@@ -7,6 +7,7 @@ All values can be overridden via environment variables or a .env file.
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,14 +24,22 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # Neo4j
+    # Storage mode: "local" (no Docker) or "docker" (full services)
+    # ------------------------------------------------------------------
+    storage_mode: Literal["local", "docker"] = Field(
+        default="local", alias="STORAGE_MODE"
+    )
+    local_data_dir: str = Field(default="./opencrab_data", alias="LOCAL_DATA_DIR")
+
+    # ------------------------------------------------------------------
+    # Neo4j (docker mode only)
     # ------------------------------------------------------------------
     neo4j_uri: str = Field(default="bolt://localhost:7687", alias="NEO4J_URI")
     neo4j_user: str = Field(default="neo4j", alias="NEO4J_USER")
     neo4j_password: str = Field(default="opencrab", alias="NEO4J_PASSWORD")
 
     # ------------------------------------------------------------------
-    # MongoDB
+    # MongoDB (docker mode only)
     # ------------------------------------------------------------------
     mongodb_uri: str = Field(
         default="mongodb://root:opencrab@localhost:27017",
@@ -39,7 +48,7 @@ class Settings(BaseSettings):
     mongodb_db: str = Field(default="opencrab", alias="MONGODB_DB")
 
     # ------------------------------------------------------------------
-    # PostgreSQL
+    # PostgreSQL (docker mode) / SQLite (local mode)
     # ------------------------------------------------------------------
     postgres_url: str = Field(
         default="postgresql://opencrab:opencrab@localhost:5432/opencrab",
@@ -47,7 +56,7 @@ class Settings(BaseSettings):
     )
 
     # ------------------------------------------------------------------
-    # ChromaDB
+    # ChromaDB (docker mode uses HttpClient; local mode uses PersistentClient)
     # ------------------------------------------------------------------
     chroma_host: str = Field(default="localhost", alias="CHROMA_HOST")
     chroma_port: int = Field(default=8000, alias="CHROMA_PORT")
@@ -73,6 +82,14 @@ class Settings(BaseSettings):
     @property
     def chroma_url(self) -> str:
         return f"http://{self.chroma_host}:{self.chroma_port}"
+
+    @property
+    def is_local(self) -> bool:
+        return self.storage_mode == "local"
+
+    @property
+    def sqlite_url(self) -> str:
+        return f"sqlite:///{self.local_data_dir}/opencrab.db"
 
 
 @lru_cache(maxsize=1)

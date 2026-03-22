@@ -1,9 +1,11 @@
 """
 ChromaDB vector store adapter.
 
-Provides text embedding storage and semantic search for the OpenCrab
-ontology. Uses ChromaDB's HTTP client to connect to a remote server.
-All methods degrade gracefully when the server is unavailable.
+Supports two modes:
+- local: uses ChromaDB PersistentClient (no server needed, data in local dir)
+- docker: uses ChromaDB HttpClient (requires running ChromaDB container)
+
+All methods degrade gracefully when unavailable.
 """
 
 from __future__ import annotations
@@ -17,12 +19,21 @@ logger = logging.getLogger(__name__)
 
 
 class ChromaStore:
-    """ChromaDB adapter using the HTTP client."""
+    """ChromaDB adapter — local (PersistentClient) or docker (HttpClient)."""
 
-    def __init__(self, host: str, port: int, collection_name: str) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        collection_name: str,
+        local_mode: bool = False,
+        local_path: str = "./opencrab_data/chroma",
+    ) -> None:
         self._host = host
         self._port = port
         self._collection_name = collection_name
+        self._local_mode = local_mode
+        self._local_path = local_path
         self._client: Any = None
         self._collection: Any = None
         self._available = False
@@ -36,23 +47,28 @@ class ChromaStore:
         try:
             import chromadb  # type: ignore[import]
 
-            self._client = chromadb.HttpClient(host=self._host, port=self._port)
-            self._client.heartbeat()
+            if self._local_mode:
+                import os
+                os.makedirs(self._local_path, exist_ok=True)
+                self._client = chromadb.PersistentClient(path=self._local_path)
+                logger.info("ChromaDB local mode at %s", self._local_path)
+            else:
+                self._client = chromadb.HttpClient(host=self._host, port=self._port)
+                self._client.heartbeat()
+                logger.info("ChromaDB connected at %s:%s", self._host, self._port)
+
             self._collection = self._client.get_or_create_collection(
                 name=self._collection_name,
                 metadata={"hnsw:space": "cosine"},
             )
             self._available = True
-            logger.info(
-                "ChromaDB connected at %s:%s (collection=%s)",
-                self._host,
-                self._port,
-                self._collection_name,
-            )
         except Exception as exc:
-            logger.warning(
-                "ChromaDB unavailable (%s:%s): %s", self._host, self._port, exc
-            )
+            if self._local_mode:
+                logger.warning("ChromaDB local init failed: %s", exc)
+            else:
+                logger.warning(
+                    "ChromaDB unavailable (%s:%s): %s", self._host, self._port, exc
+                )
             self._available = False
 
     @property
