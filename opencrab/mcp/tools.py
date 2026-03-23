@@ -34,7 +34,7 @@ _context: dict[str, Any] = {}
 
 
 def _get_context() -> dict[str, Any]:
-    """Lazily initialise all stores and engines."""
+    """Lazily initialise all stores and engines using the factory (respects STORAGE_MODE)."""
     global _context
     if _context:
         return _context
@@ -44,27 +44,24 @@ def _get_context() -> dict[str, Any]:
     from opencrab.ontology.impact import ImpactEngine
     from opencrab.ontology.query import HybridQuery
     from opencrab.ontology.rebac import ReBACEngine
-    from opencrab.stores.chroma_store import ChromaStore
-    from opencrab.stores.mongo_store import MongoStore
-    from opencrab.stores.neo4j_store import Neo4jStore
-    from opencrab.stores.sql_store import SQLStore
+    from opencrab.stores.factory import make_doc_store, make_graph_store, make_sql_store, make_vector_store
 
     cfg = get_settings()
 
-    neo4j = Neo4jStore(cfg.neo4j_uri, cfg.neo4j_user, cfg.neo4j_password)
-    chroma = ChromaStore(cfg.chroma_host, cfg.chroma_port, cfg.chroma_collection)
-    mongo = MongoStore(cfg.mongodb_uri, cfg.mongodb_db)
-    sql = SQLStore(cfg.postgres_url)
+    graph = make_graph_store(cfg)
+    vector = make_vector_store(cfg)
+    docs = make_doc_store(cfg)
+    sql = make_sql_store(cfg)
 
-    builder = OntologyBuilder(neo4j, mongo, sql)
-    rebac = ReBACEngine(neo4j, sql)
-    impact = ImpactEngine(neo4j, sql)
-    hybrid = HybridQuery(chroma, neo4j)
+    builder = OntologyBuilder(graph, docs, sql)
+    rebac = ReBACEngine(graph, sql)
+    impact = ImpactEngine(graph, sql)
+    hybrid = HybridQuery(vector, graph)
 
     _context = {
-        "neo4j": neo4j,
-        "chroma": chroma,
-        "mongo": mongo,
+        "neo4j": graph,
+        "chroma": vector,
+        "mongo": docs,
         "sql": sql,
         "builder": builder,
         "rebac": rebac,
@@ -301,6 +298,86 @@ def ontology_lever_simulate(
         return {"error": str(exc)}
 
 
+def ontology_extract(
+    text: str,
+    source_id: str,
+    model: str = "claude-haiku-4-5-20251001",
+) -> dict[str, Any]:
+    """
+    LLM-extract ontology nodes and edges from text and write to the graph.
+
+    Uses Claude to identify entities and relationships according to the
+    9-Space MetaOntology grammar, then persists them.
+
+    Parameters
+    ----------
+    text:
+        Raw text to extract knowledge from.
+    source_id:
+        Stable identifier for this source (e.g. file path or URL).
+    model:
+        Claude model to use for extraction.
+    """
+    import os
+
+    from opencrab.ontology.extractor import LLMExtractor
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        return {"error": "ANTHROPIC_API_KEY not set"}
+
+    ctx = _get_context()
+
+    try:
+        extractor = LLMExtractor(api_key=api_key, model=model)
+        result = extractor.extract_from_text(text, source_id=source_id)
+
+        added_nodes = 0
+        added_edges = 0
+        node_errors: list[str] = []
+        edge_errors: list[str] = []
+
+        for node in result.nodes:
+            try:
+                ctx["builder"].add_node(
+                    space=node.space,
+                    node_type=node.node_type,
+                    node_id=node.node_id,
+                    properties=node.properties,
+                )
+                added_nodes += 1
+            except Exception as exc:
+                node_errors.append(f"{node.node_id}: {exc}")
+
+        for edge in result.edges:
+            try:
+                ctx["builder"].add_edge(
+                    from_space=edge.from_space,
+                    from_id=edge.from_id,
+                    relation=edge.relation,
+                    to_space=edge.to_space,
+                    to_id=edge.to_id,
+                    properties=edge.properties,
+                )
+                added_edges += 1
+            except Exception as exc:
+                edge_errors.append(f"{edge.from_id}→{edge.to_id}: {exc}")
+
+        return {
+            "source_id": source_id,
+            "extracted_nodes": len(result.nodes),
+            "extracted_edges": len(result.edges),
+            "added_nodes": added_nodes,
+            "added_edges": added_edges,
+            "extraction_errors": result.errors,
+            "node_errors": node_errors,
+            "edge_errors": edge_errors,
+        }
+    except Exception as exc:
+        logger.error("ontology_extract failed: %s", exc)
+        return {"error": str(exc)}
+
+
 def ontology_ingest(
     text: str,
     source_id: str,
@@ -477,6 +554,25 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "required": ["lever_id", "direction", "magnitude"],
         },
     },
+    "ontology_extract": {
+        "description": (
+            "LLM-extract ontology nodes and edges from text using Claude, "
+            "then persist them into the knowledge graph."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "text": {"type": "string", "description": "Text to extract knowledge from."},
+                "source_id": {"type": "string", "description": "Stable source identifier."},
+                "model": {
+                    "type": "string",
+                    "description": "Claude model (default: claude-haiku-4-5-20251001).",
+                    "default": "claude-haiku-4-5-20251001",
+                },
+            },
+            "required": ["text", "source_id"],
+        },
+    },
     "ontology_ingest": {
         "description": "Ingest a text document into the vector and document stores.",
         "inputSchema": {
@@ -500,6 +596,7 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "ontology_impact": ontology_impact,
     "ontology_rebac_check": ontology_rebac_check,
     "ontology_lever_simulate": ontology_lever_simulate,
+    "ontology_extract": ontology_extract,
     "ontology_ingest": ontology_ingest,
 }
 
