@@ -6,6 +6,7 @@ Commands:
   serve     Start the MCP server (stdio)
   status    Check all store connections
   ingest    Ingest files from a path
+  extract   LLM-extract nodes/edges from files into the graph
   query     Run a hybrid query
   manifest  Print the MetaOntology grammar
 """
@@ -232,6 +233,110 @@ def ingest(path: str, recursive: bool, extension: str) -> None:
             console.print(f"  [red]FAIL[/red] {file.name}: {exc}")
 
     console.print(f"\n[bold green]Ingested {ok_count}/{len(files)} files.[/bold green]")
+
+
+# ---------------------------------------------------------------------------
+# extract
+# ---------------------------------------------------------------------------
+
+
+@main.command()
+@click.argument("path", type=click.Path(exists=True))
+@click.option("--recursive", "-r", is_flag=True, default=False)
+@click.option("--extension", "-e", default=".md,.txt,.py", show_default=True)
+@click.option("--model", default="claude-haiku-4-5-20251001", show_default=True, help="Claude model for extraction.")
+@click.option("--dry-run", is_flag=True, default=False, help="Extract but do not write to stores.")
+@click.option("--api-key", default=None, envvar="ANTHROPIC_API_KEY", help="Anthropic API key.")
+def extract(
+    path: str,
+    recursive: bool,
+    extension: str,
+    model: str,
+    dry_run: bool,
+    api_key: str | None,
+) -> None:
+    """LLM-extract ontology nodes/edges from files and write to the graph."""
+    from opencrab.config import get_settings
+    from opencrab.ontology.builder import OntologyBuilder
+    from opencrab.ontology.extractor import LLMExtractor
+    from opencrab.stores.factory import make_doc_store, make_graph_store, make_sql_store
+
+    if not api_key:
+        import os
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        console.print("[red]ANTHROPIC_API_KEY not set. Pass --api-key or set the env var.[/red]")
+        raise SystemExit(1)
+
+    cfg = get_settings()
+    graph = make_graph_store(cfg)
+    doc = make_doc_store(cfg)
+    sql = make_sql_store(cfg)
+    builder = OntologyBuilder(graph, doc, sql)
+    extractor = LLMExtractor(api_key=api_key, model=model)
+
+    extensions = [e.strip() for e in extension.split(",")]
+    root = Path(path)
+    files = list(root.rglob("*")) if recursive else list(root.iterdir())
+    files = [f for f in files if f.is_file() and f.suffix in extensions]
+
+    if not files:
+        console.print(f"[yellow]No files with extensions {extensions} found.[/yellow]")
+        return
+
+    console.print(f"[cyan]Extracting ontology from {len(files)} file(s)...[/cyan]")
+
+    total_nodes = 0
+    total_edges = 0
+    total_errors = 0
+
+    for file in files:
+        console.print(f"\n[bold]{file.name}[/bold]")
+        try:
+            result = extractor.extract_from_file(file)
+            console.print(f"  nodes={len(result.nodes)} edges={len(result.edges)}", end="")
+            if result.errors:
+                console.print(f" [yellow]warn={len(result.errors)}[/yellow]")
+                total_errors += len(result.errors)
+            else:
+                console.print()
+
+            if not dry_run:
+                for node in result.nodes:
+                    try:
+                        builder.add_node(
+                            space=node.space,
+                            node_type=node.node_type,
+                            node_id=node.node_id,
+                            properties=node.properties,
+                        )
+                    except Exception as exc:
+                        console.print(f"    [red]node {node.node_id}: {exc}[/red]")
+
+                for edge in result.edges:
+                    try:
+                        builder.add_edge(
+                            from_space=edge.from_space,
+                            from_id=edge.from_id,
+                            relation=edge.relation,
+                            to_space=edge.to_space,
+                            to_id=edge.to_id,
+                            properties=edge.properties,
+                        )
+                    except Exception as exc:
+                        console.print(f"    [yellow]edge {edge.from_id}→{edge.to_id}: {exc}[/yellow]")
+
+            total_nodes += len(result.nodes)
+            total_edges += len(result.edges)
+        except Exception as exc:
+            console.print(f"  [red]FAIL: {exc}[/red]")
+            total_errors += 1
+
+    mode_label = "[dim](dry-run)[/dim]" if dry_run else ""
+    console.print(
+        f"\n[bold green]Done {mode_label}[/bold green] — "
+        f"nodes={total_nodes} edges={total_edges} errors={total_errors}"
+    )
 
 
 # ---------------------------------------------------------------------------
