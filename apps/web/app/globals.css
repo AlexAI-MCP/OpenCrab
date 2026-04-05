@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #111111;
+  --bg-panel: #1f1f1f;
+  --bg-hover: #2a2a2a;
+  --bg-alt: #2e2e2e;
+
+  --gold: #f8c537;
+  --gold-dim: #c9a02a;
+  --gold-glow: rgba(248, 197, 55, 0.15);
+  --gold-border: rgba(248, 197, 55, 0.35);
+
+  --text-primary: #faf2d6;
+  --text-muted: #bdae93;
+  --text-faint: #7c6f64;
+  --text-link: #83a598;
+
+  --node-subject: #f8c537;
+  --node-resource: #83a598;
+  --node-concept: #b8bb26;
+  --node-evidence: #bdae93;
+  --node-outcome: #fb4934;
+  --node-lever: #d3869b;
+  --node-policy: #fabd2f;
+  --node-claim: #fe8019;
+  --node-community: #8ec07c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
+
+body {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--gold-glow);
+  color: var(--gold);
+}
+
+.mono { font-family: 'Source Code Pro', 'Fira Code', monospace; }
+
+/* Scrollbar — thin, dark */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--bg-alt); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
+
+/* Buttons */
+.btn-gold {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold-border);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-gold:hover {
+  background: var(--gold-glow);
+  border-color: var(--gold);
+}
+.btn-gold:active { opacity: 0.8; }
+
+/* Input */
+.input-dark {
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-alt);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-dark:focus { border-color: var(--gold-border); }
+.input-dark::placeholder { color: var(--text-faint); }
+
+textarea.input-dark { resize: vertical; min-height: 80px; }
+
+/* Tab bar */
+.tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  background: none;
+  border-top: none; border-left: none; border-right: none;
+}
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: var(--bg-alt);
+  color: var(--text-muted);
+}
+
+/* Divider */
+hr.gold-line {
+  border: none;
+  border-top: 1px solid var(--gold-border);
+  margin: 8px 0;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  z-index: 9999;
+  animation: slideUp 0.2s ease;
+}
+.toast-success { background: #1d3a2a; color: #8ec07c; border: 1px solid #8ec07c; }
+.toast-error   { background: #3a1d1d; color: #fb4934; border: 1px solid #fb4934; }
+
+@keyframes slideUp {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+/* Graph tooltip */
+.graph-tooltip {
+  position: fixed;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-primary);
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 220px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
