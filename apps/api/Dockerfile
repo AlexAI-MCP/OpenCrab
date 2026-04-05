@@ -4,14 +4,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
-WORKDIR /app/opencrab_root
+WORKDIR /app
 
-COPY . /app/opencrab_root
+COPY . /app
 
 RUN pip install --upgrade pip \
-    && pip install -e /app/opencrab_root \
-    && pip install -r /app/opencrab_root/apps/api/requirements.txt
+    && pip install -e /app \
+    && pip install -r /app/apps/api/requirements.txt
 
-EXPOSE 8001
+EXPOSE 8080
 
-CMD ["uvicorn", "apps.api.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["sh", "-c", "uvicorn apps.api.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
