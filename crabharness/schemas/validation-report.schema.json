@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ValidationReport",
+  "type": "object",
+  "required": [
+    "run_id",
+    "mission_id",
+    "status",
+    "completeness_score",
+    "next_action"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["pass", "retry", "fail"]
+    },
+    "completeness_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "severity", "message"],
+        "properties": {
+          "code": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "error"]
+          },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "next_action": {
+      "type": "string",
+      "enum": ["promote", "retry", "expand_scope", "reject"]
+    }
+  },
+  "additionalProperties": true
+}

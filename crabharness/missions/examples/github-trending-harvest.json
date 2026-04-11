@@ -1,0 +1,46 @@
+{
+  "mission_id": "ai-trends-harvest-001",
+  "workspace_id": "trends",
+  "objective": "Collect emerging AI/LLM trends from GitHub trending repos to inform loopy-era system evolution.",
+  "target_object": "TrendSignal",
+  "target": {
+    "source": "github",
+    "language": "python",
+    "since": "weekly"
+  },
+  "questions": [
+    "What new AI frameworks or patterns are emerging in top repos?",
+    "Which loopy-era principles (automation, friction-removal, etc.) are reflected in these trends?",
+    "Are there applicable patterns for OpenCrab evolution?"
+  ],
+  "collection_mode": "harvest",
+  "required_evidence": [
+    "repos",
+    "readme_content"
+  ],
+  "dedupe_key": "github|trending|{language}|{since}",
+  "promotion_policy": "auto_if_valid",
+  "constraints": {
+    "max_jobs": 1,
+    "max_steps": 3,
+    "concurrency": 2,
+    "delay_ms": 500,
+    "dry_run": false,
+    "allowed_sources": [
+      "github_trending_repos"
+    ]
+  },
+  "success_criteria": {
+    "min_artifacts": 1,
+    "required_fields": [
+      "repos"
+    ],
+    "completeness_threshold": 0.8,
+    "semantic_questions": [
+      "Are repos focused on AI/LLM/agents?",
+      "Do repos demonstrate loopy-era principles?",
+      "Is implementation quality high (stars>500)?"
+    ],
+    "min_semantic_score": 0.6
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "worker_id": "codex.soeak.detail",
+  "job_type": "g2b_bid_detail_crawl",
+  "description": "SOEAK detail crawler adapter registered in CrabHarness.",
+  "supported_targets": ["BidCase", "ProcurementNotice"],
+  "tags": ["procurement", "g2b", "soeak", "bid", "reserve", "bidders"],
+  "source_ids": ["g2b_notice_detail"],
+  "entrypoint": "../../soeak-detail-crawler.ts",
+  "command": [
+    "npm",
+    "--prefix",
+    "./worker_runtime",
+    "run",
+    "worker:soeak",
+    "--"
+  ],
+  "arg_schema": {
+    "bid_no": {
+      "flag": "--bid-no",
+      "required": false,
+      "type": "string",
+      "description": "G2B bid notice number (e.g., 202604110001)"
+    },
+    "bid_ntce_ord": {
+      "flag": "--bid-ord",
+      "required": false,
+      "type": "string",
+      "default": "000",
+      "description": "Bid notice order (0-padded, typically 000)"
+    },
+    "division": {
+      "flag": "--division",
+      "required": false,
+      "type": "string",
+      "description": "Procurement division (e.g., service, goods, construction)"
+    },
+    "limit": {
+      "flag": "--limit",
+      "from_option": true,
+      "type": "integer",
+      "description": "Max items to crawl in this run"
+    },
+    "concurrency": {
+      "flag": "--concurrency",
+      "from_option": true,
+      "type": "integer",
+      "description": "Number of concurrent requests"
+    },
+    "delay_ms": {
+      "flag": "--delay-ms",
+      "from_option": true,
+      "type": "integer",
+      "description": "Delay between requests in milliseconds"
+    },
+    "dry_run": {
+      "flag": "--dry-run",
+      "from_option": true,
+      "type": "boolean",
+      "description": "Run without writing to database"
+    },
+    "include_processing": {
+      "flag": "--include-processing",
+      "from_option": true,
+      "type": "boolean",
+      "description": "Include processing rows in crawl"
+    }
+  },
+  "adapter_module": "codex_workers.soeak.adapter",
+  "artifact_types": [
+    "analysis_case",
+    "bidders_table",
+    "reserve_price_table",
+    "progress_log",
+    "error_log"
+  ],
+  "validation_checks": [
+    "required_fields_present",
+    "bidders_non_empty",
+    "reserve_prices_non_empty",
+    "winner_rate_consistent"
+  ],
+  "opencrab_mapping": {
+    "resource": ["BidCase", "CrawlRun"],
+    "evidence": ["WorkProgressRow", "BidderRow", "ReservePriceRow", "RawStatusLog", "ErrorEvent"],
+    "claim": ["WinnerRate", "ReserveRatio", "SweetSpotPct", "BelowLwltPct", "WinnerMargin", "MarginToRunnerUp"],
+    "outcome": ["CompetitionIntensity", "PriceCompressionRisk", "AnomalyRisk", "VendorWinLikelihood"]
+  }
+}

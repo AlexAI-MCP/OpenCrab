@@ -1,0 +1,43 @@
+{
+  "mission_id": "procurement-bidcase-001",
+  "workspace_id": "procurement-kor",
+  "objective": "국가조달 입찰 건의 경쟁 강도와 가격 압축 리스크 판단에 필요한 증거를 수집한다.",
+  "target_object": "BidCase",
+  "target": {
+    "source": "soeak",
+    "bid_no": "202604110001",
+    "bid_ntce_ord": "000",
+    "division": "service"
+  },
+  "questions": [
+    "입찰 참여자 분포는 어떤가",
+    "예가와 낙찰률 사이의 압축 징후가 있는가",
+    "즉시 OpenCrab claim으로 승격할 만한 근거가 충분한가"
+  ],
+  "collection_mode": "targeted",
+  "required_evidence": [
+    "work_progress",
+    "bidders",
+    "reserve_prices"
+  ],
+  "constraints": {
+    "max_jobs": 1,
+    "max_steps": 6,
+    "concurrency": 5,
+    "delay_ms": 300,
+    "dry_run": false,
+    "allowed_sources": [
+      "g2b_notice_detail"
+    ]
+  },
+  "success_criteria": {
+    "min_artifacts": 3,
+    "required_fields": [
+      "bidders",
+      "reserve_prices",
+      "winner_rate"
+    ],
+    "completeness_threshold": 0.8
+  },
+  "promotion_policy": "manual_review"
+}

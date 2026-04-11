@@ -1,0 +1,15 @@
+source_catalog:
+  - source_id: g2b_notice_detail
+    domain: procurement
+    target_types: [BidCase, ProcurementNotice]
+    worker_id: codex.soeak.detail
+    trust: high
+    notes: G2B/SOEAK bid detail pages with bidder and reserve price evidence.
+
+  - source_id: registry_manual_seed
+    domain: generic
+    target_types: [Dataset, SourcePage]
+    worker_id: manual.placeholder
+    trust: medium
+    notes: Placeholder for future non-procurement missions.
+

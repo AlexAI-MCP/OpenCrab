@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PromotionPackage",
+  "type": "object",
+  "required": [
+    "package_id",
+    "mission_id",
+    "run_id",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "package_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "run_id": { "type": "string" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["space", "node_type", "node_id"],
+        "properties": {
+          "space": { "type": "string" },
+          "node_type": { "type": "string" },
+          "node_id": { "type": "string" },
+          "properties": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from_space", "from_id", "relation", "to_space", "to_id"],
+        "properties": {
+          "from_space": { "type": "string" },
+          "from_id": { "type": "string" },
+          "relation": { "type": "string" },
+          "to_space": { "type": "string" },
+          "to_id": { "type": "string" },
+          "properties": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "claim_refs": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}
+

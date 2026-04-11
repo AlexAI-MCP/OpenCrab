@@ -13,6 +13,8 @@
 OpenCrab is an MCP (Model Context Protocol) server that exposes the MetaOntology OS grammar
 to any OpenClaw-compatible agent environment — Claude Code, n8n, LangGraph, and beyond.
 
+**Companion:** [`crabharness/`](./crabharness/) — a plugin-based mission control plane that plans evidence collection, delegates heavy crawling to Codex workers, validates artifacts through a three-gate pipeline, and emits OpenCrab-ready promotion packages. See [CrabHarness README](./crabharness/README.md).
+
 ---
 
 ## Architecture
@@ -364,6 +366,51 @@ tests/                # Test suite (grammar, stores, MCP tools)
 scripts/              # Seed script
 docker-compose.yml    # All data services
 ```
+
+---
+
+---
+
+## CrabHarness — Mission Control Plane
+
+[`crabharness/`](./crabharness/) is the companion data collection pipeline for OpenCrab. It owns the "how do we *get* the evidence that fills the ontology" layer, while OpenCrab owns the "how is the ontology structured and queried" layer.
+
+### What CrabHarness adds
+
+| Capability | Description |
+|------------|-------------|
+| **Plugin workers** | Drop a `worker.manifest.json` + `adapter.py` into `codex_workers/` and a new collector appears in the catalog — no core changes. |
+| **Mission-first planner** | Declarative `mission.json` picks workers by `target_object` + tag match instead of hardcoded pipelines. |
+| **arg_schema delegation** | Workers declare their CLI contract in the manifest; CrabHarness auto-builds the Codex subprocess command. |
+| **Three-gate validation** | Every artifact bundle scored on (1) completeness, (2) semantic relevance, (3) loopy-era autoresearch verdict. |
+| **Harvest dedupe** | `.seen.json` side-index with SHA256 IDs for `harvest` collection mode. |
+| **Promotion packages** | Builds OpenCrab node/edge packages (resource + CrawlRun + CollectionCompleteness claim) — **never mutates OpenCrab directly**. |
+
+### Quickstart
+
+```bash
+cd crabharness
+pip install -e .
+crabharness catalog                                     # list registered workers
+crabharness run missions/examples/github-trending-harvest.json
+```
+
+Run output lands in `crabharness/artifacts/runs/<mission_id>/<run_id>/` with mission, delegation payload, artifact bundle, validation report, and promotion package.
+
+### Add a new worker
+
+```
+crabharness/codex_workers/my_worker/
+├── __init__.py
+├── worker.manifest.json    # capability metadata + arg schema
+└── adapter.py              # collect_bundle() + validate_bundle()
+```
+
+See `crabharness/README.md` for the full plugin contract, mission schema, and promotion flow.
+
+### Integration with OpenCrab
+
+CrabHarness produces promotion packages as pure JSON. An OpenCrab-side applier (future) reads the package and invokes `ontology_add_node` / `ontology_add_edge` MCP tools. This preserves the strict separation: **harness collects, OpenCrab stores**.
 
 ---
 

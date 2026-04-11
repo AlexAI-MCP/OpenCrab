@@ -1,0 +1,21 @@
+delegation:
+  max_jobs_per_mission: 4
+  max_retry_attempts: 2
+  retry_backoff_seconds: 30
+  require_explicit_artifacts: true
+
+validation:
+  completeness_threshold: 0.8
+  fail_on_missing_required_fields: true
+  fail_on_empty_primary_tables: true
+
+promotion:
+  default_mode: manual_review
+  opencrab_enabled: false
+  allow_auto_promote: false
+  rollback_on_validation_fail: true
+
+visibility:
+  workspace_default: private
+  publish_to_saas: false
+

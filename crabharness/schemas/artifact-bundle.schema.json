@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ArtifactBundle",
+  "type": "object",
+  "required": [
+    "run_id",
+    "mission_id",
+    "worker_id",
+    "job_id"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "worker_id": { "type": "string" },
+    "job_id": { "type": "string" },
+    "target_ref": { "type": "object" },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "path", "format"],
+        "properties": {
+          "kind": { "type": "string" },
+          "path": { "type": "string" },
+          "format": { "type": "string" },
+          "description": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "metrics": { "type": "object" },
+    "summary": { "type": "object" }
+  },
+  "additionalProperties": true
+}
+

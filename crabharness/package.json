@@ -1,0 +1,9 @@
+{
+  "name": "crabharness",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "worker:soeak": "npm --prefix ./worker_runtime run worker:soeak --",
+    "plan:example": "python -m crabharness plan ./missions/examples/soeak-bidcase.json"
+  }
+}

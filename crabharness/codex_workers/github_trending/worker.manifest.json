@@ -1,0 +1,40 @@
+{
+  "worker_id": "codex.github.trending",
+  "job_type": "github_trending_crawl",
+  "supported_targets": ["TrendSignal", "RepoInsight"],
+  "tags": ["github", "trending", "ai", "llm", "agent", "automation"],
+  "source_ids": ["github_trending_repos"],
+  "command": ["echo", "github-trending-worker-stub"],
+  "arg_schema": {
+    "language": {
+      "flag": "--language",
+      "required": false,
+      "type": "string",
+      "default": "python",
+      "description": "Language to filter"
+    },
+    "since": {
+      "flag": "--since",
+      "required": false,
+      "type": "string",
+      "default": "weekly",
+      "description": "Time window (daily, weekly, monthly)"
+    },
+    "min_stars_delta": {
+      "flag": "--min-stars",
+      "from_option": true,
+      "type": "integer",
+      "description": "Minimum stars delta"
+    },
+    "limit": {
+      "flag": "--limit",
+      "from_option": true,
+      "type": "integer",
+      "description": "Max repos to fetch"
+    }
+  },
+  "adapter_module": "codex_workers.github_trending.adapter",
+  "artifact_types": ["repo_metadata", "readme_content", "progress_log"],
+  "validation_checks": ["repos_found", "readme_extracted"],
+  "description": "GitHub trending repositories crawler (language-agnostic, format-agnostic)"
+}

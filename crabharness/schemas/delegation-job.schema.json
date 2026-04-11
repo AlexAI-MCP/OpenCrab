@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DelegationJob",
+  "type": "object",
+  "required": [
+    "job_id",
+    "mission_id",
+    "workspace_id",
+    "worker_id",
+    "job_type",
+    "objective",
+    "target"
+  ],
+  "properties": {
+    "job_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "workspace_id": { "type": "string" },
+    "worker_id": { "type": "string" },
+    "job_type": { "type": "string" },
+    "objective": { "type": "string" },
+    "target": { "type": "object" },
+    "questions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "options": { "type": "object" },
+    "expected_artifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "validation_checks": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "promotion_policy": { "type": "string" },
+    "delegation_brief": { "type": "string" }
+  },
+  "additionalProperties": true
+}
+

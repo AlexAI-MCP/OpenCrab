@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crabharness"
+version = "0.2.0"
+description = "Mission-first control plane for plugin-based Codex worker delegation, validation, and OpenCrab promotion."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "OpenCrab Team" },
+]
+keywords = ["crawling", "orchestration", "codex", "opencrab", "llm", "autoresearch"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+  "pydantic>=2.7",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[project.scripts]
+crabharness = "crabharness.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/opencrab/crabharness"
+Issues = "https://github.com/opencrab/crabharness/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["crabharness*", "codex_workers*"]
+
+[tool.setuptools.package-data]
+"codex_workers" = ["**/worker.manifest.json"]

@@ -1,0 +1,17 @@
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+node_modules/
+dist/
+artifacts/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite
+*.db
+*.log
+*.ndjson
+*.zip
+
