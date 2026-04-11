@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .models import ArtifactBundle, DelegationJob, MissionSpec, PromotionPackage, ValidationReport
 from .delegation import build_codex_payload
+from .harness_loop import run_harness_loop
 from .planner import build_jobs
 from .preflight import doctor_worker
 from .promotion import build_promotion_package
@@ -71,6 +72,15 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_loop_run(args: argparse.Namespace) -> int:
+    payload = _load_json(args.mission)
+    mission = MissionSpec.model_validate(payload)
+    state_path = Path(args.state_file) if args.state_file else None
+    result = run_harness_loop(mission, max_iterations=args.iterations, state_path=state_path)
+    _write(result)
+    return 0
+
+
 def _cmd_doctor(args: argparse.Namespace) -> int:
     _write(doctor_worker(args.worker))
     return 0
@@ -104,6 +114,19 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("mission", help="Path to a mission JSON file.")
     run.add_argument("--dry-run", action="store_true", help="Force worker dry-run mode.")
     run.set_defaults(func=_cmd_run)
+
+    loop_run = subparsers.add_parser(
+        "loop-run",
+        help="Execute self-evolving harness loop with Claude Haiku reasoning.",
+    )
+    loop_run.add_argument("mission", help="Path to a mission JSON file.")
+    loop_run.add_argument(
+        "--iterations", type=int, default=5, help="Max loop iterations (default: 5)"
+    )
+    loop_run.add_argument(
+        "--state-file", help="Path to .harness-loop-state.json for persistence."
+    )
+    loop_run.set_defaults(func=_cmd_loop_run)
 
     doctor = subparsers.add_parser(
         "doctor",
