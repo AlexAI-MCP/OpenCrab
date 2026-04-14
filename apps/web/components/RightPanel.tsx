@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { OcNode } from '../lib/api'
-import { query, ingest } from '../lib/api'
+import type { OcNode, SourceType } from '../lib/api'
+import { query, ingestSource } from '../lib/api'
 
 const SPACES = ['subject','resource','concept','evidence','outcome','lever','policy','claim','community']
 const SPACE_COLOR: Record<string, string> = {
@@ -32,9 +32,9 @@ export default function RightPanel({ selectedNode, controls, onControlChange, ap
   const [queryText, setQueryText] = useState('')
   const [queryResults, setQueryResults] = useState<{ node_id: string; score: number; text: string }[]>([])
   const [querying, setQuerying] = useState(false)
-  const [ingestText, setIngestText] = useState('')
-  const [ingestSpace, setIngestSpace] = useState('concept')
-  const [ingestSourceId, setIngestSourceId] = useState('')
+  const [ingestSourceType, setIngestSourceType] = useState<SourceType>('obsidian')
+  const [ingestToken, setIngestToken] = useState('')
+  const [ingestQuery, setIngestQuery] = useState('')
   const [ingesting, setIngesting] = useState(false)
   const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null)
 
@@ -48,21 +48,22 @@ export default function RightPanel({ selectedNode, controls, onControlChange, ap
     setQuerying(true)
     try {
       const res = await query(apiKey, queryText)
-      setQueryResults(res.results ?? [])
-    } catch { showToast('쿼리 실패', 'error') }
+      // Support both response formats
+      setQueryResults(res.results ?? res.hits ?? res.chunks ?? [])
+    } catch (e) { showToast(String(e), 'error') }
     finally { setQuerying(false) }
   }
 
   async function handleIngest() {
-    if (!ingestText.trim()) return
+    if (!ingestToken.trim()) return
     setIngesting(true)
     try {
-      await ingest(apiKey, ingestText, ingestSourceId || undefined, { space: ingestSpace })
+      await ingestSource(apiKey, ingestSourceType, ingestToken, { query: ingestQuery || undefined })
       showToast('인제스트 완료!')
-      setIngestText('')
-      setIngestSourceId('')
+      setIngestToken('')
+      setIngestQuery('')
       onRefresh()
-    } catch { showToast('인제스트 실패', 'error') }
+    } catch (e) { showToast(String(e), 'error') }
     finally { setIngesting(false) }
   }
 
@@ -177,38 +178,42 @@ export default function RightPanel({ selectedNode, controls, onControlChange, ap
         {tab === 'ingest' && (
           <div>
             <div style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>Space</label>
-              <select
-                className="input-dark"
-                value={ingestSpace}
-                onChange={e => setIngestSpace(e.target.value)}
-                style={{ fontSize: 12 }}
-              >
-                {SPACES.map(s => <option key={s} value={s}>{s}</option>)}
+              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>소스 타입</label>
+              <select className="input-dark" value={ingestSourceType}
+                onChange={e => setIngestSourceType(e.target.value as SourceType)}
+                style={{ fontSize: 12 }}>
+                <option value="obsidian">📓 Obsidian</option>
+                <option value="notion">📝 Notion</option>
+                <option value="gdrive">📂 Google Drive</option>
+                <option value="github">🐙 GitHub</option>
               </select>
             </div>
             <div style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>Source ID (선택)</label>
-              <input className="input-dark mono" value={ingestSourceId}
-                onChange={e => setIngestSourceId(e.target.value)}
-                placeholder="e.g. 01_Projects/MyProject"
+              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>
+                액세스 토큰 {ingestSourceType === 'obsidian' && '(Obsidian Sync API Key)'}
+              </label>
+              <input className="input-dark mono" value={ingestToken}
+                onChange={e => setIngestToken(e.target.value)}
+                placeholder="API 토큰 입력…"
+                type="password"
                 style={{ fontSize: 11 }}
               />
             </div>
             <div style={{ marginBottom: 8 }}>
-              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>텍스트 / 노트</label>
-              <textarea
-                className="input-dark"
-                value={ingestText}
-                onChange={e => setIngestText(e.target.value)}
-                placeholder="텍스트, 마크다운, 메모 등 붙여넣기…"
-                style={{ height: 140, fontSize: 12 }}
+              <label style={{ fontSize: 11, color: '#7c6f64', display: 'block', marginBottom: 4 }}>검색어 (선택)</label>
+              <input className="input-dark" value={ingestQuery}
+                onChange={e => setIngestQuery(e.target.value)}
+                placeholder="가져올 데이터 검색어…"
+                style={{ fontSize: 11 }}
               />
             </div>
             <button className="btn-gold" style={{ width: '100%' }}
-              onClick={handleIngest} disabled={ingesting || !ingestText.trim()}>
-              {ingesting ? '처리 중…' : '인제스트'}
+              onClick={handleIngest} disabled={ingesting || !ingestToken.trim()}>
+              {ingesting ? '처리 중…' : '데이터 가져오기'}
             </button>
+            <div style={{ marginTop: 8, fontSize: 10, color: '#555', lineHeight: 1.5 }}>
+              선택한 소스의 데이터를 GraphRAG 온톨로지로 변환해 저장해
+            </div>
           </div>
         )}
 
