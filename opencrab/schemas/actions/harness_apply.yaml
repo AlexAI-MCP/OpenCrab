@@ -1,0 +1,13 @@
+action: harness_apply
+version: "1.0"
+description: Apply a CrabHarness PromotionPackage to the OpenCrab ontology stores.
+parameters:
+  package:
+    type: dict
+    required: true
+    description: Serialised PromotionPackage object.
+  dry_run:
+    type: bool
+    required: false
+    description: Validate without writing to stores.
+    default: false

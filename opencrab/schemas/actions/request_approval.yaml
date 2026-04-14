@@ -1,0 +1,20 @@
+action: request_approval
+version: "1.0"
+description: Request human approval before executing a sensitive action.
+parameters:
+  action_type:
+    type: string
+    required: true
+    description: The action type that requires approval.
+  subject_id:
+    type: string
+    required: true
+    description: ID of the subject requesting the action.
+  payload:
+    type: dict
+    required: true
+    description: Full action payload to be reviewed.
+  reason:
+    type: string
+    required: false
+    description: Human-readable reason for the approval request.

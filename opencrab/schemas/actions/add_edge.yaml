@@ -1,0 +1,28 @@
+action: add_edge
+version: "1.0"
+description: Add a directed edge between two nodes (grammar-validated).
+parameters:
+  from_space:
+    type: string
+    required: true
+    description: Source node's space.
+  from_id:
+    type: string
+    required: true
+    description: Source node's ID.
+  relation:
+    type: string
+    required: true
+    description: Relation label (must be valid for the given space pair).
+  to_space:
+    type: string
+    required: true
+    description: Target node's space.
+  to_id:
+    type: string
+    required: true
+    description: Target node's ID.
+  properties:
+    type: dict
+    required: false
+    description: Optional edge properties.

@@ -427,6 +427,93 @@ def ontology_ingest(
     return result
 
 
+def workflow_create_run(
+    action_type: str,
+    payload: dict[str, Any],
+    subject_id: str | None = None,
+) -> dict[str, Any]:
+    """
+    Create a new workflow run in 'pending' state.
+
+    Use this to start an auditable action workflow before executing it.
+    Returns run_id, receipt_id, and status='pending'.
+
+    Parameters
+    ----------
+    action_type:
+        The action being requested (e.g. 'add_node', 'harness_apply').
+    payload:
+        The full action payload (will be stored for audit).
+    subject_id:
+        Optional identifier of the actor initiating the run.
+    """
+    from opencrab.execution.workflow import WorkflowEngine
+
+    ctx = _get_context()
+    engine = WorkflowEngine(ctx["sql"])
+    return engine.create_run(action_type, payload, subject_id)
+
+
+def workflow_advance(
+    run_id: str,
+    new_status: str,
+    output: dict[str, Any] | None = None,
+    actor: str | None = None,
+) -> dict[str, Any]:
+    """
+    Advance a workflow run to a new status.
+
+    Valid statuses: pending, running, approved, rejected, completed, failed.
+    Each advance is appended to the action_log for full provenance.
+
+    Parameters
+    ----------
+    run_id:
+        The workflow run to advance.
+    new_status:
+        Target status.
+    output:
+        Optional output/result dict to log.
+    actor:
+        Optional identifier of who triggered this transition.
+    """
+    from opencrab.execution.workflow import WorkflowEngine
+
+    ctx = _get_context()
+    engine = WorkflowEngine(ctx["sql"])
+    return engine.advance(run_id, new_status, output, actor)
+
+
+def approval_request(
+    action_type: str,
+    subject_id: str,
+    payload: dict[str, Any],
+    run_id: str | None = None,
+) -> dict[str, Any]:
+    """
+    Submit an approval request for a sensitive action.
+
+    Creates a pending approval entry that must be resolved (approved/rejected)
+    before the action is executed. Returns approval_id and status='pending'.
+
+    Parameters
+    ----------
+    action_type:
+        The type of action requiring approval.
+    subject_id:
+        The subject requesting the action.
+    payload:
+        The full action payload to be reviewed.
+    run_id:
+        Optional workflow run_id this approval is linked to.
+    """
+    from opencrab.execution.approvals import ApprovalEngine
+
+    ctx = _get_context()
+    engine = ApprovalEngine(ctx["sql"])
+    return engine.request(action_type, subject_id, payload, run_id)
+
+
 def harness_promotion_apply(
     package: dict[str, Any],
     dry_run: bool = False,
@@ -703,6 +790,53 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "required": ["text", "source_id"],
         },
     },
+    "workflow_create_run": {
+        "description": (
+            "Create a new workflow run in 'pending' state. "
+            "Use before executing any auditable action to get a run_id and receipt_id."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "action_type": {"type": "string", "description": "Action being requested (e.g. add_node, harness_apply)."},
+                "payload": {"type": "object", "description": "Full action payload for audit."},
+                "subject_id": {"type": "string", "description": "Optional actor identifier."},
+            },
+            "required": ["action_type", "payload"],
+        },
+    },
+    "workflow_advance": {
+        "description": (
+            "Advance a workflow run to a new status. "
+            "Valid statuses: pending, running, approved, rejected, completed, failed."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "run_id": {"type": "string", "description": "Workflow run to advance."},
+                "new_status": {"type": "string", "description": "Target status."},
+                "output": {"type": "object", "description": "Optional result to log."},
+                "actor": {"type": "string", "description": "Optional actor identifier."},
+            },
+            "required": ["run_id", "new_status"],
+        },
+    },
+    "approval_request": {
+        "description": (
+            "Submit an approval request for a sensitive action. "
+            "Returns approval_id with status='pending'."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "action_type": {"type": "string", "description": "Action requiring approval."},
+                "subject_id": {"type": "string", "description": "Subject requesting the action."},
+                "payload": {"type": "object", "description": "Full payload to be reviewed."},
+                "run_id": {"type": "string", "description": "Optional linked workflow run_id."},
+            },
+            "required": ["action_type", "subject_id", "payload"],
+        },
+    },
     "harness_promotion_apply": {
         "description": (
             "Apply a CrabHarness PromotionPackage to the OpenCrab ontology stores. "
@@ -739,6 +873,9 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "ontology_extract": ontology_extract,
     "ontology_ingest": ontology_ingest,
     "harness_promotion_apply": harness_promotion_apply,
+    "workflow_create_run": workflow_create_run,
+    "workflow_advance": workflow_advance,
+    "approval_request": approval_request,
 }
 
 # Combined tool descriptor list (name + schema)

@@ -1,0 +1,20 @@
+action: add_node
+version: "1.0"
+description: Add or update a node in the ontology stores.
+parameters:
+  space:
+    type: string
+    required: true
+    description: MetaOntology space identifier (e.g. subject, resource).
+  node_type:
+    type: string
+    required: true
+    description: Node type label (e.g. User, Document).
+  node_id:
+    type: string
+    required: true
+    description: Stable unique identifier for the node.
+  properties:
+    type: dict
+    required: false
+    description: Arbitrary key/value properties for the node.

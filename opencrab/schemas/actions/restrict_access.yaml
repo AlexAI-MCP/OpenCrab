@@ -1,0 +1,22 @@
+action: restrict_access
+version: "1.0"
+description: Deny a permission for a subject on a resource.
+parameters:
+  resource_id:
+    type: string
+    required: true
+    description: ID of the resource to restrict access to.
+  subject_id:
+    type: string
+    required: true
+    description: ID of the subject whose access is being restricted.
+  permission:
+    type: string
+    required: true
+    description: Permission to restrict (e.g. view, edit, execute).
+  effect:
+    type: string
+    required: true
+    description: Effect to apply.
+    enum: [deny, require_approval]
+    default: deny

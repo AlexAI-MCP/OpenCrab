@@ -1,0 +1,18 @@
+action: promote_claim
+version: "1.0"
+description: Promote a claim node to a validated or promoted status.
+parameters:
+  claim_id:
+    type: string
+    required: true
+    description: ID of the claim node to promote.
+  target_status:
+    type: string
+    required: true
+    description: Target status after promotion.
+    enum: [validated, promoted]
+    default: promoted
+  evidence_ids:
+    type: list
+    required: false
+    description: IDs of evidence nodes supporting this promotion.
