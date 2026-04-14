@@ -1,0 +1,21 @@
+type: Entity
+version: "1.0"
+space: concept
+description: A named real-world entity extracted from text.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Canonical name of the entity.
+  entity_type:
+    type: string
+    required: true
+    nullable: false
+    description: Semantic category of the entity.
+    enum: [person, organization, location, product, event, other]
+  description:
+    type: string
+    required: false
+    nullable: true
+    description: Short description or summary of the entity.

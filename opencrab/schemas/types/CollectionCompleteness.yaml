@@ -1,0 +1,39 @@
+type: CollectionCompleteness
+version: "1.0"
+space: claim
+description: A claim about the completeness and quality of a data collection run.
+properties:
+  status:
+    type: string
+    required: true
+    nullable: false
+    description: Pass/fail/retry outcome of the validation gate.
+    enum: [pass, retry, fail]
+  score:
+    type: float
+    required: true
+    nullable: false
+    description: Completeness score between 0.0 and 1.0.
+  semantic_score:
+    type: float
+    required: false
+    nullable: true
+    description: Semantic quality score between 0.0 and 1.0.
+  semantic_verdict:
+    type: string
+    required: false
+    nullable: true
+    description: Autoresearch verdict from semantic evaluation.
+    enum: [keep, discard, crash]
+  autoresearch_verdict:
+    type: string
+    required: false
+    nullable: true
+    description: Final autoresearch decision.
+    enum: [keep, discard]
+  next_action:
+    type: string
+    required: false
+    nullable: true
+    description: Recommended next action after validation.
+    enum: [promote, retry, discard]

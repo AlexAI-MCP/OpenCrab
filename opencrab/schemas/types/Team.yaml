@@ -1,0 +1,20 @@
+type: Team
+version: "1.0"
+space: subject
+description: A group of users sharing resources and permissions.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Display name of the team.
+  org_id:
+    type: string
+    required: false
+    nullable: true
+    description: Organization this team belongs to.
+  member_count:
+    type: int
+    required: false
+    nullable: true
+    description: Number of members in the team.

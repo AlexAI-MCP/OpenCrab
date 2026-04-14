@@ -11,9 +11,11 @@ but do not abort the operation.
 from __future__ import annotations
 
 import logging
+import uuid
+from datetime import datetime, timezone
 from typing import Any
 
-from opencrab.grammar.validator import validate_edge, validate_node
+from opencrab.grammar.validator import validate_edge, validate_node, validate_node_properties
 from opencrab.stores.mongo_store import MongoStore
 from opencrab.stores.neo4j_store import Neo4jStore
 from opencrab.stores.sql_store import SQLStore
@@ -74,11 +76,20 @@ class OntologyBuilder:
         result = validate_node(space, node_type)
         result.raise_if_invalid()
 
+        # Schema property validation (raises ValueError on failure)
+        prop_result = validate_node_properties(node_type, props)
+        prop_result.raise_if_invalid()
+
+        receipt_id = f"rcpt_{uuid.uuid4().hex[:12]}"
+        receipt_ts = datetime.now(timezone.utc).isoformat()
+
         output: dict[str, Any] = {
             "node_id": node_id,
             "space": space,
             "node_type": node_type,
             "properties": props,
+            "receipt_id": receipt_id,
+            "receipt_ts": receipt_ts,
             "stores": {},
         }
 
@@ -176,10 +187,15 @@ class OntologyBuilder:
         edge_result.raise_if_invalid()
 
         props = properties or {}
+        receipt_id = f"rcpt_{uuid.uuid4().hex[:12]}"
+        receipt_ts = datetime.now(timezone.utc).isoformat()
+
         output: dict[str, Any] = {
             "from": {"space": from_space, "id": from_id},
             "relation": relation,
             "to": {"space": to_space, "id": to_id},
+            "receipt_id": receipt_id,
+            "receipt_ts": receipt_ts,
             "stores": {},
         }
 

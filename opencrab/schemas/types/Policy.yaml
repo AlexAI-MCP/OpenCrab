@@ -1,0 +1,23 @@
+type: Policy
+version: "1.0"
+space: policy
+description: A rule governing access, classification, or approval workflows.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Human-readable name of the policy.
+  rule_type:
+    type: string
+    required: true
+    nullable: false
+    description: What the policy governs.
+    enum: [access, approval, classification, restriction]
+  effect:
+    type: string
+    required: false
+    nullable: false
+    description: Default effect when the policy applies.
+    enum: [allow, deny, require_approval]
+    default: allow

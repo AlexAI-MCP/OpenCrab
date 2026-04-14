@@ -155,18 +155,65 @@ def _score_with_heuristic(
 def score_bundle_semantically(
     bundle: ArtifactBundle,
     mission: MissionSpec,
+    mcp_mode: bool = False,
 ) -> dict[str, Any]:
     """Score artifact bundle against mission's semantic_questions.
 
-    Uses Claude if ANTHROPIC_API_KEY is set and `anthropic` SDK is installed.
-    Falls back to keyword heuristic otherwise.
-    Override model via CRABHARNESS_SEMANTIC_MODEL env var.
+    Parameters
+    ----------
+    bundle:
+        The collected artifact bundle.
+    mission:
+        The mission spec containing semantic_questions.
+    mcp_mode:
+        When True, skip all scoring and return a structured payload that an
+        MCP host (Claude Code / Claude) can evaluate directly. The caller
+        receives ``{"backend": "mcp_pending", "payload": {...}}`` and should
+        pass it to the model for scoring rather than treating the result as final.
+
+    Notes
+    -----
+    - If mcp_mode is False: uses Claude API if ANTHROPIC_API_KEY is set,
+      otherwise falls back to keyword heuristic.
+    - Override Claude model via CRABHARNESS_SEMANTIC_MODEL env var.
     """
+    if mcp_mode:
+        return _score_mcp_payload(bundle, mission)
     if _claude_available():
         result = _score_with_claude(bundle, mission)
         if result is not None:
             return result
     return _score_with_heuristic(bundle, mission)
+
+
+def _score_mcp_payload(
+    bundle: ArtifactBundle,
+    mission: MissionSpec,
+) -> dict[str, Any]:
+    """Return a payload for MCP-host evaluation instead of scoring inline.
+
+    The MCP host (Claude Code or Claude) receives this dict and performs
+    the semantic evaluation directly — no separate API call needed.
+    """
+    return {
+        "backend": "mcp_pending",
+        "semantic_score": None,
+        "question_verdicts": [],
+        "analysis": "Awaiting MCP host evaluation.",
+        "payload": {
+            "mission_objective": mission.objective,
+            "target": mission.target,
+            "questions": mission.success_criteria.semantic_questions or [],
+            "summary": bundle.summary,
+            "metrics": bundle.metrics,
+            "instructions": (
+                "For each question, score the evidence 0.0-1.0 "
+                "(0=no support, 1=strong support). "
+                "Return a JSON object shaped as: "
+                '{"verdicts": [{"question": "...", "score": 0.0, "reason": "..."}]}'
+            ),
+        },
+    }
 
 
 def determine_autoresearch_verdict(

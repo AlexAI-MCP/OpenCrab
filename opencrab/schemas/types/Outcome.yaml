@@ -1,0 +1,25 @@
+type: Outcome
+version: "1.0"
+space: outcome
+description: A measurable result or performance indicator.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Name of the outcome or KPI.
+  metric:
+    type: string
+    required: false
+    nullable: true
+    description: Unit or metric name (e.g. "revenue_usd", "churn_rate").
+  target_value:
+    type: float
+    required: false
+    nullable: true
+    description: Desired target value for the metric.
+  current_value:
+    type: float
+    required: false
+    nullable: true
+    description: Current measured value for the metric.

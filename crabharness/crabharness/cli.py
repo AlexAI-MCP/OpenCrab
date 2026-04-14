@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from .models import ArtifactBundle, DelegationJob, MissionSpec, PromotionPackage, ValidationReport
+from .apply import apply_promotion_package
 from .delegation import build_codex_payload
 from .harness_loop import run_harness_loop
 from .planner import build_jobs
@@ -95,6 +96,26 @@ def _cmd_promotion_stub(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_promotion_apply(args: argparse.Namespace) -> int:
+    result = apply_promotion_package(args.package, dry_run=args.dry_run)
+    _write(result)
+    summary = result.get("summary") or {}
+    if result.get("dry_run"):
+        print(
+            f"\ndry-run: {len(result['node_receipts'])} nodes valid, "
+            f"{len(result['errors'])} errors",
+            flush=True,
+        )
+    else:
+        print(
+            f"\napplied: {summary.get('nodes_written', 0)} nodes, "
+            f"{summary.get('edges_written', 0)} edges, "
+            f"{summary.get('errors', 0)} errors",
+            flush=True,
+        )
+    return 1 if result.get("errors") else 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="crabharness")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -144,6 +165,18 @@ def build_parser() -> argparse.ArgumentParser:
     promotion.add_argument("bundle")
     promotion.add_argument("validation")
     promotion.set_defaults(func=_cmd_promotion_stub)
+
+    apply_cmd = subparsers.add_parser(
+        "promotion-apply",
+        help="Apply a promotion package JSON to the OpenCrab ontology stores.",
+    )
+    apply_cmd.add_argument("package", help="Path to promotion-package.json.")
+    apply_cmd.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Validate grammar and schema without writing to stores.",
+    )
+    apply_cmd.set_defaults(func=_cmd_promotion_apply)
 
     return parser
 

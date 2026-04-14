@@ -1,0 +1,15 @@
+type: Org
+version: "1.0"
+space: subject
+description: An organization or company entity.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Legal or display name of the organization.
+  domain:
+    type: string
+    required: false
+    nullable: true
+    description: Primary domain (e.g. acme.com).

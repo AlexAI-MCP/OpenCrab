@@ -1,0 +1,27 @@
+type: Document
+version: "1.0"
+space: resource
+description: A text artifact such as a report, note, or page.
+properties:
+  title:
+    type: string
+    required: true
+    nullable: false
+    description: Title or name of the document.
+  content:
+    type: string
+    required: false
+    nullable: true
+    description: Full text content of the document.
+  source_url:
+    type: string
+    required: false
+    nullable: true
+    description: Original URL the document was ingested from.
+  format:
+    type: string
+    required: false
+    nullable: false
+    description: Content format of the document.
+    enum: [markdown, pdf, html, plain]
+    default: plain

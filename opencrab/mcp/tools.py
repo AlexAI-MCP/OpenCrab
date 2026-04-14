@@ -427,6 +427,124 @@ def ontology_ingest(
     return result
 
 
+def harness_promotion_apply(
+    package: dict[str, Any],
+    dry_run: bool = False,
+) -> dict[str, Any]:
+    """
+    Apply a CrabHarness PromotionPackage directly to the OpenCrab ontology stores.
+
+    Accepts the promotion package as a JSON object (not a file path) so it can
+    be called inline from Claude or any MCP client without file I/O.
+
+    Each node and edge write returns a receipt_id + receipt_ts for provenance.
+
+    Parameters
+    ----------
+    package:
+        A serialised PromotionPackage object (from CrabHarness promotion-stub output).
+    dry_run:
+        If True, validate grammar + schema without writing to any store.
+    """
+    try:
+        from crabharness.crabharness.models import PromotionPackage
+    except ImportError:
+        return {"error": "crabharness package not installed. Run: pip install -e crabharness/"}
+
+    from opencrab.grammar.validator import validate_node, validate_node_properties
+
+    try:
+        promo = PromotionPackage.model_validate(package)
+    except Exception as exc:
+        return {"error": f"Invalid PromotionPackage: {exc}"}
+
+    node_receipts: list[dict[str, Any]] = []
+    edge_receipts: list[dict[str, Any]] = []
+    errors: list[dict[str, Any]] = []
+
+    if dry_run:
+        for node in promo.nodes:
+            r = validate_node(node.space, node.node_type)
+            if not r.valid:
+                errors.append({"node_id": node.node_id, "error": r.error})
+            else:
+                pr = validate_node_properties(node.node_type, node.properties or {})
+                if not pr.valid:
+                    errors.append({"node_id": node.node_id, "error": pr.error})
+                else:
+                    node_receipts.append({
+                        "node_id": node.node_id,
+                        "space": node.space,
+                        "node_type": node.node_type,
+                        "status": "dry_run_valid",
+                    })
+        return {
+            "package_id": promo.package_id,
+            "dry_run": True,
+            "node_receipts": node_receipts,
+            "edge_receipts": edge_receipts,
+            "errors": errors,
+        }
+
+    ctx = _get_context()
+    builder = ctx["builder"]
+
+    for node in promo.nodes:
+        try:
+            result = builder.add_node(
+                space=node.space,
+                node_type=node.node_type,
+                node_id=node.node_id,
+                properties=node.properties or {},
+            )
+            node_receipts.append({
+                "node_id": node.node_id,
+                "receipt_id": result.get("receipt_id"),
+                "receipt_ts": result.get("receipt_ts"),
+                "stores": result.get("stores"),
+            })
+        except Exception as exc:
+            errors.append({"node_id": node.node_id, "error": str(exc)})
+
+    for edge in promo.edges:
+        try:
+            result = builder.add_edge(
+                from_space=edge.from_space,
+                from_id=edge.from_id,
+                relation=edge.relation,
+                to_space=edge.to_space,
+                to_id=edge.to_id,
+            )
+            edge_receipts.append({
+                "from_id": edge.from_id,
+                "relation": edge.relation,
+                "to_id": edge.to_id,
+                "receipt_id": result.get("receipt_id"),
+                "receipt_ts": result.get("receipt_ts"),
+                "stores": result.get("stores"),
+            })
+        except Exception as exc:
+            errors.append({
+                "edge": f"{edge.from_id}-[{edge.relation}]->{edge.to_id}",
+                "error": str(exc),
+            })
+
+    return {
+        "package_id": promo.package_id,
+        "mission_id": promo.mission_id,
+        "run_id": promo.run_id,
+        "dry_run": False,
+        "node_receipts": node_receipts,
+        "edge_receipts": edge_receipts,
+        "errors": errors,
+        "summary": {
+            "nodes_written": len(node_receipts),
+            "edges_written": len(edge_receipts),
+            "errors": len(errors),
+        },
+    }
+
+
 # ---------------------------------------------------------------------------
 # Tool registry (used by the MCP server for tools/list)
 # ---------------------------------------------------------------------------
@@ -585,6 +703,28 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "required": ["text", "source_id"],
         },
     },
+    "harness_promotion_apply": {
+        "description": (
+            "Apply a CrabHarness PromotionPackage to the OpenCrab ontology stores. "
+            "Writes each node and edge, returning receipt_id + receipt_ts per operation. "
+            "Use dry_run=true to validate grammar and schema without writing."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "package": {
+                    "type": "object",
+                    "description": "Serialised PromotionPackage (from crabharness promotion-stub or run output).",
+                },
+                "dry_run": {
+                    "type": "boolean",
+                    "description": "Validate without writing to stores.",
+                    "default": False,
+                },
+            },
+            "required": ["package"],
+        },
+    },
 }
 
 # Callable map
@@ -598,6 +738,7 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "ontology_lever_simulate": ontology_lever_simulate,
     "ontology_extract": ontology_extract,
     "ontology_ingest": ontology_ingest,
+    "harness_promotion_apply": harness_promotion_apply,
 }
 
 # Combined tool descriptor list (name + schema)

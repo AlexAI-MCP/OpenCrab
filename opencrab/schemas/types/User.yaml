@@ -1,0 +1,26 @@
+type: User
+version: "1.0"
+space: subject
+description: A human actor with identity and permissions.
+properties:
+  name:
+    type: string
+    required: true
+    nullable: false
+    description: Display name of the user.
+  email:
+    type: string
+    required: true
+    nullable: false
+    description: Unique email address.
+  role:
+    type: string
+    required: true
+    nullable: false
+    description: Access role within the system.
+    enum: [admin, editor, viewer, agent, analyst, engineer]
+  org_id:
+    type: string
+    required: false
+    nullable: true
+    description: Organization the user belongs to.

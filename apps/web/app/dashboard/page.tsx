@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
   const fetchData = useCallback(async () => {
     const ok = await getStatus()
-    setConnected(ok)
+    setConnected(ok.ok)
     if (!apiKey) return
     const [n, e] = await Promise.all([getNodes(apiKey), getEdges(apiKey)])
     setNodes(n.filter(node => !controls.hiddenSpaces.includes(node.space)))

@@ -1,0 +1,26 @@
+type: CrawlRun
+version: "1.0"
+space: resource
+description: A single execution run of a CrabHarness worker mission.
+properties:
+  worker_id:
+    type: string
+    required: true
+    nullable: false
+    description: ID of the CrabHarness worker that ran the mission.
+  job_id:
+    type: string
+    required: true
+    nullable: false
+    description: Unique job identifier within the run.
+  mission_id:
+    type: string
+    required: false
+    nullable: true
+    description: Parent mission identifier.
+  status:
+    type: string
+    required: false
+    nullable: true
+    description: Final status of the crawl run.
+    enum: [pass, retry, fail]

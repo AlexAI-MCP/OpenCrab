@@ -1,0 +1,22 @@
+type: Claim
+version: "1.0"
+space: claim
+description: An assertion derived from evidence, with a promotion lifecycle.
+properties:
+  statement:
+    type: string
+    required: true
+    nullable: false
+    description: The claim text as a declarative sentence.
+  confidence:
+    type: float
+    required: false
+    nullable: true
+    description: Confidence score between 0.0 and 1.0.
+  status:
+    type: string
+    required: false
+    nullable: false
+    description: Lifecycle stage of the claim.
+    enum: [candidate, validated, promoted, rejected]
+    default: candidate

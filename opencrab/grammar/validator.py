@@ -191,10 +191,62 @@ def validate_rebac_permission(permission: str) -> ValidationResult:
     return ValidationResult(valid=True)
 
 
+def validate_node_properties(node_type: str, properties: dict[str, Any]) -> ValidationResult:
+    """
+    Validate node properties against the Type Schema Registry.
+
+    If no schema exists for the node_type, the check always passes
+    (schema is optional — not all types need a registered schema).
+
+    Parameters
+    ----------
+    node_type:
+        The node type label (e.g. "User", "Document").
+    properties:
+        The property dict to validate.
+
+    Returns
+    -------
+    ValidationResult
+    """
+    try:
+        from opencrab.schemas.loader import load_type_schema
+    except ImportError:
+        return ValidationResult(valid=True)
+
+    schema = load_type_schema(node_type)
+    if schema is None:
+        return ValidationResult(valid=True)
+
+    schema_props: dict[str, Any] = schema.get("properties", {})
+    errors: list[str] = []
+
+    # Required field check
+    for field, spec in schema_props.items():
+        if spec.get("required", False) and "default" not in spec:
+            if field not in properties:
+                errors.append(f"Required field '{field}' is missing.")
+
+    # Enum value check
+    for field, value in properties.items():
+        if field in schema_props:
+            spec = schema_props[field]
+            allowed = spec.get("enum")
+            if allowed is not None and value is not None and value not in allowed:
+                errors.append(
+                    f"Field '{field}' must be one of {allowed}, got '{value}'."
+                )
+
+    if errors:
+        return ValidationResult(valid=False, error="; ".join(errors))
+    return ValidationResult(valid=True)
+
+
 def describe_grammar() -> dict[str, Any]:
     """Return a JSON-serialisable summary of the full MetaOntology grammar."""
     from opencrab.grammar.manifest import (
         ACTIVE_METADATA_LAYERS,
+        GRAMMAR_VERSION,
         IMPACT_CATEGORIES,
         REBAC_OBJECT_TYPES,
         REBAC_PERMISSIONS,
@@ -202,6 +254,7 @@ def describe_grammar() -> dict[str, Any]:
     )
 
     return {
+        "version": GRAMMAR_VERSION,
         "spaces": SPACES,
         "meta_edges": META_EDGES,
         "impact_categories": IMPACT_CATEGORIES,

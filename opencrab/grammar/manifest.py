@@ -9,6 +9,12 @@ and ReBAC configuration.
 from typing import Any
 
 # ---------------------------------------------------------------------------
+# Grammar versioning
+# ---------------------------------------------------------------------------
+
+GRAMMAR_VERSION = "1.0.0"
+
+# ---------------------------------------------------------------------------
 # Spaces
 # Each space has a description and the canonical node types it can contain.
 # ---------------------------------------------------------------------------
@@ -20,7 +26,7 @@ SPACES: dict[str, dict[str, Any]] = {
     },
     "resource": {
         "description": "Artifacts and tools that subjects act upon.",
-        "node_types": ["Project", "Document", "File", "Dataset", "Tool", "API"],
+        "node_types": ["Project", "Document", "File", "Dataset", "Tool", "API", "CrawlRun"],
     },
     "evidence": {
         "description": "Raw observations, logs, and empirical records.",
@@ -32,7 +38,7 @@ SPACES: dict[str, dict[str, Any]] = {
     },
     "claim": {
         "description": "Assertions derived from evidence.",
-        "node_types": ["Claim", "Covariate"],
+        "node_types": ["Claim", "Covariate", "CollectionCompleteness"],
     },
     "community": {
         "description": "Clusters of related concepts or actors.",
