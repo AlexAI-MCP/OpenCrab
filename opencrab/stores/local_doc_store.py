@@ -58,13 +58,13 @@ class LocalDocStore:
     # Node document operations (mirrors MongoStore)
     # ------------------------------------------------------------------
 
-    def upsert_node(
+    def upsert_node_doc(
         self,
         space: str,
         node_type: str,
         node_id: str,
         properties: dict[str, Any],
-    ) -> None:
+    ) -> str:
         with self._lock:
             data = self._load("nodes")
             key = f"{space}::{node_id}"
@@ -76,17 +76,28 @@ class LocalDocStore:
                 "updated_at": datetime.now(UTC).isoformat(),
             }
             self._save("nodes", data)
+            return key
 
-    def get_node(self, space: str, node_id: str) -> dict[str, Any] | None:
+    def get_node_doc(self, space: str, node_id: str) -> dict[str, Any] | None:
         data = self._load("nodes")
         return data.get(f"{space}::{node_id}")
 
-    def list_nodes(self, space: str | None = None) -> list[dict[str, Any]]:
+    def list_nodes(self, space: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
         data = self._load("nodes")
         rows = list(data.values())
         if space:
             rows = [r for r in rows if r.get("space") == space]
-        return rows
+        return rows[:limit]
+
+    def delete_node_doc(self, space: str, node_id: str) -> bool:
+        with self._lock:
+            data = self._load("nodes")
+            key = f"{space}::{node_id}"
+            if key in data:
+                del data[key]
+                self._save("nodes", data)
+                return True
+            return False
 
     # ------------------------------------------------------------------
     # Source ingestion (mirrors MongoStore)
@@ -94,7 +105,7 @@ class LocalDocStore:
 
     def upsert_source(
         self, source_id: str, text: str, metadata: dict[str, Any]
-    ) -> None:
+    ) -> str:
         with self._lock:
             data = self._load("sources")
             data[source_id] = {
@@ -104,12 +115,13 @@ class LocalDocStore:
                 "ingested_at": datetime.now(UTC).isoformat(),
             }
             self._save("sources", data)
+            return source_id
 
     def get_source(self, source_id: str) -> dict[str, Any] | None:
         return self._load("sources").get(source_id)
 
-    def list_sources(self) -> list[dict[str, Any]]:
-        return list(self._load("sources").values())
+    def list_sources(self, limit: int = 100) -> list[dict[str, Any]]:
+        return list(self._load("sources").values())[:limit]
 
     # ------------------------------------------------------------------
     # Audit log (mirrors MongoStore)
@@ -118,8 +130,8 @@ class LocalDocStore:
     def log_event(
         self,
         event_type: str,
-        payload: dict[str, Any],
-        actor: str = "system",
+        subject_id: str | None,
+        details: dict[str, Any],
     ) -> None:
         with self._lock:
             data = self._load("audit_log")
@@ -127,25 +139,26 @@ class LocalDocStore:
             entry_id = f"{event_type}::{ts}"
             data[entry_id] = {
                 "event_type": event_type,
-                "actor": actor,
-                "payload": payload,
+                "subject_id": subject_id,
+                "details": details,
                 "timestamp": ts,
             }
             self._save("audit_log", data)
 
-    def get_audit_log(self, limit: int = 100) -> list[dict[str, Any]]:
+    def get_audit_log(self, limit: int = 100, event_type: str | None = None) -> list[dict[str, Any]]:
         data = self._load("audit_log")
         entries = sorted(data.values(), key=lambda e: e["timestamp"], reverse=True)
+        if event_type:
+            entries = [e for e in entries if e.get("event_type") == event_type]
         return entries[:limit]
 
     # ------------------------------------------------------------------
     # Stats
     # ------------------------------------------------------------------
 
-    def stats(self) -> dict[str, Any]:
+    def collection_stats(self) -> dict[str, int]:
         return {
             "nodes": len(self._load("nodes")),
             "sources": len(self._load("sources")),
-            "audit_events": len(self._load("audit_log")),
-            "data_dir": self._data_dir,
+            "audit_log": len(self._load("audit_log")),
         }

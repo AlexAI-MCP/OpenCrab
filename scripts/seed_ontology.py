@@ -192,13 +192,20 @@ def seed() -> None:
     from opencrab.stores.neo4j_store import Neo4jStore
     from opencrab.stores.sql_store import SQLStore
 
+    from opencrab.stores.factory import (
+        make_doc_store,
+        make_graph_store,
+        make_sql_store,
+        make_vector_store,
+    )
+
     cfg = get_settings()
 
-    # Init stores
-    neo4j = Neo4jStore(cfg.neo4j_uri, cfg.neo4j_user, cfg.neo4j_password)
-    chroma = ChromaStore(cfg.chroma_host, cfg.chroma_port, cfg.chroma_collection)
-    mongo = MongoStore(cfg.mongodb_uri, cfg.mongodb_db)
-    sql = SQLStore(cfg.postgres_url)
+    # Init stores via factory to respect STORAGE_MODE
+    neo4j = make_graph_store(cfg)
+    chroma = make_vector_store(cfg)
+    mongo = make_doc_store(cfg)
+    sql = make_sql_store(cfg)
 
     # Print store status
     store_table = Table(title="Store Status", show_header=True)
