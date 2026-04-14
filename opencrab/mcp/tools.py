@@ -58,6 +58,10 @@ def _get_context() -> dict[str, Any]:
     impact = ImpactEngine(graph, sql)
     hybrid = HybridQuery(vector, graph)
 
+    # Attach Phase 4 dependencies to HybridQuery for BM25 + policy filter
+    hybrid._doc_store = docs
+    hybrid._rebac = rebac
+
     _context = {
         "neo4j": graph,
         "chroma": vector,
@@ -173,9 +177,15 @@ def ontology_query(
     question: str,
     spaces: list[str] | None = None,
     limit: int = 10,
+    subject_id: str | None = None,
+    use_bm25: bool = True,
+    use_rerank: bool = True,
 ) -> dict[str, Any]:
     """
-    Run a hybrid vector + graph query against the ontology.
+    Run a hybrid vector + BM25 + graph query against the ontology.
+
+    Pipeline: vector similarity → BM25 keyword → graph expansion →
+    RRF reranking → policy-aware filter (if subject_id provided).
 
     Parameters
     ----------
@@ -185,6 +195,12 @@ def ontology_query(
         Optional list of space IDs to restrict the search.
     limit:
         Maximum number of results.
+    subject_id:
+        If set, filters results to only nodes the subject can view (ReBAC).
+    use_bm25:
+        Include BM25 keyword results (default True).
+    use_rerank:
+        Apply RRF + BM25 cross-score reranking (default True).
     """
     ctx = _get_context()
     try:
@@ -192,15 +208,59 @@ def ontology_query(
             question=question,
             spaces=spaces,
             limit=limit,
+            subject_id=subject_id,
+            use_bm25=use_bm25,
+            use_rerank=use_rerank,
         )
         return {
             "question": question,
             "spaces_filter": spaces,
+            "subject_id": subject_id,
+            "pipeline": {"bm25": use_bm25, "rerank": use_rerank},
             "total": len(results),
             "results": [r.to_dict() for r in results],
         }
     except Exception as exc:
         logger.error("ontology_query failed: %s", exc)
+        return {"error": str(exc)}
+
+
+def query_bm25(
+    question: str,
+    spaces: list[str] | None = None,
+    limit: int = 10,
+) -> dict[str, Any]:
+    """
+    Run a BM25-only keyword search against ontology node properties.
+
+    Faster than hybrid query for precise keyword lookups.
+    Indexes node_id, name, description, text, title, summary fields.
+
+    Parameters
+    ----------
+    question:
+        Search keywords.
+    spaces:
+        Optional space filter.
+    limit:
+        Maximum results.
+    """
+    from opencrab.ontology.bm25 import BM25Index
+
+    ctx = _get_context()
+    doc_store = ctx["mongo"]
+    try:
+        nodes = doc_store.list_nodes(limit=5000)
+        index = BM25Index.build(nodes)
+        hits = index.search(question, spaces=spaces, limit=limit)
+        return {
+            "question": question,
+            "index_size": len(index),
+            "total": len(hits),
+            "results": hits,
+        }
+    except Exception as exc:
+        logger.error("query_bm25 failed: %s", exc)
         return {"error": str(exc)}
 
 
@@ -905,7 +965,10 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         },
     },
     "ontology_query": {
-        "description": "Hybrid vector + graph search across the ontology.",
+        "description": (
+            "Hybrid vector + BM25 + graph search with RRF reranking. "
+            "Pass subject_id for policy-aware filtering via ReBAC."
+        ),
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -918,6 +981,40 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
                 "limit": {
                     "type": "integer",
                     "description": "Maximum number of results (default 10).",
+                    "default": 10,
+                },
+                "subject_id": {
+                    "type": "string",
+                    "description": "Optional subject ID for policy-aware filtering (ReBAC view check).",
+                },
+                "use_bm25": {
+                    "type": "boolean",
+                    "description": "Include BM25 keyword results (default true).",
+                    "default": True,
+                },
+                "use_rerank": {
+                    "type": "boolean",
+                    "description": "Apply RRF + BM25 cross-score reranking (default true).",
+                    "default": True,
+                },
+            },
+            "required": ["question"],
+        },
+    },
+    "query_bm25": {
+        "description": "BM25-only keyword search against ontology node properties. Fast and deterministic.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "question": {"type": "string", "description": "Search keywords."},
+                "spaces": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Optional space filter.",
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "Maximum results (default 10).",
                     "default": 10,
                 },
             },
@@ -1246,6 +1343,7 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "ontology_add_node": ontology_add_node,
     "ontology_add_edge": ontology_add_edge,
     "ontology_query": ontology_query,
+    "query_bm25": query_bm25,
     "ontology_impact": ontology_impact,
     "ontology_rebac_check": ontology_rebac_check,
     "ontology_lever_simulate": ontology_lever_simulate,

@@ -23,6 +23,26 @@ from opencrab.stores.neo4j_store import Neo4jStore
 
 logger = logging.getLogger(__name__)
 
+# Lazily imported Phase 4 modules to avoid circular deps at module load
+_BM25Index: Any = None
+_Reranker: Any = None
+
+
+def _get_bm25():
+    global _BM25Index
+    if _BM25Index is None:
+        from opencrab.ontology.bm25 import BM25Index
+        _BM25Index = BM25Index
+    return _BM25Index
+
+
+def _get_reranker():
+    global _Reranker
+    if _Reranker is None:
+        from opencrab.ontology.reranker import Reranker
+        _Reranker = Reranker
+    return _Reranker
+
 
 @dataclass
 class QueryResult:
@@ -52,6 +72,9 @@ class HybridQuery:
     def __init__(self, chroma: ChromaStore, neo4j: Neo4jStore) -> None:
         self._chroma = chroma
         self._neo4j = neo4j
+        # Optional stores attached at runtime by _get_context() in tools.py
+        self._doc_store: Any = None
+        self._rebac: Any = None
 
     def query(
         self,
@@ -59,9 +82,12 @@ class HybridQuery:
         spaces: list[str] | None = None,
         limit: int = 10,
         graph_depth: int = 1,
+        subject_id: str | None = None,
+        use_bm25: bool = True,
+        use_rerank: bool = True,
     ) -> list[QueryResult]:
         """
-        Execute a hybrid query against vector and graph stores.
+        Execute a hybrid query: vector + BM25 + graph expansion, then rerank.
 
         Parameters
         ----------
@@ -73,33 +99,122 @@ class HybridQuery:
             Maximum number of results to return.
         graph_depth:
             Neighbourhood expansion depth from vector-hit anchors.
+        subject_id:
+            If set, policy-aware filter: removes nodes the subject cannot view.
+            Requires self._rebac to be attached (done by _get_context in tools.py).
+        use_bm25:
+            Include BM25 keyword results in the merge (default True).
+        use_rerank:
+            Apply RRF + BM25 cross-score reranking (default True).
 
         Returns
         -------
         list[QueryResult] sorted by descending score.
         """
-        results: list[QueryResult] = []
+        result_lists: list[list[dict[str, Any]]] = []
 
         # --- Stage 1: Vector similarity search ---
         vector_hits = self._vector_search(question, spaces, limit)
-        results.extend(vector_hits)
+        if vector_hits:
+            result_lists.append([r.to_dict() for r in vector_hits])
 
-        # --- Stage 2: Graph expansion from vector anchor nodes ---
-        anchor_ids = [
-            hit.node_id for hit in vector_hits if hit.node_id
-        ]
+        # --- Stage 2: BM25 keyword search ---
+        if use_bm25 and self._doc_store is not None:
+            bm25_hits = self._bm25_search(question, spaces, limit)
+            if bm25_hits:
+                result_lists.append(bm25_hits)
+
+        # --- Stage 3: Graph expansion from vector anchor nodes ---
+        anchor_ids = [hit.node_id for hit in vector_hits if hit.node_id]
         if anchor_ids and self._neo4j.available:
             graph_results = self._graph_expand(anchor_ids, graph_depth, limit)
-            # Avoid duplicating nodes already in vector results
-            seen_ids = {r.node_id for r in results}
-            for gr in graph_results:
-                if gr.node_id not in seen_ids:
-                    results.append(gr)
-                    seen_ids.add(gr.node_id)
+            if graph_results:
+                result_lists.append([r.to_dict() for r in graph_results])
 
-        # --- Sort and truncate ---
-        results.sort(key=lambda r: r.score, reverse=True)
-        return results[:limit]
+        # --- Stage 4: Rerank ---
+        if use_rerank and result_lists:
+            reranker = _get_reranker()()
+            merged = reranker.rerank(question, result_lists, top_k=limit * 2)
+        else:
+            # Flat merge without reranking
+            seen: set[str | None] = set()
+            merged = []
+            for lst in result_lists:
+                for item in lst:
+                    if item.get("node_id") not in seen:
+                        seen.add(item.get("node_id"))
+                        merged.append(item)
+            merged.sort(key=lambda x: x.get("score", 0.0), reverse=True)
+
+        # --- Stage 5: Policy-aware filter ---
+        if subject_id and self._rebac is not None:
+            merged = self._policy_filter(merged, subject_id)
+
+        # Convert back to QueryResult
+        results = []
+        for item in merged[:limit]:
+            results.append(QueryResult(
+                source=item.get("source", "hybrid"),
+                node_id=item.get("node_id"),
+                score=item.get("rerank_score") or item.get("score", 0.0),
+                text=item.get("text"),
+                metadata=item.get("metadata") or {},
+                graph_context=item.get("graph_context"),
+            ))
+        return results
+
+    def _bm25_search(
+        self,
+        question: str,
+        spaces: list[str] | None,
+        limit: int,
+    ) -> list[dict[str, Any]]:
+        """Run BM25 search against doc store nodes."""
+        try:
+            nodes = self._doc_store.list_nodes(limit=5000)
+            BM25Index = _get_bm25()
+            index = BM25Index.build(nodes)
+            hits = index.search(question, spaces=spaces, limit=limit)
+            for h in hits:
+                h["source"] = "bm25"
+            return hits
+        except Exception as exc:
+            logger.warning("BM25 search error: %s", exc)
+            return []
+
+    def _policy_filter(
+        self,
+        results: list[dict[str, Any]],
+        subject_id: str,
+    ) -> list[dict[str, Any]]:
+        """
+        Remove results the subject cannot view.
+
+        Uses ReBAC 'view' permission check. Nodes with no registered policy
+        are passed through (open by default).
+        """
+        filtered = []
+        for item in results:
+            nid = item.get("node_id")
+            if not nid:
+                filtered.append(item)
+                continue
+            try:
+                decision = self._rebac.check(
+                    subject_id=subject_id,
+                    permission="view",
+                    resource_id=nid,
+                )
+                if decision.granted:
+                    filtered.append(item)
+                else:
+                    logger.debug(
+                        "Policy filter: %s denied view on %s", subject_id, nid
+                    )
+            except Exception:
+                # No policy registered = pass through
+                filtered.append(item)
+        return filtered
 
     def _vector_search(
         self, question: str, spaces: list[str] | None, limit: int
