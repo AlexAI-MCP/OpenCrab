@@ -85,12 +85,17 @@ class MCPServer:
         try:
             request = json.loads(raw)
         except json.JSONDecodeError as exc:
-            return self._error_response(None, PARSE_ERROR, f"Parse error: {exc}")
+            logger.error("Parse error: %s", exc)
+            return None  # Can't send error response without a valid id
 
+        # JSON-RPC notifications have no "id" field — must NOT be responded to
+        is_notification = "id" not in request
         req_id = request.get("id")
         method = request.get("method")
 
         if not isinstance(method, str):
+            if is_notification:
+                return None
             return self._error_response(req_id, INVALID_REQUEST, "Missing or invalid 'method'.")
 
         params = request.get("params") or {}
@@ -98,12 +103,23 @@ class MCPServer:
         try:
             result = self._dispatch(method, params)
         except KeyError as exc:
+            if is_notification:
+                logger.debug("Ignoring notification for unknown method '%s'", method)
+                return None
             return self._error_response(req_id, METHOD_NOT_FOUND, str(exc))
         except TypeError as exc:
+            if is_notification:
+                return None
             return self._error_response(req_id, INVALID_PARAMS, f"Invalid params: {exc}")
         except Exception as exc:
             logger.exception("Internal error handling method '%s': %s", method, exc)
+            if is_notification:
+                return None
             return self._error_response(req_id, INTERNAL_ERROR, str(exc))
+
+        # Notifications never get a response, even on success
+        if is_notification:
+            return None
 
         return {"jsonrpc": "2.0", "id": req_id, "result": result}
 
@@ -117,6 +133,10 @@ class MCPServer:
             return self._handle_tools_call(params)
         elif method == "ping":
             return {"status": "ok", "server": self._name}
+        elif method.startswith("notifications/"):
+            # MCP notifications: silently acknowledge, no response needed
+            logger.debug("Received notification: %s", method)
+            return None
         else:
             raise KeyError(f"Method not found: '{method}'")
 
