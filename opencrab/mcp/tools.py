@@ -514,6 +514,219 @@ def approval_request(
     return engine.request(action_type, subject_id, payload, run_id)
 
 
+# ---------------------------------------------------------------------------
+# Phase 3: Identity / Canonicalization / Promotion tools
+# ---------------------------------------------------------------------------
+
+
+def identity_add_alias(
+    canonical_id: str,
+    alias_id: str,
+    alias_type: str = "name",
+    space: str | None = None,
+    created_by: str | None = None,
+) -> dict[str, Any]:
+    """
+    Register alias_id as an alias for canonical_id.
+
+    alias_type hints: 'name' (same name, diff ID), 'merge' (confirmed merge),
+    'external' (same entity from external source).
+    """
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    engine = IdentityEngine(ctx["sql"])
+    return engine.add_alias(canonical_id, alias_id, alias_type, space, created_by)
+
+
+def identity_resolve_canonical(node_id: str) -> dict[str, Any]:
+    """
+    Resolve node_id to its canonical ID.
+
+    If node_id is an alias, returns the canonical. Otherwise returns node_id unchanged.
+    """
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    engine = IdentityEngine(ctx["sql"])
+    canonical = engine.resolve_canonical(node_id)
+    return {"node_id": node_id, "canonical_id": canonical, "is_alias": canonical != node_id}
+
+
+def identity_propose_duplicate(
+    node_a_id: str,
+    node_b_id: str,
+    space: str | None = None,
+    similarity: float | None = None,
+    method: str = "name_fuzzy",
+) -> dict[str, Any]:
+    """
+    Propose that two nodes may be the same entity.
+
+    Creates a pending duplicate candidate for human review. Returns early if
+    the pair is already proposed.
+    """
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    engine = IdentityEngine(ctx["sql"])
+    return engine.propose_duplicate(node_a_id, node_b_id, space, similarity, method)
+
+
+def identity_resolve_duplicate(
+    candidate_id: str,
+    decision: str,
+    decided_by: str | None = None,
+    note: str | None = None,
+) -> dict[str, Any]:
+    """
+    Accept or reject a pending duplicate candidate.
+
+    decision: 'accepted' | 'rejected'
+    If accepted, automatically registers node_b as alias of node_a.
+    """
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    engine = IdentityEngine(ctx["sql"])
+    try:
+        return engine.resolve_duplicate(candidate_id, decision, decided_by, note)
+    except ValueError as exc:
+        return {"error": str(exc)}
+
+
+def identity_list_pending_duplicates(limit: int = 50) -> dict[str, Any]:
+    """Return all pending duplicate candidates sorted by similarity descending."""
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    engine = IdentityEngine(ctx["sql"])
+    candidates = engine.list_pending_candidates(limit)
+    return {"total": len(candidates), "candidates": candidates}
+
+
+def canonicalize_merge_nodes(
+    canonical_id: str,
+    alias_id: str,
+    canonical_space: str,
+    canonical_type: str,
+    merge_properties: bool = True,
+    merged_by: str | None = None,
+) -> dict[str, Any]:
+    """
+    Merge alias_id into canonical_id (tombstone pattern).
+
+    The alias node is preserved — use resolve_canonical() to normalise IDs.
+    Returns a merge receipt.
+    """
+    from opencrab.ontology.canonicalize import CanonicalizeEngine
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    identity = IdentityEngine(ctx["sql"])
+    engine = CanonicalizeEngine(identity, ctx["builder"])
+    return engine.merge_nodes(
+        canonical_id, alias_id, canonical_space, canonical_type, merge_properties, merged_by
+    )
+
+
+def canonicalize_find_and_propose(
+    node_id: str,
+    name: str,
+    space: str | None = None,
+    threshold: float = 0.5,
+) -> dict[str, Any]:
+    """
+    Find similar nodes by name and auto-propose them as duplicate candidates for review.
+
+    Returns proposed candidates — none are applied automatically.
+    """
+    from opencrab.ontology.canonicalize import CanonicalizeEngine
+    from opencrab.ontology.identity import IdentityEngine
+
+    ctx = _get_context()
+    identity = IdentityEngine(ctx["sql"])
+    engine = CanonicalizeEngine(identity, ctx["builder"])
+    return engine.find_and_propose(node_id, name, space, threshold)
+
+
+def promotion_register_candidate(
+    space: str,
+    node_type: str,
+    node_id: str,
+    properties: dict[str, Any],
+    confidence: float | None = None,
+    source_id: str | None = None,
+) -> dict[str, Any]:
+    """
+    Register an extracted entity as a promotion candidate (status='candidate').
+
+    The node will not appear in promoted queries until promoted.
+    """
+    from opencrab.ontology.promotion import PromotionEngine
+
+    ctx = _get_context()
+    engine = PromotionEngine(ctx["builder"], ctx["sql"])
+    return engine.register_candidate(space, node_type, node_id, properties, confidence, source_id)
+
+
+def promotion_validate_candidate(
+    space: str,
+    node_type: str,
+    node_id: str,
+    existing_properties: dict[str, Any],
+    validator_id: str | None = None,
+    note: str | None = None,
+) -> dict[str, Any]:
+    """
+    Mark a candidate as 'validated' — ready for final promotion review.
+
+    Does not promote yet. Call promotion_promote() after validation.
+    """
+    from opencrab.ontology.promotion import PromotionEngine
+
+    ctx = _get_context()
+    engine = PromotionEngine(ctx["builder"], ctx["sql"])
+    return engine.validate_candidate(space, node_type, node_id, existing_properties, validator_id, note)
+
+
+def promotion_promote(
+    space: str,
+    node_type: str,
+    node_id: str,
+    existing_properties: dict[str, Any],
+    promoted_by: str | None = None,
+    evidence_ids: list[str] | None = None,
+) -> dict[str, Any]:
+    """
+    Promote a validated candidate to 'promoted' status.
+
+    Optionally links evidence nodes via 'supports' edges.
+    Returns a promotion receipt with receipt_id and receipt_ts.
+    """
+    from opencrab.ontology.promotion import PromotionEngine
+
+    ctx = _get_context()
+    engine = PromotionEngine(ctx["builder"], ctx["sql"])
+    return engine.promote(space, node_type, node_id, existing_properties, promoted_by, evidence_ids)
+
+
+def promotion_reject(
+    space: str,
+    node_type: str,
+    node_id: str,
+    existing_properties: dict[str, Any],
+    rejected_by: str | None = None,
+    reason: str | None = None,
+) -> dict[str, Any]:
+    """Mark a candidate as 'rejected' with an optional reason."""
+    from opencrab.ontology.promotion import PromotionEngine
+
+    ctx = _get_context()
+    engine = PromotionEngine(ctx["builder"], ctx["sql"])
+    return engine.reject(space, node_type, node_id, existing_properties, rejected_by, reason)
+
+
 def harness_promotion_apply(
     package: dict[str, Any],
     dry_run: bool = False,
@@ -859,6 +1072,172 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "required": ["package"],
         },
     },
+    # ------------------------------------------------------------------
+    # Phase 3 — Identity / Canonicalization / Promotion
+    # ------------------------------------------------------------------
+    "identity_add_alias": {
+        "description": "Register an alias_id for a canonical_id in the alias table.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "canonical_id": {"type": "string", "description": "Authoritative node ID."},
+                "alias_id": {"type": "string", "description": "Alias to register."},
+                "alias_type": {
+                    "type": "string",
+                    "description": "Type hint: name, merge, external (default: name).",
+                    "default": "name",
+                },
+                "space": {"type": "string", "description": "Optional space of the canonical node."},
+                "created_by": {"type": "string", "description": "Optional actor ID."},
+            },
+            "required": ["canonical_id", "alias_id"],
+        },
+    },
+    "identity_resolve_canonical": {
+        "description": "Resolve a node_id to its canonical ID. Returns is_alias=true if it was an alias.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "node_id": {"type": "string", "description": "Node ID to resolve."},
+            },
+            "required": ["node_id"],
+        },
+    },
+    "identity_propose_duplicate": {
+        "description": (
+            "Propose that two nodes may be the same entity. "
+            "Creates a pending duplicate candidate for human review."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "node_a_id": {"type": "string", "description": "First node ID."},
+                "node_b_id": {"type": "string", "description": "Second node ID."},
+                "space": {"type": "string", "description": "Optional shared space."},
+                "similarity": {"type": "number", "description": "Optional similarity score (0.0–1.0)."},
+                "method": {"type": "string", "description": "Detection method (default: name_fuzzy).", "default": "name_fuzzy"},
+            },
+            "required": ["node_a_id", "node_b_id"],
+        },
+    },
+    "identity_resolve_duplicate": {
+        "description": "Accept or reject a pending duplicate candidate. If accepted, registers alias automatically.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "candidate_id": {"type": "string", "description": "Duplicate candidate ID."},
+                "decision": {"type": "string", "description": "accepted or rejected."},
+                "decided_by": {"type": "string", "description": "Optional reviewer ID."},
+                "note": {"type": "string", "description": "Optional decision note."},
+            },
+            "required": ["candidate_id", "decision"],
+        },
+    },
+    "identity_list_pending_duplicates": {
+        "description": "List all pending duplicate candidates sorted by similarity descending.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "limit": {"type": "integer", "description": "Max results (default 50).", "default": 50},
+            },
+            "required": [],
+        },
+    },
+    "canonicalize_merge_nodes": {
+        "description": (
+            "Merge alias_id into canonical_id using the tombstone pattern. "
+            "Alias node is preserved; use identity_resolve_canonical to normalise IDs."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "canonical_id": {"type": "string", "description": "Surviving canonical node ID."},
+                "alias_id": {"type": "string", "description": "Node being merged in."},
+                "canonical_space": {"type": "string", "description": "Space of the canonical node."},
+                "canonical_type": {"type": "string", "description": "Node type of the canonical node."},
+                "merge_properties": {"type": "boolean", "description": "Copy alias properties to canonical (default true).", "default": True},
+                "merged_by": {"type": "string", "description": "Optional actor ID."},
+            },
+            "required": ["canonical_id", "alias_id", "canonical_space", "canonical_type"],
+        },
+    },
+    "canonicalize_find_and_propose": {
+        "description": "Find nodes with similar names and auto-propose them as duplicate candidates for review.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "node_id": {"type": "string", "description": "Source node ID."},
+                "name": {"type": "string", "description": "Name to search for."},
+                "space": {"type": "string", "description": "Optional space to limit search."},
+                "threshold": {"type": "number", "description": "Minimum similarity threshold (default 0.5).", "default": 0.5},
+            },
+            "required": ["node_id", "name"],
+        },
+    },
+    "promotion_register_candidate": {
+        "description": "Register an extracted entity as a promotion candidate (status=candidate). Will not appear in promoted queries until promoted.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "space": {"type": "string", "description": "Target space."},
+                "node_type": {"type": "string", "description": "Node type."},
+                "node_id": {"type": "string", "description": "Node ID."},
+                "properties": {"type": "object", "description": "Node properties."},
+                "confidence": {"type": "number", "description": "Extraction confidence (0.0–1.0)."},
+                "source_id": {"type": "string", "description": "Source document ID."},
+            },
+            "required": ["space", "node_type", "node_id", "properties"],
+        },
+    },
+    "promotion_validate_candidate": {
+        "description": "Mark a candidate as validated (ready for final promotion review). Does not promote yet.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "space": {"type": "string"},
+                "node_type": {"type": "string"},
+                "node_id": {"type": "string"},
+                "existing_properties": {"type": "object", "description": "Current node properties."},
+                "validator_id": {"type": "string", "description": "Optional validator ID."},
+                "note": {"type": "string", "description": "Optional validation note."},
+            },
+            "required": ["space", "node_type", "node_id", "existing_properties"],
+        },
+    },
+    "promotion_promote": {
+        "description": "Promote a validated candidate to promoted status. Optionally links evidence nodes via supports edges.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "space": {"type": "string"},
+                "node_type": {"type": "string"},
+                "node_id": {"type": "string"},
+                "existing_properties": {"type": "object", "description": "Current node properties."},
+                "promoted_by": {"type": "string", "description": "Optional actor ID."},
+                "evidence_ids": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "Optional evidence node IDs to link via supports edges.",
+                },
+            },
+            "required": ["space", "node_type", "node_id", "existing_properties"],
+        },
+    },
+    "promotion_reject": {
+        "description": "Mark a candidate as rejected with an optional reason.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "space": {"type": "string"},
+                "node_type": {"type": "string"},
+                "node_id": {"type": "string"},
+                "existing_properties": {"type": "object", "description": "Current node properties."},
+                "rejected_by": {"type": "string", "description": "Optional actor ID."},
+                "reason": {"type": "string", "description": "Rejection reason."},
+            },
+            "required": ["space", "node_type", "node_id", "existing_properties"],
+        },
+    },
 }
 
 # Callable map
@@ -876,6 +1255,18 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "workflow_create_run": workflow_create_run,
     "workflow_advance": workflow_advance,
     "approval_request": approval_request,
+    # Phase 3
+    "identity_add_alias": identity_add_alias,
+    "identity_resolve_canonical": identity_resolve_canonical,
+    "identity_propose_duplicate": identity_propose_duplicate,
+    "identity_resolve_duplicate": identity_resolve_duplicate,
+    "identity_list_pending_duplicates": identity_list_pending_duplicates,
+    "canonicalize_merge_nodes": canonicalize_merge_nodes,
+    "canonicalize_find_and_propose": canonicalize_find_and_propose,
+    "promotion_register_candidate": promotion_register_candidate,
+    "promotion_validate_candidate": promotion_validate_candidate,
+    "promotion_promote": promotion_promote,
+    "promotion_reject": promotion_reject,
 }
 
 # Combined tool descriptor list (name + schema)
