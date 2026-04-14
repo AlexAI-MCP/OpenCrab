@@ -17,6 +17,37 @@ to any OpenClaw-compatible agent environment — Claude Code, n8n, LangGraph, an
 
 ---
 
+## What's New (v1.5.0)
+
+### Phase 1 — Core Stabilization
+- **Grammar versioning**: `GRAMMAR_VERSION = "1.0.0"` in every manifest response
+- **Type Schema Registry**: YAML schemas in `schemas/types/` — `required`, `enum` validation on every node write
+- **Receipt IDs**: every `add_node` / `add_edge` returns `receipt_id + receipt_ts` for provenance
+
+### Phase 2 — Action / Workflow Runtime
+- **WorkflowEngine**: SQL state machine (`pending → running → approved/rejected → completed/failed`) with full audit log
+- **ApprovalEngine**: three-state approval queue linked to workflow runs
+- **CrabHarness `promotion-apply`**: CLI command + MCP tool to apply PromotionPackages inline
+
+### Phase 3 — Identity / Canonicalization / Promotion
+- **IdentityEngine**: alias table + fuzzy duplicate detection — no auto-merge, human review first
+- **CanonicalizeEngine**: tombstone-based node merge — alias nodes preserved, `resolve_canonical()` for lookups
+- **PromotionEngine**: full extraction lifecycle `candidate → validated → promoted | rejected` with evidence linking
+
+### Phase 4 — Query / Reasoning Upgrade
+- **BM25 Index**: pure Python keyword search over all node properties (no external deps)
+- **RRF Reranker**: Reciprocal Rank Fusion merges vector + BM25 + graph results; BM25 cross-score boosts query-relevant hits
+- **Policy-aware filtering**: pass `subject_id` to `ontology_query` and results are filtered by ReBAC `view` permission
+
+### Phase 5 — Productization
+- **Tenant isolation**: `tenant_id` context stamped on writes; `X-Tenant-Id` header support
+- **Billing hooks**: `billing_events` table tracks node_write / query / ingest / promotion per tenant
+- **Schema packs**: domain bundles (`saas`, `biomedical`, `legal`) installable with one MCP call
+
+**Total MCP tools: 30**
+
+---
+
 ## Architecture
 
 ```
@@ -33,19 +64,19 @@ to any OpenClaw-compatible agent environment — Claude Code, n8n, LangGraph, an
       │  validator.py│           │   rebac.py     │          │  neo4j_store   │
       │  glossary.py │           │   impact.py    │          │  chroma_store  │
       └──────────────┘           │   query.py     │          │  mongo_store   │
-                                 └────────────────┘          │  sql_store     │
-                                                             └───────┬────────┘
-                                                                     │
-                              ┌──────────────────────────────────────┤
-                              │              Data Layer              │
-              ┌───────────────┼───────────────┬──────────────────────┤
-              │               │               │                      │
-      ┌───────▼──────┐ ┌──────▼──────┐ ┌─────▼──────┐ ┌────────────▼───┐
-      │    Neo4j     │ │  ChromaDB   │ │  MongoDB   │ │  PostgreSQL    │
-      │  (graph)     │ │  (vectors)  │ │ (documents)│ │  (registry +   │
-      │  Cypher      │ │  semantic   │ │  audit log │ │   ReBAC policy)│
-      │  traversal   │ │  search     │ │            │ │                │
-      └──────────────┘ └─────────────┘ └────────────┘ └────────────────┘
+                                 │   identity.py  │          │  sql_store     │
+      ┌───────────────┐          │   canonicalize │          └───────┬────────┘
+      │  schemas/     │          │   promotion.py │                  │
+      │  types/*.yaml │          │   bm25.py      │   ┌─────────────▼──────────┐
+      │  packs/*.yaml │          │   reranker.py  │   │       billing/         │
+      │  loader.py    │          │   tenant.py    │   │   hooks.py             │
+      │  pack_registry│          └────────────────┘   └────────────────────────┘
+      └───────────────┘
+                                 ┌──────────────────────────────────┐
+                                 │         execution/               │
+                                 │   workflow.py  approvals.py      │
+                                 │   action_registry.py             │
+                                 └──────────────────────────────────┘
 ```
 
 ### MetaOntology OS — 9 Spaces
@@ -103,6 +134,14 @@ opencrab init          # creates .env from template
 # Edit .env if your credentials differ from defaults
 ```
 
+**Local mode (no Docker required):**
+
+```bash
+STORAGE_MODE=local opencrab serve
+```
+
+Local mode uses SQLite + JSON files — no external services needed.
+
 ### 4. Seed example data
 
 ```bash
@@ -157,14 +196,17 @@ Add to `~/.claude/mcp.json` (or project-level `.mcp.json`):
 }
 ```
 
-Alternatively, with `uvx` (no install required):
+**Local mode (SQLite + JSON, no Docker):**
 
 ```json
 {
   "mcpServers": {
     "opencrab": {
-      "command": "uvx",
-      "args": ["--from", "opencrab", "opencrab", "serve"]
+      "command": "opencrab",
+      "args": ["serve"],
+      "env": {
+        "STORAGE_MODE": "local"
+      }
     }
   }
 }
@@ -174,111 +216,173 @@ Alternatively, with `uvx` (no install required):
 
 ## MCP Tool Reference
 
-### `ontology_manifest`
+### Core Ontology (9 tools)
 
-Returns the full MetaOntology grammar: spaces, meta-edges, impact categories,
-active metadata layers, and ReBAC configuration.
+#### `ontology_manifest`
+Returns the full MetaOntology grammar with version, spaces, meta-edges, impact categories, and ReBAC config.
 
-```json
-{}
-```
-
-### `ontology_add_node`
-
-Add or update a node in the ontology.
-
+#### `ontology_add_node`
 ```json
 {
   "space": "subject",
   "node_type": "User",
   "node_id": "user-alice",
-  "properties": {
-    "name": "Alice Chen",
-    "role": "analyst"
-  }
+  "properties": { "name": "Alice Chen", "role": "analyst" },
+  "tenant_id": "acme",
+  "subject_id": "user-alice"
 }
 ```
+Returns `receipt_id + receipt_ts`. Properties validated against type schema if one exists.
 
-### `ontology_add_edge`
-
-Add a directed edge (grammar-validated before write).
-
+#### `ontology_add_edge`
 ```json
 {
-  "from_space": "subject",
-  "from_id": "user-alice",
+  "from_space": "subject", "from_id": "user-alice",
   "relation": "owns",
-  "to_space": "resource",
-  "to_id": "doc-spec"
+  "to_space": "resource", "to_id": "doc-spec"
 }
 ```
+Validates the `(from_space, to_space, relation)` triple against the grammar before write.
 
-Returns a validation error if the relation is not valid for the given space pair.
-
-### `ontology_query`
-
-Hybrid vector + graph search.
-
+#### `ontology_query` — Hybrid Query (v2)
 ```json
 {
   "question": "What factors degrade system performance?",
   "spaces": ["concept", "outcome"],
-  "limit": 10
-}
-```
-
-### `ontology_impact`
-
-Impact analysis: which I1–I7 categories are triggered by a change?
-
-```json
-{
-  "node_id": "lever-cache-ttl",
-  "change_type": "update"
-}
-```
-
-Returns triggered impact categories, affected neighbouring nodes, and a summary.
-
-### `ontology_rebac_check`
-
-Relationship-based access control check.
-
-```json
-{
+  "limit": 10,
   "subject_id": "user-alice",
-  "permission": "edit",
-  "resource_id": "ds-events"
+  "tenant_id": "acme",
+  "use_bm25": true,
+  "use_rerank": true
 }
 ```
+Pipeline: vector similarity → BM25 keyword → graph expansion → RRF reranking → policy filter.
 
+#### `query_bm25`
+```json
+{ "question": "machine learning", "spaces": ["concept"], "limit": 10 }
+```
+BM25-only keyword search. Fast and deterministic, no embeddings.
+
+#### `ontology_impact`
+```json
+{ "node_id": "lever-cache-ttl", "change_type": "update" }
+```
+Returns triggered I1–I7 impact categories and affected neighbours.
+
+#### `ontology_rebac_check`
+```json
+{ "subject_id": "user-alice", "permission": "edit", "resource_id": "ds-events" }
+```
 Returns `{ "granted": true/false, "reason": "...", "path": [...] }`.
 
-### `ontology_lever_simulate`
-
-Predict downstream outcome changes from a lever movement.
-
+#### `ontology_lever_simulate`
 ```json
-{
-  "lever_id": "lever-cache-ttl",
-  "direction": "lowers",
-  "magnitude": 0.7
-}
+{ "lever_id": "lever-cache-ttl", "direction": "lowers", "magnitude": 0.7 }
 ```
 
-### `ontology_ingest`
-
-Ingest text into the vector and document stores.
-
+#### `ontology_ingest`
 ```json
-{
-  "text": "The Q4 incident report shows error rates increased by 40%...",
-  "source_id": "incident-2026-01",
-  "metadata": {
-    "space": "evidence",
-    "type": "incident_report"
-  }
-}
+{ "text": "...", "source_id": "incident-2026-01", "metadata": { "space": "evidence" } }
+```
+
+---
+
+### Identity & Canonicalization (7 tools)
+
+#### `identity_add_alias`
+Register `alias_id` as an alias for `canonical_id`. Types: `name`, `merge`, `external`.
+
+#### `identity_resolve_canonical`
+Resolve a node ID to its canonical form. Returns `is_alias: true` if it was an alias.
+
+#### `identity_propose_duplicate`
+Propose two nodes as potential duplicates for human review.
+
+#### `identity_resolve_duplicate`
+Accept or reject a pending duplicate candidate. On accept, registers alias automatically.
+
+#### `identity_list_pending_duplicates`
+List all pending duplicate candidates sorted by similarity.
+
+#### `canonicalize_merge_nodes`
+Merge `alias_id` into `canonical_id` using tombstone pattern — alias node is preserved.
+
+#### `canonicalize_find_and_propose`
+Find nodes with similar names and auto-propose them as duplicate candidates.
+
+---
+
+### Promotion Lifecycle (4 tools)
+
+Tracks extracted entities through: `candidate → validated → promoted | rejected`.
+
+#### `promotion_register_candidate`
+Register an extracted entity as a promotion candidate (not visible in normal queries yet).
+
+#### `promotion_validate_candidate`
+Mark a candidate as validated — ready for final review.
+
+#### `promotion_promote`
+Promote to `promoted` status. Optionally links evidence nodes via `supports` edges.
+
+#### `promotion_reject`
+Mark a candidate as rejected with an optional reason.
+
+---
+
+### Workflow & Approvals (3 tools)
+
+#### `workflow_create_run`
+Start an auditable workflow run in `pending` state before executing any sensitive action.
+
+#### `workflow_advance`
+Advance a run to a new status (`pending → running → approved/rejected → completed/failed`).
+
+#### `approval_request`
+Submit an approval request linked to a workflow run.
+
+---
+
+### CrabHarness Integration (1 tool)
+
+#### `harness_promotion_apply`
+```json
+{ "package": { ... }, "dry_run": false }
+```
+Apply a CrabHarness PromotionPackage inline. Returns `receipt_id + receipt_ts` per node/edge written. Use `dry_run: true` to validate without writing.
+
+---
+
+### Billing & Usage (2 tools)
+
+#### `billing_get_usage`
+```json
+{ "tenant_id": "acme", "event_type": "query", "since": "2026-04-01T00:00:00Z" }
+```
+Aggregated usage counts by event type for a tenant.
+
+#### `billing_list_events`
+Recent raw billing events for a tenant (last N).
+
+---
+
+### Schema Packs (3 tools)
+
+Domain-specific schema bundles that extend the type registry without touching core schemas.
+
+#### `schema_pack_list`
+List available packs with install status. Built-in packs: `saas`, `biomedical`, `legal`.
+
+#### `schema_pack_install`
+```json
+{ "name": "biomedical" }
+```
+Generates stub YAML type schemas in `schemas/types/`. Existing user schemas are never overwritten.
+
+#### `schema_pack_uninstall`
+```json
+{ "name": "biomedical", "force": false }
 ```
 
 ---
@@ -297,11 +401,11 @@ opencrab manifest          Print MetaOntology grammar
 Global flags:
 
 ```
-opencrab --version         Show version
-opencrab query --json-output <q>   Raw JSON output
-opencrab manifest --json-output    Raw JSON grammar
-opencrab ingest -r <dir>   Recursive ingestion
-opencrab ingest -e .txt,.md <dir>  Filter by extension
+opencrab --version
+opencrab query --json-output <q>
+opencrab manifest --json-output
+opencrab ingest -r <dir>
+opencrab ingest -e .txt,.md <dir>
 ```
 
 ---
@@ -348,8 +452,6 @@ make status         # check store connections
 
 ### Running integration tests
 
-Integration tests require live services:
-
 ```bash
 OPENCRAB_INTEGRATION=1 pytest tests/ -v
 ```
@@ -359,15 +461,33 @@ OPENCRAB_INTEGRATION=1 pytest tests/ -v
 ```
 opencrab/
 ├── grammar/          # MetaOntology grammar (manifest, validator, glossary)
-├── stores/           # Store adapters (Neo4j, ChromaDB, MongoDB, PostgreSQL)
-├── ontology/         # Ontology engine (builder, ReBAC, impact, query)
-└── mcp/              # MCP server (stdio JSON-RPC) and tool definitions
-tests/                # Test suite (grammar, stores, MCP tools)
+├── schemas/          # Type schemas (YAML), schema packs, loader
+│   ├── types/        # Per-node-type YAML schemas (required/enum validation)
+│   └── packs/        # Domain packs: saas, biomedical, legal
+├── ontology/         # Core engines
+│   ├── builder.py    # Node/edge write with receipt IDs + schema validation
+│   ├── query.py      # Hybrid query: vector + BM25 + graph + RRF reranker
+│   ├── bm25.py       # Pure Python BM25 index
+│   ├── reranker.py   # RRF + BM25 cross-score fusion
+│   ├── identity.py   # Alias table + duplicate candidate detection
+│   ├── canonicalize.py # Tombstone-based node merge
+│   ├── promotion.py  # Extraction lifecycle (candidate → promoted)
+│   ├── tenant.py     # Tenant isolation context + property stamping
+│   ├── rebac.py      # Relationship-based access control
+│   └── impact.py     # I1–I7 impact analysis
+├── execution/        # Workflow & approvals runtime
+│   ├── workflow.py   # WorkflowEngine state machine
+│   ├── approvals.py  # ApprovalEngine queue
+│   └── action_registry.py # YAML action schemas
+├── billing/          # Usage metering
+│   └── hooks.py      # BillingHooks — billing_events table
+├── stores/           # Store adapters (Neo4j, ChromaDB, MongoDB, PostgreSQL, Local)
+└── mcp/              # MCP server (stdio JSON-RPC) + 30 tool definitions
+tests/                # Test suite
 scripts/              # Seed script
+crabharness/          # Evidence collection pipeline
 docker-compose.yml    # All data services
 ```
-
----
 
 ---
 
@@ -381,36 +501,28 @@ docker-compose.yml    # All data services
 |------------|-------------|
 | **Plugin workers** | Drop a `worker.manifest.json` + `adapter.py` into `codex_workers/` and a new collector appears in the catalog — no core changes. |
 | **Mission-first planner** | Declarative `mission.json` picks workers by `target_object` + tag match instead of hardcoded pipelines. |
-| **arg_schema delegation** | Workers declare their CLI contract in the manifest; CrabHarness auto-builds the Codex subprocess command. |
-| **Three-gate validation** | Every artifact bundle scored on (1) completeness, (2) semantic relevance, (3) loopy-era autoresearch verdict. |
+| **Three-gate validation** | Every artifact bundle scored on (1) completeness, (2) semantic relevance, (3) autoresearch verdict. |
 | **Harvest dedupe** | `.seen.json` side-index with SHA256 IDs for `harvest` collection mode. |
-| **Promotion packages** | Builds OpenCrab node/edge packages (resource + CrawlRun + CollectionCompleteness claim) — **never mutates OpenCrab directly**. |
+| **Promotion packages** | Builds OpenCrab node/edge packages — **never mutates OpenCrab directly**. |
+| **MCP-native apply** | `harness_promotion_apply` MCP tool applies packages inline from Claude without file I/O. |
 
 ### Quickstart
 
 ```bash
 cd crabharness
 pip install -e .
-crabharness catalog                                     # list registered workers
+crabharness catalog
 crabharness run missions/examples/github-trending-harvest.json
+crabharness promotion-apply artifacts/runs/<mission>/<run>/promotion_package.json
 ```
-
-Run output lands in `crabharness/artifacts/runs/<mission_id>/<run_id>/` with mission, delegation payload, artifact bundle, validation report, and promotion package.
-
-### Add a new worker
-
-```
-crabharness/codex_workers/my_worker/
-├── __init__.py
-├── worker.manifest.json    # capability metadata + arg schema
-└── adapter.py              # collect_bundle() + validate_bundle()
-```
-
-See `crabharness/README.md` for the full plugin contract, mission schema, and promotion flow.
 
 ### Integration with OpenCrab
 
-CrabHarness produces promotion packages as pure JSON. An OpenCrab-side applier (future) reads the package and invokes `ontology_add_node` / `ontology_add_edge` MCP tools. This preserves the strict separation: **harness collects, OpenCrab stores**.
+CrabHarness produces promotion packages as pure JSON. Apply them via:
+- **CLI**: `crabharness promotion-apply <package.json>`
+- **MCP**: `harness_promotion_apply { "package": { ... } }`
+
+The `dry_run: true` flag validates grammar and schemas without writing.
 
 ---
 
