@@ -62,6 +62,10 @@ def _get_context() -> dict[str, Any]:
     hybrid._doc_store = docs
     hybrid._rebac = rebac
 
+    # Phase 5: billing hooks
+    from opencrab.billing.hooks import BillingHooks
+    billing = BillingHooks(sql)
+
     _context = {
         "neo4j": graph,
         "chroma": vector,
@@ -71,6 +75,7 @@ def _get_context() -> dict[str, Any]:
         "rebac": rebac,
         "impact": impact,
         "hybrid": hybrid,
+        "billing": billing,
     }
     return _context
 
@@ -97,6 +102,8 @@ def ontology_add_node(
     node_type: str,
     node_id: str,
     properties: dict[str, Any] | None = None,
+    tenant_id: str = "default",
+    subject_id: str | None = None,
 ) -> dict[str, Any]:
     """
     Add or update a node in the MetaOntology graph.
@@ -111,15 +118,25 @@ def ontology_add_node(
         Stable unique identifier.
     properties:
         Key/value properties for the node.
+    tenant_id:
+        Tenant identifier for multi-tenant isolation (default: 'default').
+    subject_id:
+        Optional subject performing the write (stamped into properties).
     """
+    from opencrab.ontology.tenant import TenantContext, stamp_properties
+
     ctx = _get_context()
+    tenant_ctx = TenantContext(tenant_id=tenant_id, subject_id=subject_id)
+    props = stamp_properties(properties or {}, tenant_ctx)
     try:
-        return ctx["builder"].add_node(
+        result = ctx["builder"].add_node(
             space=space,
             node_type=node_type,
             node_id=node_id,
-            properties=properties or {},
+            properties=props,
         )
+        ctx["billing"].on_node_write(tenant_id, subject_id, space, node_type)
+        return result
     except ValueError as exc:
         return {"error": str(exc), "valid": False}
     except Exception as exc:
@@ -178,6 +195,7 @@ def ontology_query(
     spaces: list[str] | None = None,
     limit: int = 10,
     subject_id: str | None = None,
+    tenant_id: str = "default",
     use_bm25: bool = True,
     use_rerank: bool = True,
 ) -> dict[str, Any]:
@@ -212,10 +230,12 @@ def ontology_query(
             use_bm25=use_bm25,
             use_rerank=use_rerank,
         )
+        ctx["billing"].on_query(tenant_id, subject_id, question)
         return {
             "question": question,
             "spaces_filter": spaces,
             "subject_id": subject_id,
+            "tenant_id": tenant_id,
             "pipeline": {"bm25": use_bm25, "rerank": use_rerank},
             "total": len(results),
             "results": [r.to_dict() for r in results],
@@ -787,6 +807,77 @@ def promotion_reject(
     return engine.reject(space, node_type, node_id, existing_properties, rejected_by, reason)
 
 
+# ---------------------------------------------------------------------------
+# Phase 5: Billing / Tenant / Schema Packs
+# ---------------------------------------------------------------------------
+
+
+def billing_get_usage(
+    tenant_id: str = "default",
+    event_type: str | None = None,
+    since: str | None = None,
+) -> dict[str, Any]:
+    """
+    Return aggregated usage counts for a tenant.
+
+    Parameters
+    ----------
+    tenant_id:
+        Tenant to report on (default: 'default').
+    event_type:
+        Optional filter: node_write, edge_write, query, ingest, promotion, harness_apply.
+    since:
+        Optional ISO timestamp — only count events after this time.
+    """
+    ctx = _get_context()
+    return ctx["billing"].get_usage(tenant_id, event_type, since)
+
+
+def billing_list_events(
+    tenant_id: str = "default",
+    limit: int = 50,
+) -> dict[str, Any]:
+    """Return recent billing events for a tenant."""
+    ctx = _get_context()
+    events = ctx["billing"].list_events(tenant_id, limit)
+    return {"tenant_id": tenant_id, "total": len(events), "events": events}
+
+
+def schema_pack_list() -> dict[str, Any]:
+    """List all available schema packs with install status."""
+    from opencrab.schemas.pack_registry import list_packs
+
+    packs = list_packs()
+    return {"total": len(packs), "packs": packs}
+
+
+def schema_pack_install(name: str) -> dict[str, Any]:
+    """
+    Install a schema pack by generating type YAML files.
+
+    Existing user-customised schemas are NOT overwritten.
+
+    Parameters
+    ----------
+    name:
+        Pack name (e.g. 'saas', 'biomedical', 'legal').
+    """
+    from opencrab.schemas.pack_registry import install_pack
+
+    return install_pack(name)
+
+
+def schema_pack_uninstall(name: str, force: bool = False) -> dict[str, Any]:
+    """
+    Remove auto-generated type schemas for a pack.
+
+    User-customised schemas (no pack: header) are kept unless force=True.
+    """
+    from opencrab.schemas.pack_registry import uninstall_pack
+
+    return uninstall_pack(name, force)
+
+
 def harness_promotion_apply(
     package: dict[str, Any],
     dry_run: bool = False,
@@ -1335,6 +1426,57 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
             "required": ["space", "node_type", "node_id", "existing_properties"],
         },
     },
+    # ------------------------------------------------------------------
+    # Phase 5 — Billing / Tenant / Schema Packs
+    # ------------------------------------------------------------------
+    "billing_get_usage": {
+        "description": "Return aggregated usage counts for a tenant (node_write, query, ingest, etc).",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "tenant_id": {"type": "string", "description": "Tenant to report on (default: 'default').", "default": "default"},
+                "event_type": {"type": "string", "description": "Optional filter: node_write, edge_write, query, ingest, promotion, harness_apply."},
+                "since": {"type": "string", "description": "Optional ISO timestamp — only count events after this time."},
+            },
+            "required": [],
+        },
+    },
+    "billing_list_events": {
+        "description": "Return recent billing events for a tenant.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "tenant_id": {"type": "string", "default": "default"},
+                "limit": {"type": "integer", "default": 50},
+            },
+            "required": [],
+        },
+    },
+    "schema_pack_list": {
+        "description": "List all available schema packs (saas, biomedical, legal) with install status.",
+        "inputSchema": {"type": "object", "properties": {}, "required": []},
+    },
+    "schema_pack_install": {
+        "description": "Install a domain schema pack by generating type YAML files in schemas/types/.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Pack name: saas, biomedical, or legal."},
+            },
+            "required": ["name"],
+        },
+    },
+    "schema_pack_uninstall": {
+        "description": "Remove auto-generated type schemas for a pack. User-customised schemas are kept unless force=true.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string", "description": "Pack name to uninstall."},
+                "force": {"type": "boolean", "description": "Remove even user-customised schemas (default false).", "default": False},
+            },
+            "required": ["name"],
+        },
+    },
 }
 
 # Callable map
@@ -1365,6 +1507,12 @@ _TOOL_FUNCTIONS: dict[str, Callable[..., Any]] = {
     "promotion_validate_candidate": promotion_validate_candidate,
     "promotion_promote": promotion_promote,
     "promotion_reject": promotion_reject,
+    # Phase 5
+    "billing_get_usage": billing_get_usage,
+    "billing_list_events": billing_list_events,
+    "schema_pack_list": schema_pack_list,
+    "schema_pack_install": schema_pack_install,
+    "schema_pack_uninstall": schema_pack_uninstall,
 }
 
 # Combined tool descriptor list (name + schema)

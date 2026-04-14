@@ -1,0 +1,18 @@
+name: legal
+version: "1.0.0"
+description: >
+  Schema pack for legal knowledge graphs.
+  Covers contracts, clauses, parties, obligations, and regulatory frameworks.
+types:
+  - Contract
+  - Clause
+  - Party
+  - Obligation
+  - Regulation
+  - Jurisdiction
+spaces:
+  - subject
+  - resource
+  - policy
+  - claim
+  - evidence

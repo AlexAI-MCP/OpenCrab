@@ -1,0 +1,16 @@
+name: saas
+version: "1.0.0"
+description: >
+  Schema pack for SaaS product knowledge graphs.
+  Covers subscriptions, feature flags, churn signals, and product analytics.
+types:
+  - Subscription
+  - Feature
+  - ChurnSignal
+  - PricingTier
+  - ProductEvent
+spaces:
+  - subject
+  - resource
+  - outcome
+  - lever

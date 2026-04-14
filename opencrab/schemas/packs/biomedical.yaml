@@ -1,0 +1,17 @@
+name: biomedical
+version: "1.0.0"
+description: >
+  Schema pack for biomedical knowledge graphs.
+  Covers diseases, genes, drugs, clinical trials, and biomarkers.
+types:
+  - Disease
+  - Gene
+  - Drug
+  - ClinicalTrial
+  - Biomarker
+  - Pathway
+spaces:
+  - concept
+  - resource
+  - evidence
+  - claim
