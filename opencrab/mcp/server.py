@@ -225,7 +225,16 @@ class MCPServer:
 
 def main() -> None:
     """Start the MCP server (called by cli.py serve command)."""
+    import io
     import logging
+
+    # Force UTF-8 on Windows stdio — prevents Korean/CJK from becoming surrogates
+    if hasattr(sys.stdin, "buffer"):
+        sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", errors="replace")
+    if hasattr(sys.stdout, "buffer"):
+        sys.stdout = io.TextIOWrapper(
+            sys.stdout.buffer, encoding="utf-8", errors="replace", line_buffering=True
+        )
 
     logging.basicConfig(
         level=logging.WARNING,  # keep stderr quiet while serving MCP on stdio

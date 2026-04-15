@@ -24,6 +24,27 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+
+def _clean_str(s: str) -> str:
+    """Strip surrogate characters introduced by Windows MCP pipeline encoding."""
+    if not isinstance(s, str):
+        return str(s)
+    return s.encode("utf-8", errors="replace").decode("utf-8", errors="replace")
+
+
+def _clean_meta(meta: dict[str, Any]) -> dict[str, Any]:
+    """Recursively sanitize metadata dict — remove surrogates from string values."""
+    result: dict[str, Any] = {}
+    for k, v in meta.items():
+        if isinstance(v, str):
+            result[_clean_str(k)] = _clean_str(v)
+        elif isinstance(v, dict):
+            result[_clean_str(k)] = _clean_meta(v)
+        else:
+            result[_clean_str(k)] = v
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Store / engine singletons (lazily initialised)
 # ---------------------------------------------------------------------------
@@ -126,8 +147,11 @@ def ontology_add_node(
     from opencrab.ontology.tenant import TenantContext, stamp_properties
 
     ctx = _get_context()
+    space = _clean_str(space)
+    node_type = _clean_str(node_type)
+    node_id = _clean_str(node_id)
     tenant_ctx = TenantContext(tenant_id=tenant_id, subject_id=subject_id)
-    props = stamp_properties(properties or {}, tenant_ctx)
+    props = stamp_properties(_clean_meta(properties or {}), tenant_ctx)
     try:
         result = ctx["builder"].add_node(
             space=space,
@@ -174,14 +198,16 @@ def ontology_add_edge(
         Optional edge properties.
     """
     ctx = _get_context()
+    from_id = _clean_str(from_id)
+    to_id = _clean_str(to_id)
     try:
         return ctx["builder"].add_edge(
-            from_space=from_space,
+            from_space=_clean_str(from_space),
             from_id=from_id,
-            relation=relation,
-            to_space=to_space,
+            relation=_clean_str(relation),
+            to_space=_clean_str(to_space),
             to_id=to_id,
-            properties=properties,
+            properties=_clean_meta(properties or {}),
         )
     except ValueError as exc:
         return {"error": str(exc), "valid": False}
@@ -402,9 +428,20 @@ def ontology_extract(
 
     from opencrab.ontology.extractor import LLMExtractor
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    text = _clean_str(text)
+    source_id = _clean_str(source_id)
+
+    # API key: prefer env var, fall back to Claude Code session key
+    api_key = (
+        os.environ.get("ANTHROPIC_API_KEY")
+        or os.environ.get("CLAUDE_API_KEY")
+        or ""
+    )
     if not api_key:
-        return {"error": "ANTHROPIC_API_KEY not set"}
+        return {
+            "error": "No LLM API key available. Set ANTHROPIC_API_KEY in .env, "
+                     "or use ontology_ingest + ontology_add_node/edge instead."
+        }
 
     ctx = _get_context()
 
@@ -479,7 +516,9 @@ def ontology_ingest(
         Optional metadata (e.g. space, node_id, author, created_at).
     """
     ctx = _get_context()
-    meta = metadata or {}
+    text = _clean_str(text)
+    source_id = _clean_str(source_id)
+    meta = _clean_meta(metadata or {})
     result: dict[str, Any] = {"source_id": source_id, "stores": {}}
 
     # Ingest into vector store

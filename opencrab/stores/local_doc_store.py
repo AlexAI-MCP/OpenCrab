@@ -46,13 +46,25 @@ class LocalDocStore:
         path = self._collection_path(collection)
         if not os.path.exists(path):
             return {}
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
+        try:
+            with open(path, encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            logger.warning("Corrupt %s.json, resetting: %s", collection, exc)
+            return {}
 
     def _save(self, collection: str, data: dict[str, Any]) -> None:
+        """Atomic write: serialize to tmp file then rename to avoid corruption."""
         path = self._collection_path(collection)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2, default=str)
+        tmp_path = path + ".tmp"
+        try:
+            serialized = json.dumps(data, ensure_ascii=True, indent=2, default=str)
+        except (TypeError, ValueError) as exc:
+            logger.error("JSON serialization failed for %s: %s", collection, exc)
+            raise
+        with open(tmp_path, "w", encoding="utf-8") as f:
+            f.write(serialized)
+        os.replace(tmp_path, path)
 
     # ------------------------------------------------------------------
     # Node document operations (mirrors MongoStore)
@@ -103,9 +115,18 @@ class LocalDocStore:
     # Source ingestion (mirrors MongoStore)
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _safe_str(s: str) -> str:
+        """Remove surrogate characters that Windows MCP pipeline may introduce."""
+        if not isinstance(s, str):
+            return str(s)
+        return s.encode("utf-8", errors="replace").decode("utf-8", errors="replace")
+
     def upsert_source(
         self, source_id: str, text: str, metadata: dict[str, Any]
     ) -> str:
+        source_id = self._safe_str(source_id)
+        text = self._safe_str(text)
         with self._lock:
             data = self._load("sources")
             data[source_id] = {
