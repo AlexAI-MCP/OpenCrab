@@ -1,0 +1,52 @@
+{
+  "mission_id": "landscape-construction-ai-usecases-001",
+  "workspace_id": "landscape-ai",
+  "objective": "Collect practical AI use cases across landscape architecture and construction, then promote evidence-backed concepts and claims into OpenCrab.",
+  "target_object": "Dataset",
+  "target": {
+    "source": "web",
+    "topic": "landscape-construction-ai-usecases"
+  },
+  "questions": [
+    "Which practical AI capabilities are already in use across landscape architecture and construction?",
+    "Which organizations or products appear repeatedly in the evidence?",
+    "What outcomes do these AI use cases claim to improve?"
+  ],
+  "collection_mode": "harvest",
+  "required_evidence": [
+    "source_documents",
+    "use_cases",
+    "categories"
+  ],
+  "promotion_policy": "auto_if_valid",
+  "constraints": {
+    "max_jobs": 1,
+    "max_steps": 6,
+    "concurrency": 3,
+    "delay_ms": 300,
+    "limit": 8,
+    "dry_run": false,
+    "allowed_sources": [
+      "asla",
+      "landezine",
+      "autodesk",
+      "procore",
+      "buildots"
+    ]
+  },
+  "success_criteria": {
+    "min_artifacts": 1,
+    "required_fields": [
+      "source_documents",
+      "use_cases",
+      "categories"
+    ],
+    "completeness_threshold": 0.8,
+    "semantic_questions": [
+      "Do the collected pages describe concrete AI workflows or use cases rather than generic marketing copy?",
+      "Is there evidence for both landscape_ai and construction_ai coverage?",
+      "Do the sources identify practical outcomes such as risk reduction, productivity, documentation quality, or design exploration?"
+    ],
+    "min_semantic_score": 0.45
+  }
+}

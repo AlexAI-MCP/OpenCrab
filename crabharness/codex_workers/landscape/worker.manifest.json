@@ -1,0 +1,46 @@
+{
+  "worker_id": "codex.landscape.scan",
+  "job_type": "landscape_ai_usecase_crawl",
+  "supported_targets": ["Dataset"],
+  "tags": ["landscape", "construction", "ai", "usecase", "crawl", "aec", "case-study"],
+  "source_ids": ["asla", "landezine", "autodesk", "procore", "buildots"],
+  "command": ["python", "codex_workers/landscape/runner.py"],
+  "arg_schema": {
+    "topic": {
+      "flag": "--topic",
+      "required": false,
+      "type": "string",
+      "default": "landscape-construction-ai-usecases",
+      "description": "Collection topic slug"
+    },
+    "limit": {
+      "flag": "--limit",
+      "from_option": true,
+      "type": "integer",
+      "description": "Maximum number of pages to fetch"
+    },
+    "concurrency": {
+      "flag": "--concurrency",
+      "from_option": true,
+      "type": "integer",
+      "description": "Concurrent page fetch limit"
+    },
+    "delay_ms": {
+      "flag": "--delay-ms",
+      "from_option": true,
+      "type": "integer",
+      "description": "Delay between requests in milliseconds"
+    },
+    "dry_run": {
+      "flag": "--dry-run",
+      "from_option": true,
+      "type": "boolean",
+      "description": "Run without fetching remote pages"
+    }
+  },
+  "adapter_module": "codex_workers.landscape.adapter",
+  "artifact_types": ["json_dataset", "progress_log", "error_log"],
+  "validation_checks": ["source_documents_present", "use_cases_present", "categories_covered"],
+  "description": "Collects AI use cases across landscape architecture and construction and packages them for OpenCrab."
+}
+

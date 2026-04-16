@@ -86,7 +86,7 @@ class MCPServer:
             request = json.loads(raw)
         except json.JSONDecodeError as exc:
             logger.error("Parse error: %s", exc)
-            return None  # Can't send error response without a valid id
+            return self._error_response(None, PARSE_ERROR, f"Parse error: {exc}")
 
         # JSON-RPC notifications have no "id" field — must NOT be responded to
         is_notification = "id" not in request

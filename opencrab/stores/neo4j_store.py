@@ -19,10 +19,11 @@ logger = logging.getLogger(__name__)
 class Neo4jStore:
     """Thread-safe Neo4j adapter using the official driver."""
 
-    def __init__(self, uri: str, user: str, password: str) -> None:
+    def __init__(self, uri: str, user: str, password: str, database: str | None = None) -> None:
         self._uri = uri
         self._user = user
         self._password = password
+        self._database = database
         self._driver: Any = None
         self._available = False
         self._connect()
@@ -39,10 +40,14 @@ class Neo4jStore:
                 self._uri, auth=(self._user, self._password)
             )
             # Verify connectivity with a lightweight query
-            with self._driver.session() as session:
+            session_kwargs = {"database": self._database} if self._database else {}
+            with self._driver.session(**session_kwargs) as session:
                 session.run("RETURN 1")
             self._available = True
-            logger.info("Neo4j connected at %s", self._uri)
+            if self._database:
+                logger.info("Neo4j connected at %s (database=%s)", self._uri, self._database)
+            else:
+                logger.info("Neo4j connected at %s", self._uri)
         except Exception as exc:
             logger.warning("Neo4j unavailable (%s): %s", self._uri, exc)
             self._available = False
@@ -62,7 +67,8 @@ class Neo4jStore:
     def _session(self) -> Generator[Any, None, None]:
         if not self._available or self._driver is None:
             raise RuntimeError("Neo4j is not available.")
-        with self._driver.session() as session:
+        session_kwargs = {"database": self._database} if self._database else {}
+        with self._driver.session(**session_kwargs) as session:
             yield session
 
     # ------------------------------------------------------------------
@@ -123,7 +129,7 @@ class Neo4jStore:
 
         set_clause = ", ".join(f"n.{k} = ${k}" for k in props)
         cypher = f"""
-            MERGE (n:{node_type} {{id: $id}})
+            MERGE (n:OpenCrabNode:{node_type} {{id: $id}})
             SET {set_clause}
             RETURN properties(n) AS props
         """

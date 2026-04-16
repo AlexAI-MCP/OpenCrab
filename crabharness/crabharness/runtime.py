@@ -88,6 +88,17 @@ def _validate_bundle(bundle: ArtifactBundle, mission: MissionSpec) -> Validation
     raise ValueError(f"Worker adapter for {bundle.worker_id} has no validate_bundle or {validate_fn_name} function")
 
 
+def _build_promotion_package(
+    mission: MissionSpec,
+    bundle: ArtifactBundle,
+    validation: ValidationReport,
+) -> PromotionPackage:
+    adapter = resolve_worker_adapter(bundle.worker_id)
+    if hasattr(adapter, "build_promotion_package"):
+        return adapter.build_promotion_package(mission, bundle, validation)
+    return build_promotion_package(mission, bundle, validation)
+
+
 def run_mission(mission: MissionSpec) -> dict:
     jobs = build_jobs(mission)
     run_id = f"{mission.mission_id}--{_timestamp()}"
@@ -133,7 +144,7 @@ def run_mission(mission: MissionSpec) -> dict:
 
         bundle = _collect_bundle(ROOT_DIR, mission, job, run_id, progress_path, error_log_path)
         validation = _validate_bundle(bundle, mission)
-        promotion = build_promotion_package(mission, bundle, validation)
+        promotion = _build_promotion_package(mission, bundle, validation)
 
         bundle_path.write_text(json.dumps(bundle.model_dump(mode="json"), ensure_ascii=False, indent=2), encoding="utf-8")
         validation_path.write_text(json.dumps(validation.model_dump(mode="json"), ensure_ascii=False, indent=2), encoding="utf-8")

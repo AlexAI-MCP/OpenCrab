@@ -28,7 +28,7 @@ class TestToolDispatch:
     def test_tools_list_not_empty(self):
         from opencrab.mcp.tools import TOOLS
 
-        assert len(TOOLS) == 9  # 9 tools defined (includes ontology_extract)
+        assert len(TOOLS) == 30  # 30 tools defined in Phase 5
         names = [t["name"] for t in TOOLS]
         assert "ontology_manifest" in names
         assert "ontology_add_node" in names
@@ -69,7 +69,14 @@ class TestToolDispatch:
         with patch("opencrab.mcp.tools._get_context") as mock_ctx:
             builder = MagicMock()
             builder.add_node.side_effect = ValueError("Unknown space 'badspace'.")
-            mock_ctx.return_value = {"builder": builder, "rebac": MagicMock(), "impact": MagicMock(), "hybrid": MagicMock(), "mongo": MagicMock()}
+            mock_ctx.return_value = {
+                "builder": builder,
+                "rebac": MagicMock(),
+                "impact": MagicMock(),
+                "hybrid": MagicMock(),
+                "mongo": MagicMock(),
+                "billing": MagicMock(),
+            }
 
             result = dispatch_tool("ontology_add_node", {
                 "space": "badspace", "node_type": "User", "node_id": "u1"
@@ -89,9 +96,11 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": builder, "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_add_node", {
-                "space": "subject", "node_type": "User", "node_id": "u1"
+                "space": "subject", "node_type": "User", "node_id": "u1",
+                "properties": {"name": "Alice", "email": "alice@example.com", "role": "admin"}
             })
             assert result["node_id"] == "u1"
             assert "stores" in result
@@ -110,6 +119,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": builder, "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_add_edge", {
                 "from_space": "subject", "from_id": "u1",
@@ -127,6 +137,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": builder, "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_add_edge", {
                 "from_space": "subject", "from_id": "u1",
@@ -149,6 +160,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": MagicMock(), "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": hybrid, "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_query", {"question": "What is a lever?"})
             assert "results" in result
@@ -170,6 +182,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": MagicMock(), "rebac": MagicMock(),
                 "impact": impact_engine, "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_impact", {"node_id": "n1", "change_type": "update"})
             assert result["node_id"] == "n1"
@@ -189,6 +202,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": MagicMock(), "rebac": rebac,
                 "impact": MagicMock(), "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_rebac_check", {
                 "subject_id": "u1", "permission": "view", "resource_id": "doc1"
@@ -208,6 +222,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": MagicMock(), "rebac": MagicMock(),
                 "impact": impact_engine, "hybrid": MagicMock(), "mongo": MagicMock(),
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_lever_simulate", {
                 "lever_id": "lev1", "direction": "raises", "magnitude": 0.8
@@ -231,6 +246,7 @@ class TestToolDispatch:
             mock_ctx.return_value = {
                 "builder": MagicMock(), "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": hybrid, "mongo": mongo,
+                "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_ingest", {
                 "text": "This is a test document about ontologies.",
@@ -290,7 +306,7 @@ class TestMCPServer:
         assert response["id"] == 2
         assert "tools" in response["result"]
         tools = response["result"]["tools"]
-        assert len(tools) == 9
+        assert len(tools) == 30
 
     def test_handle_tools_call_manifest(self, server):
         request = json.dumps({
@@ -369,7 +385,9 @@ class TestOntologyBuilder:
         return OntologyBuilder(neo4j, mongo, sql)
 
     def test_add_node_valid(self, builder):
-        result = builder.add_node("subject", "User", "u1", {"name": "Alice"})
+        result = builder.add_node("subject", "User", "u1", {
+            "name": "Alice", "email": "alice@example.com", "role": "admin"
+        })
         assert result["node_id"] == "u1"
         assert result["space"] == "subject"
         assert result["node_type"] == "User"
@@ -386,8 +404,8 @@ class TestOntologyBuilder:
             builder.add_node("subject", "Document", "u1")
 
     def test_add_edge_valid(self, builder):
-        builder.add_node("subject", "User", "u1")
-        builder.add_node("resource", "Project", "p1")
+        builder.add_node("subject", "User", "u1", {"name": "Alice", "email": "a@ex.com", "role": "admin"})
+        builder.add_node("resource", "Project", "p1", {"name": "Project X"})
         result = builder.add_edge("subject", "u1", "owns", "resource", "p1")
         assert result["relation"] == "owns"
         assert result["stores"]["postgres"] == "ok"

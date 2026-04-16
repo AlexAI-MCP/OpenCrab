@@ -37,6 +37,7 @@ class Settings(BaseSettings):
     neo4j_uri: str = Field(default="bolt://localhost:7687", alias="NEO4J_URI")
     neo4j_user: str = Field(default="neo4j", alias="NEO4J_USER")
     neo4j_password: str = Field(default="opencrab", alias="NEO4J_PASSWORD")
+    neo4j_database: str | None = Field(default=None, alias="NEO4J_DATABASE")
 
     # ------------------------------------------------------------------
     # MongoDB (docker mode only)

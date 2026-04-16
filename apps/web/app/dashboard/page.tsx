@@ -138,9 +138,10 @@ export default function DashboardPage() {
           borderRadius: 6, padding: '8px 12px',
         }}>
           {[
-            ['subject','#f8c537'], ['resource','#83a598'], ['concept','#b8bb26'],
-            ['evidence','#bdae93'], ['outcome','#fb4934'], ['lever','#d3869b'],
-            ['policy','#fabd2f'],
+            ['Landscape', '#5ea85b'],
+            ['AI', '#e38b2c'],
+            ['Alex', '#d97ab5'],
+            ['Fallback', '#7c6f64'],
           ].map(([s, c]) => (
             <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: c }} />
