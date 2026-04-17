@@ -23,6 +23,17 @@ from opencrab.stores.neo4j_store import Neo4jStore
 
 logger = logging.getLogger(__name__)
 
+# Edge-type weights for graph expansion scoring
+_EDGE_WEIGHTS: dict[str, float] = {
+    "SUPPORTS": 0.7,
+    "DEPENDS_ON": 0.7,
+    "RELATED_TO": 0.6,
+    "CONTAINS": 0.65,
+    "INFLUENCES": 0.65,
+    "CONTRADICTS": 0.5,
+}
+_DEFAULT_EDGE_SCORE: float = 0.5
+
 # Lazily imported Phase 4 modules to avoid circular deps at module load
 _BM25Index: Any = None
 _Reranker: Any = None
@@ -75,6 +86,14 @@ class HybridQuery:
         # Optional stores attached at runtime by _get_context() in tools.py
         self._doc_store: Any = None
         self._rebac: Any = None
+        # BM25 index cache — rebuilt lazily, invalidated on every write
+        self._bm25_cache: Any = None
+        self._bm25_cache_size: int = 0
+        self._bm25_dirty: bool = True
+
+    def invalidate_bm25_cache(self) -> None:
+        """Mark the BM25 index stale so it is rebuilt on the next query."""
+        self._bm25_dirty = True
 
     def query(
         self,
@@ -169,12 +188,16 @@ class HybridQuery:
         spaces: list[str] | None,
         limit: int,
     ) -> list[dict[str, Any]]:
-        """Run BM25 search against doc store nodes."""
+        """Run BM25 search against doc store nodes, using a cached index."""
         try:
-            nodes = self._doc_store.list_nodes(limit=5000)
-            BM25Index = _get_bm25()
-            index = BM25Index.build(nodes)
-            hits = index.search(question, spaces=spaces, limit=limit)
+            if self._bm25_dirty or self._bm25_cache is None:
+                nodes = self._doc_store.list_nodes(limit=5000)
+                BM25Index = _get_bm25()
+                self._bm25_cache = BM25Index.build(nodes)
+                self._bm25_cache_size = len(nodes)
+                self._bm25_dirty = False
+                logger.debug("BM25 index rebuilt (%d nodes)", self._bm25_cache_size)
+            hits = self._bm25_cache.search(question, spaces=spaces, limit=limit)
             for h in hits:
                 h["source"] = "bm25"
             return hits
@@ -261,14 +284,21 @@ class HybridQuery:
     def _graph_expand(
         self, anchor_ids: list[str], depth: int, limit: int
     ) -> list[QueryResult]:
-        """Expand graph neighbourhood from anchor node IDs."""
+        """Expand graph neighbourhood from anchor node IDs.
+
+        Uses at most 3 anchors for depth > 1 (multi-hop) to keep result sets
+        manageable. Edge-type weights adjust the baseline score; a per-hop
+        decay of 0.85 reduces scores for deeper neighbours.
+        """
         if not self._neo4j.available:
             return []
 
         expanded: list[QueryResult] = []
         seen: set[str] = set(anchor_ids)
+        max_anchors = 3 if depth > 1 else 5
+        hop_decay = 0.85 ** (depth - 1)
 
-        for anchor_id in anchor_ids[:5]:  # expand at most 5 anchors
+        for anchor_id in anchor_ids[:max_anchors]:
             try:
                 neighbours = self._neo4j.find_neighbors(
                     node_id=anchor_id,
@@ -281,16 +311,20 @@ class HybridQuery:
                     nid = props.get("id")
                     if nid and nid not in seen:
                         seen.add(nid)
+                        rel_type = n.get("relation_type") or n.get("relationship_type") or ""
+                        base_score = _EDGE_WEIGHTS.get(rel_type, _DEFAULT_EDGE_SCORE) * hop_decay
                         expanded.append(
                             QueryResult(
                                 source="graph",
                                 node_id=nid,
-                                score=0.5,  # graph neighbours get a baseline score
+                                score=base_score,
                                 text=props.get("text") or props.get("name"),
                                 metadata=props,
                                 graph_context={
                                     "anchor_id": anchor_id,
                                     "labels": n.get("labels", []),
+                                    "relation_type": rel_type,
+                                    "depth": depth,
                                 },
                             )
                         )

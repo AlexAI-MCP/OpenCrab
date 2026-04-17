@@ -160,6 +160,7 @@ def ontology_add_node(
             properties=props,
         )
         ctx["billing"].on_node_write(tenant_id, subject_id, space, node_type)
+        ctx["hybrid"].invalidate_bm25_cache()
         return result
     except ValueError as exc:
         return {"error": str(exc), "valid": False}
@@ -201,7 +202,7 @@ def ontology_add_edge(
     from_id = _clean_str(from_id)
     to_id = _clean_str(to_id)
     try:
-        return ctx["builder"].add_edge(
+        result = ctx["builder"].add_edge(
             from_space=_clean_str(from_space),
             from_id=from_id,
             relation=_clean_str(relation),
@@ -209,6 +210,8 @@ def ontology_add_edge(
             to_id=to_id,
             properties=_clean_meta(properties or {}),
         )
+        ctx["hybrid"].invalidate_bm25_cache()
+        return result
     except ValueError as exc:
         return {"error": str(exc), "valid": False}
     except Exception as exc:
