@@ -26,15 +26,12 @@ def read_index(store_dir: str) -> Dict[str, Any]:
         return json.load(f)
 
 def write_layer(store_dir: str, layer: Dict[str, Any]) -> None:
-    # Write the layer file
-    layer_id = layer["id"]
-    layer_path = os.path.join(store_dir, f"{layer_id}.json")
-    with open(layer_path, "w", encoding="utf-8") as f:
-        json.dump(layer, f)
-    # Update the index atomically via write-to-temp-then-replace
-    # Use lock to prevent race conditions on Windows where os.replace can fail
-    # if the target file is open by another thread
+    # Synchronize both layer file write and index update in the same lock critical section
     with _index_lock:
+        layer_id = layer["id"]
+        layer_path = os.path.join(store_dir, f"{layer_id}.json")
+        with open(layer_path, "w", encoding="utf-8") as f:
+            json.dump(layer, f)
         index_path = os.path.join(store_dir, "layers-index.json")
         with open(index_path, encoding="utf-8") as f:
             index = json.load(f)
@@ -48,12 +45,11 @@ def write_layer(store_dir: str, layer: Dict[str, Any]) -> None:
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as f:
                 json.dump(index, f)
-            # os.replace is atomic on both Windows and POSIX
             os.replace(temp_path, index_path)
         except:
-            # Clean up temp file on error
             try:
                 os.unlink(temp_path)
             except:
                 pass
             raise
+
