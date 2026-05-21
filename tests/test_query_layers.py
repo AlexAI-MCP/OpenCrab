@@ -143,3 +143,60 @@ def test_write_layer_concurrent_writes(tmp_path):
     # All layer IDs should be present
     index_ids = {layer["id"] for layer in index["layers"]}
     assert index_ids == set(layer_ids)
+
+
+def test_concurrent_read_write_no_corruption(tmp_path):
+    """Test that concurrent reads and writes don't cause corruption or errors"""
+    store_dir = tmp_path / "store"
+    query_layers.ensure_layer_store(str(store_dir))
+    
+    errors = []
+    read_count = [0]
+    
+    def write_layers():
+        try:
+            for i in range(20):
+                layer = {
+                    "id": f"layer{i}",
+                    "query": f"MATCH (n:{i})",
+                    "timestamp": "2024-01-01T00:00:00Z",
+                    "source": "test",
+                    "node_count": i,
+                    "edge_count": 0,
+                    "enabled": True
+                }
+                query_layers.write_layer(str(store_dir), layer)
+        except Exception as e:
+            errors.append(("write", e))
+    
+    def read_index_repeatedly():
+        try:
+            for _ in range(50):
+                index = query_layers.read_index(str(store_dir))
+                # Validate that the index is well-formed
+                assert "layers" in index
+                assert "version" in index
+                assert isinstance(index["layers"], list)
+                read_count[0] += 1
+        except Exception as e:
+            errors.append(("read", e))
+    
+    # Start writer and multiple readers concurrently
+    writer = threading.Thread(target=write_layers)
+    readers = [threading.Thread(target=read_index_repeatedly) for _ in range(3)]
+    
+    writer.start()
+    for r in readers:
+        r.start()
+    
+    writer.join()
+    for r in readers:
+        r.join()
+    
+    # No errors should have occurred
+    assert errors == [], f"Errors occurred: {errors}"
+    # Readers should have successfully read multiple times
+    assert read_count[0] > 0
+    # Final index should be valid and contain all written layers
+    final_index = query_layers.read_index(str(store_dir))
+    assert len(final_index["layers"]) == 20

@@ -22,8 +22,9 @@ def ensure_layer_store(store_dir: str) -> None:
 
 def read_index(store_dir: str) -> Dict[str, Any]:
     index_path = os.path.join(store_dir, "layers-index.json")
-    with open(index_path, encoding="utf-8") as f:
-        return json.load(f)
+    with _index_lock:
+        with open(index_path, encoding="utf-8") as f:
+            return json.load(f)
 
 def write_layer(store_dir: str, layer: Dict[str, Any]) -> None:
     # Synchronize both layer file write and index update in the same lock critical section
