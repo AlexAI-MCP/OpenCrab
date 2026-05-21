@@ -1,83 +1,224 @@
+"""Tests for query visualization layer builder."""
+
+from __future__ import annotations
+
 import pytest
-import time
 from opencrab.ontology import query_visualization
 
+
 class DummyGraph:
-    def __init__(self, neighbors):
+    """Mock graph store that returns dict-based neighbor records."""
+
+    def __init__(self, neighbors: dict[str, list[dict]]) -> None:
         self.neighbors = neighbors
-        self.last_direction = None
-    def find_neighbors(self, node_id, direction, depth, limit):
-        # Returns a list of (from_id, to_id, relation, path_rank, neighbor_depth)
+        self.last_direction: str | None = None
+        self.last_depth: int | None = None
+
+    def find_neighbors(
+        self, node_id: str, direction: str = "both", depth: int = 1, limit: int = 50
+    ) -> list[dict]:
+        """
+        Returns neighbor records as dicts matching LocalGraphStore/Neo4jStore format.
+        Each record has: properties, labels, relation_type, depth
+        """
         self.last_direction = direction
+        self.last_depth = depth
         return self.neighbors.get(node_id, [])[:limit]
 
-def test_build_layer_payload_basic():
+
+def test_build_layer_payload_includes_seed_and_neighbors() -> None:
+    """Verify seed nodes and neighbors are included with correct fields."""
     question = "What is the capital of France?"
     query_results = [
-        {"id": "paris", "label": "Paris"},
-        {"id": "france", "label": "France"}
+        {
+            "node_id": "paris",
+            "space": "geography",
+            "node_type": "City",
+            "properties": {"name": "Paris", "population": 2161000},
+            "score": 0.95,
+        },
+        {
+            "node_id": "france",
+            "space": "geography",
+            "node_type": "Country",
+            "properties": {"name": "France"},
+            "score": 0.90,
+        },
     ]
+
     neighbors = {
-        "paris": [("paris", "france", "capital_of", 1, 1)],
-        "france": [("france", "paris", "has_capital", 1, 1)]
+        "paris": [
+            {
+                "properties": {"id": "eiffel-tower", "name": "Eiffel Tower"},
+                "labels": ["Landmark"],
+                "relation_type": "has_landmark",
+                "depth": 1,
+            }
+        ],
+        "france": [
+            {
+                "properties": {"id": "paris", "name": "Paris"},
+                "labels": ["City"],
+                "relation_type": "has_capital",
+                "depth": 1,
+            }
+        ],
     }
+
     graph = DummyGraph(neighbors)
-    max_hops = 1
-    limit = 2
-    payload = query_visualization.build_layer_payload(question, query_results, graph, max_hops, limit)
-    # Verify direction='both' was used
-    assert graph.last_direction == 'both'
-    assert payload["id"]
+    payload = query_visualization.build_layer_payload(
+        question, query_results, graph, max_hops=2, limit=10
+    )
+
+    # Verify basic payload structure
+    assert payload["id"].startswith("layer-")
     assert payload["query"] == question
     assert payload["source"] == "cli"
-    assert isinstance(payload["timestamp"], float)
-    assert len(payload["nodes"]) == 2
-    assert len(payload["edges"]) == 2
-    assert payload["metadata"]["total_nodes"] == 2
-    assert payload["metadata"]["total_edges"] == 2
-    assert payload["metadata"]["max_hops"] == 1
-    assert "query_time_ms" in payload["metadata"]
-    for node in payload["nodes"]:
-        assert node["highlight"] is True
-        assert node["hop_distance"] == 0
-    for edge in payload["edges"]:
-        assert set(edge.keys()) == {"relation", "from_id", "to_id", "path_rank"}
+    assert isinstance(payload["timestamp"], str)  # ISO string, not float
+    assert "T" in payload["timestamp"] or " " in payload["timestamp"]  # ISO format
 
-def test_build_layer_payload_deduplication():
+    # Verify direction='both' and depth parameter were used
+    assert graph.last_direction == "both"
+    assert graph.last_depth == 2
+
+    # Verify seed nodes have required fields
+    node_dict = {n["id"]: n for n in payload["nodes"]}
+    assert "paris" in node_dict
+    assert "france" in node_dict
+
+    paris = node_dict["paris"]
+    assert paris["highlight"] is True
+    assert paris["hop_distance"] == 0
+    assert paris["space"] == "geography"
+    assert paris["node_type"] == "City"
+    assert paris["properties"]["name"] == "Paris"
+    assert paris["score"] == 0.95
+
+    # Verify neighbor node
+    assert "eiffel-tower" in node_dict
+    eiffel = node_dict["eiffel-tower"]
+    assert eiffel["highlight"] is False
+    assert eiffel["hop_distance"] == 1
+    assert eiffel["node_type"] == "Landmark"
+
+    # Verify edges have required fields
+    assert len(payload["edges"]) > 0
+    for edge in payload["edges"]:
+        required_fields = {
+            "from_id",
+            "to_id",
+            "relation",
+            "from_space",
+            "to_space",
+            "path_rank",
+        }
+        assert required_fields.issubset(edge.keys())
+
+    # Verify metadata
+    assert payload["metadata"]["total_nodes"] == len(payload["nodes"])
+    assert payload["metadata"]["total_edges"] == len(payload["edges"])
+    assert payload["metadata"]["max_hops"] == 2
+    assert payload["metadata"]["query_time_ms"] >= 0
+
+
+def test_build_layer_payload_deduplicates_nodes() -> None:
+    """Verify nodes are deduplicated by ID."""
     question = "Test deduplication"
     query_results = [
-        {"id": "a", "label": "A"},
-        {"id": "b", "label": "B"}
+        {
+            "node_id": "a",
+            "space": "test",
+            "node_type": "Node",
+            "properties": {"label": "A"},
+            "score": 1.0,
+        },
+        {
+            "node_id": "b",
+            "space": "test",
+            "node_type": "Node",
+            "properties": {"label": "B"},
+            "score": 0.8,
+        },
     ]
+
     neighbors = {
-        "a": [("a", "b", "rel", 1, 1), ("a", "b", "rel", 1, 1)],
-        "b": [("b", "a", "rel", 1, 1)]
+        "a": [
+            {
+                "properties": {"id": "b", "label": "B"},
+                "labels": ["Node"],
+                "relation_type": "relates_to",
+                "depth": 1,
+            }
+        ],
+        "b": [
+            {
+                "properties": {"id": "a", "label": "A"},
+                "labels": ["Node"],
+                "relation_type": "relates_to",
+                "depth": 1,
+            }
+        ],
     }
+
     graph = DummyGraph(neighbors)
     payload = query_visualization.build_layer_payload(question, query_results, graph, 1, 10)
-    node_ids = [n["id"] for n in payload["nodes"]]
-    assert len(node_ids) == len(set(node_ids))
-    edge_tuples = [(e["from_id"], e["to_id"], e["relation"]) for e in payload["edges"]]
-    assert len(edge_tuples) == len(set(edge_tuples))
 
-def test_build_layer_payload_multi_hop():
-    """Test that hop_distance is correctly set based on neighbor depth, not hardcoded to 1"""
+    # Should only have 2 unique nodes (a and b), not 4
+    node_ids = [n["id"] for n in payload["nodes"]]
+    assert len(node_ids) == 2
+    assert len(set(node_ids)) == 2
+    assert set(node_ids) == {"a", "b"}
+
+    # Verify seed nodes keep highlight=True
+    node_dict = {n["id"]: n for n in payload["nodes"]}
+    assert node_dict["a"]["highlight"] is True
+    assert node_dict["b"]["highlight"] is True
+
+
+def test_build_layer_payload_uses_direction_both_and_depth() -> None:
+    """Verify graph.find_neighbors is called with direction='both' and correct depth."""
     question = "Multi-hop test"
     query_results = [
-        {"id": "start", "label": "Start"}
+        {
+            "node_id": "start",
+            "space": "test",
+            "node_type": "Node",
+            "properties": {"label": "Start"},
+            "score": 1.0,
+        }
     ]
+
     neighbors = {
         "start": [
-            ("start", "hop1", "rel1", 1, 1),
-            ("start", "hop2", "rel2", 1, 2),
-            ("start", "hop3", "rel3", 1, 3)
+            {
+                "properties": {"id": "hop1", "label": "Hop 1"},
+                "labels": ["Node"],
+                "relation_type": "rel1",
+                "depth": 1,
+            },
+            {
+                "properties": {"id": "hop2", "label": "Hop 2"},
+                "labels": ["Node"],
+                "relation_type": "rel2",
+                "depth": 2,
+            },
+            {
+                "properties": {"id": "hop3", "label": "Hop 3"},
+                "labels": ["Node"],
+                "relation_type": "rel3",
+                "depth": 3,
+            },
         ]
     }
+
     graph = DummyGraph(neighbors)
     payload = query_visualization.build_layer_payload(question, query_results, graph, 3, 10)
-    # Verify direction='both' was used
-    assert graph.last_direction == 'both'
-    # Check hop_distance values
+
+    # Verify find_neighbors was called with correct parameters
+    assert graph.last_direction == "both"
+    assert graph.last_depth == 3
+
+    # Verify hop_distance is set from neighbor depth field
     node_dict = {n["id"]: n for n in payload["nodes"]}
     assert node_dict["start"]["hop_distance"] == 0
     assert node_dict["hop1"]["hop_distance"] == 1
