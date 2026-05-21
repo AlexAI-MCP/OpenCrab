@@ -1,6 +1,7 @@
 import os
 import json
 import pytest
+import threading
 from opencrab.ontology import query_layers
 
 
@@ -80,3 +81,65 @@ def test_write_layer_persists_layer_and_updates_index(tmp_path):
     assert meta["enabled"] is True
     # Extra fields should NOT be in index metadata
     assert "extra" not in meta
+
+
+def test_ensure_layer_store_concurrent_creation(tmp_path):
+    """Test that concurrent calls to ensure_layer_store don't cause errors"""
+    store_dir = tmp_path / "store"
+    errors = []
+    
+    def create_store():
+        try:
+            query_layers.ensure_layer_store(str(store_dir))
+        except Exception as e:
+            errors.append(e)
+    
+    # Create multiple threads that try to initialize concurrently
+    threads = [threading.Thread(target=create_store) for _ in range(5)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    
+    # No errors should have occurred
+    assert errors == []
+    # Index should exist and be valid
+    index_path = store_dir / "layers-index.json"
+    assert index_path.exists()
+    with open(index_path, encoding="utf-8") as f:
+        data = json.load(f)
+    assert data == {"layers": [], "version": "1.0"}
+
+
+def test_write_layer_concurrent_writes(tmp_path):
+    """Test that concurrent writes maintain index consistency"""
+    store_dir = tmp_path / "store"
+    query_layers.ensure_layer_store(str(store_dir))
+    
+    def write_test_layer(layer_id):
+        layer = {
+            "id": layer_id,
+            "query": f"MATCH (n:{layer_id})",
+            "timestamp": "2024-01-01T00:00:00Z",
+            "source": "test",
+            "node_count": 1,
+            "edge_count": 0,
+            "enabled": True
+        }
+        query_layers.write_layer(str(store_dir), layer)
+    
+    # Write multiple layers concurrently
+    layer_ids = [f"layer{i}" for i in range(10)]
+    threads = [threading.Thread(target=write_test_layer, args=(lid,)) for lid in layer_ids]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    
+    # Read final index - it should be valid JSON and contain all layers
+    index = query_layers.read_index(str(store_dir))
+    assert index["version"] == "1.0"
+    assert len(index["layers"]) == 10
+    # All layer IDs should be present
+    index_ids = {layer["id"] for layer in index["layers"]}
+    assert index_ids == set(layer_ids)
