@@ -247,8 +247,15 @@ def test_query_viz_cli_command(monkeypatch, tmp_path) -> None:
             pass
         
         def query(self, question: str, limit: int = 10, **kwargs) -> list[QueryResult]:
-            # Return mock results
+            # Return mock results, including one with node_id=None
             return [
+                QueryResult(
+                    source="vector",
+                    node_id=None,
+                    score=0.5,
+                    text="Should be skipped",
+                    metadata={"space": "test", "node_type": "TestNode", "name": "Test None"},
+                ),
                 QueryResult(
                     source="vector",
                     node_id="test-node-1",
@@ -300,3 +307,7 @@ def test_query_viz_cli_command(monkeypatch, tmp_path) -> None:
     assert layer_data["source"] == "cli"
     assert "nodes" in layer_data
     assert "edges" in layer_data
+    # Ensure only the valid node_id is present
+    node_ids = [n["id"] for n in layer_data["nodes"]]
+    assert "test-node-1" in node_ids
+    assert None not in node_ids

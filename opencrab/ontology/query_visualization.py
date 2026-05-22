@@ -60,7 +60,9 @@ def build_layer_payload(
     # Results use 'node_id' key, not 'id'
     seed_ids = []
     for result in query_results:
-        node_id = result["node_id"]
+        node_id = result.get("node_id")
+        if not node_id:
+            continue  # Defensive: skip seeds without id
         seed_ids.append(node_id)
 
         # Seed nodes get all their fields plus highlight=True, hop_distance=0

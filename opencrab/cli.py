@@ -471,6 +471,8 @@ def query_viz(question: str, max_hops: int, limit: int, output_dir: str | None) 
     # Convert results to dict format expected by build_layer_payload
     results_dicts = []
     for r in results:
+        if r.node_id is None:
+            continue  # Skip results without node_id
         result_dict = {
             "node_id": r.node_id,
             "score": r.score,
