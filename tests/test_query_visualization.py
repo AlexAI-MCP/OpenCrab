@@ -224,3 +224,79 @@ def test_build_layer_payload_uses_direction_both_and_depth() -> None:
     assert node_dict["hop1"]["hop_distance"] == 1
     assert node_dict["hop2"]["hop_distance"] == 2
     assert node_dict["hop3"]["hop_distance"] == 3
+
+
+def test_query_viz_cli_command(monkeypatch, tmp_path) -> None:
+    """Test that query-viz CLI command exists and runs with mocked dependencies."""
+    from click.testing import CliRunner
+    from opencrab.cli import main
+    from opencrab.ontology.query import QueryResult
+
+    # Mock the factories and stores
+    class MockVectorStore:
+        available = True
+
+    class MockGraphStore:
+        available = True
+        
+        def find_neighbors(self, node_id: str, direction: str = "both", depth: int = 1, limit: int = 50) -> list[dict]:
+            return []
+
+    class MockHybridQuery:
+        def __init__(self, chroma, graph):
+            pass
+        
+        def query(self, question: str, limit: int = 10, **kwargs) -> list[QueryResult]:
+            # Return mock results
+            return [
+                QueryResult(
+                    source="vector",
+                    node_id="test-node-1",
+                    score=0.95,
+                    text="Test result",
+                    metadata={"space": "test", "node_type": "TestNode", "name": "Test 1"},
+                )
+            ]
+
+    # Patch the factory functions and classes
+    import opencrab.stores.factory
+    import opencrab.ontology.query
+    
+    monkeypatch.setattr(opencrab.stores.factory, "make_vector_store", lambda cfg: MockVectorStore())
+    monkeypatch.setattr(opencrab.stores.factory, "make_graph_store", lambda cfg: MockGraphStore())
+    monkeypatch.setattr(opencrab.ontology.query, "HybridQuery", MockHybridQuery)
+
+    # Run the CLI command
+    runner = CliRunner()
+    output_dir = str(tmp_path / "layers")
+    result = runner.invoke(main, ["query-viz", "test question", "--output-dir", output_dir])
+
+    # Check that the command ran successfully
+    assert result.exit_code == 0, f"CLI failed: {result.output}"
+    assert "Layer saved" in result.output
+    assert "layer-" in result.output
+
+    # Verify layer file was created
+    import json
+    from pathlib import Path
+    
+    layer_dir = Path(output_dir)
+    assert layer_dir.exists()
+    
+    # Check that index was created
+    index_file = layer_dir / "layers-index.json"
+    assert index_file.exists()
+    
+    index_data = json.loads(index_file.read_text())
+    assert "layers" in index_data
+    assert len(index_data["layers"]) == 1
+    
+    # Check that layer file was created
+    layer_files = list(layer_dir.glob("layer-*.json"))
+    assert len(layer_files) == 1
+    
+    layer_data = json.loads(layer_files[0].read_text())
+    assert layer_data["query"] == "test question"
+    assert layer_data["source"] == "cli"
+    assert "nodes" in layer_data
+    assert "edges" in layer_data

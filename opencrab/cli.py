@@ -442,6 +442,69 @@ def manifest(json_output: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
+# query-viz
+# ---------------------------------------------------------------------------
+
+
+@main.command("query-viz")
+@click.argument("question")
+@click.option("--max-hops", default=3, show_default=True, type=int, help="Max graph expansion depth.")
+@click.option("--limit", "-n", default=20, show_default=True, type=int, help="Max results to retrieve.")
+@click.option("--output-dir", default=None, type=click.Path(), help="Output directory for layer JSON.")
+def query_viz(question: str, max_hops: int, limit: int, output_dir: str | None) -> None:
+    """Run a query and generate a visualization layer."""
+    from pathlib import Path as PathLib
+    from opencrab.config import get_settings
+    from opencrab.ontology.query import HybridQuery
+    from opencrab.ontology.query_visualization import build_layer_payload
+    from opencrab.ontology.query_layers import write_layer, ensure_layer_store
+    from opencrab.stores.factory import make_graph_store, make_vector_store
+
+    cfg = get_settings()
+    chroma = make_vector_store(cfg)
+    graph_store = make_graph_store(cfg)
+    hybrid = HybridQuery(chroma, graph_store)
+
+    # Run the query
+    results = hybrid.query(question=question, limit=limit)
+
+    # Convert results to dict format expected by build_layer_payload
+    results_dicts = []
+    for r in results:
+        result_dict = {
+            "node_id": r.node_id,
+            "score": r.score,
+            "space": r.metadata.get("space"),
+            "node_type": r.metadata.get("node_type"),
+            "properties": r.metadata,
+        }
+        # If node_type not in metadata, try to get it from graph_context
+        if not result_dict["node_type"] and r.graph_context:
+            labels = r.graph_context.get("labels", [])
+            if labels:
+                result_dict["node_type"] = labels[0]
+        results_dicts.append(result_dict)
+
+    # Build the visualization layer
+    layer = build_layer_payload(question, results_dicts, graph_store, max_hops, limit)
+
+    # Set output directory
+    if output_dir is None:
+        output_dir = "apps/web/public/query-layers"
+    
+    target_dir = PathLib(output_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Ensure the layer store is initialized
+    ensure_layer_store(str(target_dir))
+
+    # Write the layer
+    write_layer(str(target_dir), layer)
+
+    console.print(f"[green]Layer saved: {layer['id']}[/green]")
+
+
+# ---------------------------------------------------------------------------
 # export-neo4j-pack
 # ---------------------------------------------------------------------------
 
