@@ -31,6 +31,35 @@ export interface QueryResult {
 
 export type SourceType = 'obsidian' | 'notion' | 'gdrive' | 'github'
 
+/* ── Query Layers ────────────────────────────────────────────── */
+export interface LayerMetadata {
+  id: string
+  name: string
+  description?: string
+}
+
+export interface LayerIndex {
+  layers: LayerMetadata[]
+}
+
+export interface LayerNode {
+  id: string
+  label: string
+  metadata?: Record<string, unknown>
+}
+
+export interface LayerEdge {
+  from: string
+  to: string
+  relation?: string
+}
+
+export interface LayerData {
+  layerId: string
+  nodes: LayerNode[]
+  edges: LayerEdge[]
+}
+
 /* ── Status ──────────────────────────────────────────────── */
 export async function getStatus(): Promise<{ ok: boolean; version?: string; vectorCount?: number }> {
   try {
@@ -97,6 +126,14 @@ export async function ingestSource(
 /* ── Graph nodes/edges (new API — available after redeploy) ─ */
 export async function getNodes(apiKey: string): Promise<OcNode[]> {
   try {
+    // Try local static file first
+    const localResponse = await fetch('/nodes.json', { cache: 'no-store' })
+    if (localResponse.ok) {
+      const nodes = await localResponse.json()
+      return nodes
+    }
+    
+    // Fallback to API server
     const r = await fetch(`${BASE}/api/nodes`, { headers: headers(apiKey), cache: 'no-store' })
     if (!r.ok) return []
     const d = await r.json()
@@ -106,9 +143,38 @@ export async function getNodes(apiKey: string): Promise<OcNode[]> {
 
 export async function getEdges(apiKey: string): Promise<OcEdge[]> {
   try {
+    // Try local static file first
+    const localResponse = await fetch('/edges.json', { cache: 'no-store' })
+    if (localResponse.ok) {
+      const edges = await localResponse.json()
+      return edges
+    }
+    
+    // Fallback to API server
     const r = await fetch(`${BASE}/api/edges`, { headers: headers(apiKey), cache: 'no-store' })
     if (!r.ok) return []
     const d = await r.json()
     return d.edges ?? []
   } catch { return [] }
+}
+
+/* ── Query Layers API ────────────────────────────────────────── */
+export async function getQueryLayers(): Promise<LayerIndex> {
+  try {
+    const r = await fetch('/query-layers/layers-index.json', { cache: 'no-store' })
+    if (!r.ok) return { layers: [] }
+    return r.json()
+  } catch {
+    return { layers: [] }
+  }
+}
+
+export async function getLayerData(layerId: string): Promise<LayerData | null> {
+  try {
+    const r = await fetch(`/query-layers/${layerId}.json`, { cache: 'no-store' })
+    if (!r.ok) return null
+    return r.json()
+  } catch {
+    return null
+  }
 }
