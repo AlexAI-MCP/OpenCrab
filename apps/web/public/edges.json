@@ -1,0 +1,4671 @@
+[
+  {
+    "from_id": "comm-perf-cluster",
+    "to_id": "con-error-rate",
+    "relation": "clusters",
+    "from_space": "community",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "comm-perf-cluster",
+    "to_id": "top-performance",
+    "relation": "clusters",
+    "from_space": "community",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "report-perf",
+    "to_id": "top-performance",
+    "relation": "summarizes",
+    "from_space": "community",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "top_retailers_community",
+    "to_id": "retail_technology",
+    "relation": "clusters",
+    "from_space": "community",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "top_retailers_community",
+    "to_id": "marketplace_platform",
+    "relation": "summarizes",
+    "from_space": "community",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "api_token_auth",
+    "to_id": "sse_endpoint_deprecation_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "atlassian_cloud_cli",
+    "to_id": "jira_project_management",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "atlassian_document_format",
+    "to_id": "jira_work_item",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "atlassian_jira",
+    "to_id": "cli_authentication",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "atlassian_jira",
+    "to_id": "cli_authentication",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "attachment_management_concept",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "auto_merge",
+    "to_id": "merge_train",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "auto_merge",
+    "to_id": "merge_train",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "auto_merge",
+    "to_id": "merge_train",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "automatic_pipeline_cancellation",
+    "to_id": "pipeline_resource_waste",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "automatic_pipeline_cancellation",
+    "to_id": "redundant_pipeline",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "automatic_pipeline_cancellation",
+    "to_id": "ci_pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "automatic_pipeline_cancellation",
+    "to_id": "merge_train_pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "build_job",
+    "to_id": "pipeline_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "business_partner_type",
+    "to_id": "retail_segment",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "captcha_verification",
+    "to_id": "bot_access_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "captcha_verification",
+    "to_id": "bot_access_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "child_pipeline",
+    "to_id": "parent_pipeline",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "child_pipeline",
+    "to_id": "deployment_pipeline",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ci_job",
+    "to_id": "ci_pipeline",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ci_job",
+    "to_id": "pipeline",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ci_pipeline",
+    "to_id": "merge_train",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ci_pipeline",
+    "to_id": "merge_train",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ci_pipeline_configuration",
+    "to_id": "resource_group",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cli_automation_topic",
+    "to_id": "workitem_linking_concept",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cli_commands_topic",
+    "to_id": "jira_field_concept",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cloud_native_api_first",
+    "to_id": "faster_retail_solution_deployment",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "cloud_native_api_first",
+    "to_id": "pos_software",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cloud_native_architecture_concept",
+    "to_id": "outcome_retail_innovation",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "cloud_native_architecture_concept",
+    "to_id": "pos_software_concept",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_diff_concept",
+    "to_id": "diff_load_time_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_diff_concept",
+    "to_id": "merge_request_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_explanation",
+    "to_id": "improved_code_comprehension",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_quality_findings",
+    "to_id": "code_security_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_quality_findings",
+    "to_id": "static_analysis_findings",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_review_topic",
+    "to_id": "collapse_generated_diff",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_review_workflow",
+    "to_id": "review_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_review_workflow",
+    "to_id": "reviewer_collaboration",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_review_workflow",
+    "to_id": "merge_request_diff",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "collapse_generated_diff",
+    "to_id": "reviewer_focus_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "company_managed_project_concept",
+    "to_id": "jira_project_concept",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "con-error-rate",
+    "to_id": "out-reliability",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "con-error-rate",
+    "to_id": "out-reliability",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "con-error-rate",
+    "to_id": "kpi-p95-latency",
+    "relation": "degrades",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "con-error-rate",
+    "to_id": "top-performance",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "con-error-rate",
+    "to_id": "cls-kpi",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "concurrent_execution",
+    "to_id": "concurrent_deployment_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "contact_form_submission",
+    "to_id": "customer_contact_followup",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "continuous_deployment",
+    "to_id": "process_mode",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "convenience_fuel_retail",
+    "to_id": "transaction_acceleration",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "convenience_fuel_retail",
+    "to_id": "transaction_acceleration",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "convenience_fuel_retail",
+    "to_id": "grocery_general_merchandise_retail",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "convenience_fuel_retail",
+    "to_id": "retail_industry_solutions",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "custom_field_searcher",
+    "to_id": "jira_custom_field",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "custom_field_type",
+    "to_id": "jira_custom_field",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "customer_contact_request",
+    "to_id": "customer_followup_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "deferred_module_loading",
+    "to_id": "contact_form_submission",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "deployment_job",
+    "to_id": "concurrent_deployment_corruption",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "deployment_job",
+    "to_id": "ci_job",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_gutter",
+    "to_id": "diff_view",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_version_comparison",
+    "to_id": "merge_request_diff_comment",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_view",
+    "to_id": "merge_request",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_view",
+    "to_id": "syntax_highlighting",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "draft_merge_request",
+    "to_id": "risk_mr_dropped_from_train",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "edge_computing_concept",
+    "to_id": "outcome_retail_operational_stability",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "edge_computing_concept",
+    "to_id": "retail_technology_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "edge_computing_concept",
+    "to_id": "cloud_native_architecture_concept",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "edge_computing_retail",
+    "to_id": "faster_retail_solution_deployment",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "edge_computing_retail",
+    "to_id": "operational_stability_retail",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "edge_computing_retail",
+    "to_id": "cloud_native_api_first",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "edge_computing_retail",
+    "to_id": "cloud_native_api_first",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "email_marketing_consent",
+    "to_id": "future_of_retail",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "epos_market_share_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "epos_market_share_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "worldwide_epos_share_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "worldwide_epos_share_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "pos_self_checkout",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "pos_self_checkout",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "pos_self_checkout",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "epos_installations",
+    "to_id": "pos_self_checkout",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "experiment_beta_features",
+    "to_id": "code_explanation",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "explain_code_concept",
+    "to_id": "merge_request_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "failed_pipeline",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "failed_pipeline",
+    "to_id": "ci_pipeline",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "fast_forward_merge",
+    "to_id": "merge_train",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "feature_flag_concept",
+    "to_id": "code_diff_concept",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "file_browser",
+    "to_id": "review_performance",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "file_browser",
+    "to_id": "one_file_at_a_time",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "file_browser",
+    "to_id": "merge_request_diff",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "file_collapse_performance",
+    "to_id": "review_performance",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "file_collapse_performance",
+    "to_id": "merge_request_diff",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "file_collapse_performance",
+    "to_id": "file_browser",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "file_viewed_marker",
+    "to_id": "diff_view",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "future_of_retail",
+    "to_id": "retail_industry_engagement",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "generated_file_concept",
+    "to_id": "collapse_generated_diff",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitlab_cicd_pipeline",
+    "to_id": "build_job",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitlab_cicd_pipeline",
+    "to_id": "deployment_job",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitlab_generated_attribute",
+    "to_id": "collapse_generated_diff",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "grocery_general_merchandise_retail",
+    "to_id": "frictionless_customer_experience",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "grocery_general_merchandise_retail",
+    "to_id": "operational_agility",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "grocery_general_merchandise_retail",
+    "to_id": "operational_agility",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "grocery_general_merchandise_retail",
+    "to_id": "retail_industry_solutions",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "hospitality_entertainment_retail",
+    "to_id": "specialty_retail",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "hospitality_entertainment_retail",
+    "to_id": "retail_industry_solutions",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "idempotency",
+    "to_id": "process_mode_newest_first",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "idempotency",
+    "to_id": "process_mode_newest_ready_first",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "inline_comment",
+    "to_id": "diff_view",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "inline_comment_expansion",
+    "to_id": "merge_request_diff",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "inline_comment_management",
+    "to_id": "code_explanation",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "inline_diff_mode",
+    "to_id": "improved_code_review_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "inline_diff_mode",
+    "to_id": "side_by_side_diff_mode",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_attachment",
+    "to_id": "jira_workitem",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_auth",
+    "to_id": "jira_project",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_board",
+    "to_id": "jira_sprint",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_field_concept",
+    "to_id": "cli_commands_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_filter",
+    "to_id": "jira_dashboard",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project",
+    "to_id": "jira_board",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_concept",
+    "to_id": "jira_project_created_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "jira_project_management",
+    "to_id": "atlassian_cloud_cli",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_management",
+    "to_id": "cli_authentication",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_management",
+    "to_id": "cli_authentication",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_sprint",
+    "to_id": "jira_workitem",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_work_item",
+    "to_id": "json_output",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_work_item_concept",
+    "to_id": "jira_project_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_work_item_concept",
+    "to_id": "cli_command_reference_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem",
+    "to_id": "jira_project",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem",
+    "to_id": "jira_sprint",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_attachment",
+    "to_id": "jira_workitem",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_attachment",
+    "to_id": "acli_reference_commands",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_attachment_management",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_comment_management",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_concept",
+    "to_id": "atlassian_cli_reference",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_concept",
+    "to_id": "cli_command_reference_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_link",
+    "to_id": "jira_workitem",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jql_query",
+    "to_id": "work_item_filter",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "json_output_concept",
+    "to_id": "jira_project",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "keyboard_shortcuts",
+    "to_id": "one_file_at_a_time",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "large_language_model",
+    "to_id": "llm_accuracy_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "large_language_model",
+    "to_id": "improved_code_comprehension",
+    "relation": "degrades",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "large_language_model",
+    "to_id": "code_explanation",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "loss_prevention",
+    "to_id": "retail_loss_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "loss_prevention",
+    "to_id": "serviceability",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "marketplace_platform",
+    "to_id": "retailer_growth_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "marketplace_platform",
+    "to_id": "retail_technology",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mcp_client",
+    "to_id": "mcp_client_security_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "mcp_client",
+    "to_id": "mcp_server",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mcp_protocol",
+    "to_id": "successful_mcp_client_connection",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_conflict",
+    "to_id": "risk_mr_dropped_from_train",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_method",
+    "to_id": "merge_train_queue",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request",
+    "to_id": "source_branch",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request",
+    "to_id": "target_branch",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request",
+    "to_id": "merge_train",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_changes",
+    "to_id": "code_quality_findings",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_changes",
+    "to_id": "static_analysis_findings",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_conflicts",
+    "to_id": "missed_conflict_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_request_diff",
+    "to_id": "code_review_workflow",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_diff",
+    "to_id": "merge_request",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_diff_comment",
+    "to_id": "persistent_code_review_comments",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_request_image_comment",
+    "to_id": "merge_request_diff_comment",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "default_branch_stability",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "devops_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "merge_conflict_reduction",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "default_branch",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "merge_train_pipeline",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "merge_request",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train",
+    "to_id": "merge_train_pipeline",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "faster_merge_throughput",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "risk_mr_dropped_from_train",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "merge_request",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "target_branch",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "automatic_pipeline_cancellation",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "merge_train",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline",
+    "to_id": "merged_results_pipeline",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_pipeline_limit",
+    "to_id": "merge_train_queue_outcome",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train_pipeline_limit",
+    "to_id": "ci_pipeline",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_queue",
+    "to_id": "merge_train_started_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_train_queue",
+    "to_id": "merge_method",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merged_results_pipeline",
+    "to_id": "merge_train_pipeline",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_concept",
+    "to_id": "customer_trust_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modularity_concept",
+    "to_id": "retail_scalability_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modularity_concept",
+    "to_id": "unified_retail_future_concept",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_concept",
+    "to_id": "retail_technology_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_concept",
+    "to_id": "unified_retail_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "oauth_21_authentication",
+    "to_id": "successful_mcp_client_connection",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "oauth_21_authentication",
+    "to_id": "mcp_protocol",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "oauth_2_1",
+    "to_id": "api_token_auth",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "oldest_first_mode",
+    "to_id": "pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "oldest_first_process_mode",
+    "to_id": "pipeline_deadlock",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "oldest_first_process_mode",
+    "to_id": "resource_group",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "one_file_at_a_time",
+    "to_id": "improved_code_review_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "one_file_at_a_time",
+    "to_id": "merge_request_review",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "operational_excellence",
+    "to_id": "business_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "operational_excellence",
+    "to_id": "retail_business_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pagination_concept",
+    "to_id": "jira_project",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "parallel_execution",
+    "to_id": "default_branch_stability",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "parent_pipeline",
+    "to_id": "child_pipeline",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pinned_file_feature",
+    "to_id": "reviewer_collaboration",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pinned_file_feature",
+    "to_id": "code_review_workflow",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pinned_file_feature",
+    "to_id": "file_browser",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline",
+    "to_id": "race_condition_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pipeline_concurrency",
+    "to_id": "concurrent_deployment_corruption",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pipeline_concurrency",
+    "to_id": "pipeline_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pipeline_deadlock",
+    "to_id": "deadlock_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pipeline_failure",
+    "to_id": "merge_train",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_failure",
+    "to_id": "redundant_pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_level_concurrency_control",
+    "to_id": "resource_group",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_level_concurrency_control",
+    "to_id": "resource_group_keyword",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_level_concurrency_control",
+    "to_id": "stuck_job_risk",
+    "relation": "predicts",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pipelines_must_succeed_setting",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "pos_units_deployed_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "pos_units_deployed_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "pos_units_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "pos_units_kpi",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "epos_installations",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "epos_installations",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "epos_installations",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pos_self_checkout",
+    "to_id": "epos_installations",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pos_software",
+    "to_id": "retail_innovation",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pos_software_concept",
+    "to_id": "retail_technology_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode",
+    "to_id": "upcoming_jobs",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode",
+    "to_id": "resource_group",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode",
+    "to_id": "newest_first_mode",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode",
+    "to_id": "oldest_first_mode",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_newest_first",
+    "to_id": "deployment_safety",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "process_mode_newest_first",
+    "to_id": "resource_group_keyword",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_newest_first",
+    "to_id": "process_mode",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_newest_ready_first",
+    "to_id": "process_mode_newest_first",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_newest_ready_first",
+    "to_id": "process_mode",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_oldest_first",
+    "to_id": "deployment_safety",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "process_mode_oldest_first",
+    "to_id": "resource_group_keyword",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_oldest_first",
+    "to_id": "process_mode",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_unordered",
+    "to_id": "deployment_safety",
+    "relation": "degrades",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "process_mode_unordered",
+    "to_id": "resource_group_keyword",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_unordered",
+    "to_id": "process_mode",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "production_resource_group",
+    "to_id": "resource_group",
+    "relation": "subclass_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "race_condition",
+    "to_id": "race_condition_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "race_condition",
+    "to_id": "resource_group_malfunction_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "recaptcha_challenge",
+    "to_id": "bot_abuse_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "recaptcha_challenge",
+    "to_id": "bot_abuse_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "recaptcha_verification",
+    "to_id": "customer_contact_followup",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "redundant_pipeline",
+    "to_id": "pipeline_resource_waste",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "concurrent_deployment_corruption",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "outdated_deployment_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "stuck_job_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "deployment_safety",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "pipeline_serialization",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "resource_group_keyword",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "pipeline_concurrency",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group",
+    "to_id": "continuous_deployment",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group_keyword",
+    "to_id": "concurrent_deployment_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_keyword",
+    "to_id": "controlled_deployment_order",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_advisory_services",
+    "to_id": "retail_solutions",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_industry_solutions",
+    "to_id": "operational_agility",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_industry_solutions",
+    "to_id": "operational_agility",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_industry_trends",
+    "to_id": "retail_marketplace",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_innovation",
+    "to_id": "operational_stability_retail",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_journey_excellence",
+    "to_id": "retail_solutions",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_marketplace",
+    "to_id": "retail_growth_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_security",
+    "to_id": "retail_business_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_security",
+    "to_id": "operational_excellence",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_segment",
+    "to_id": "future_of_retail",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_segments",
+    "to_id": "future_of_retail",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "customer_shopping_experience",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "customer_shopping_experience",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "business_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "retail_business_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "customer_shopping_experience",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retail_solutions",
+    "to_id": "customer_shopping_experience",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retail_technology",
+    "to_id": "retailer_growth_success",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retry_keyword",
+    "to_id": "ci_pipeline",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "evolving_threats_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "customer_trust_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "regulatory_compliance_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "unified_retail_future_concept",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "retail_technology_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "security_concept",
+    "to_id": "unified_retail_topic",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "semi_linear_merge",
+    "to_id": "merge_train",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "semi_linear_merge_method",
+    "to_id": "faster_merge_throughput",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "serviceability",
+    "to_id": "retail_loss_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "serviceability",
+    "to_id": "system_uptime_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "side_by_side_diff_mode",
+    "to_id": "improved_code_review_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "source_branch",
+    "to_id": "target_branch",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "static_analysis_findings",
+    "to_id": "code_security_outcome",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "strategy_mirror",
+    "to_id": "pipeline_deadlock",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "top-performance",
+    "to_id": "ent-user-behaviour",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "top-performance",
+    "to_id": "kpi-p95-latency",
+    "relation": "predicts",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "trigger_job",
+    "to_id": "ci_pipeline",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "trigger_job",
+    "to_id": "pipeline_level_concurrency_control",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "trigger_keyword",
+    "to_id": "resource_group_keyword",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "trigger_strategy_keyword",
+    "to_id": "trigger_keyword",
+    "relation": "depends_on",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "trigger_strategy_keyword",
+    "to_id": "resource_group_keyword",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "unresolved_thread",
+    "to_id": "risk_mr_dropped_from_train",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "upcoming_jobs",
+    "to_id": "resource_group_malfunction_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "viewed_file_tracking",
+    "to_id": "review_efficiency",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "waiting_for_resource_state",
+    "to_id": "deadlock_risk",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "whitespace_changes",
+    "to_id": "review_efficiency",
+    "relation": "degrades",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "whitespace_changes",
+    "to_id": "merge_request_diff",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "work_item_assignee",
+    "to_id": "jira_work_item",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "work_item_fields",
+    "to_id": "jira_work_item",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "workflow_automation",
+    "to_id": "successful_mcp_client_connection",
+    "relation": "contributes_to",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "workitem_link_type",
+    "to_id": "jira_workitem_link",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "workitem_linking_concept",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "workitem_linking_concept",
+    "to_id": "jira_workitem_concept",
+    "relation": "related_to",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "workitem_linking_topic",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "advisory_services_lever",
+    "to_id": "retail_journey_excellence",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "advisory_services_lever",
+    "to_id": "business_success",
+    "relation": "optimizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "advisory_services_lever",
+    "to_id": "customer_shopping_experience",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "advisory_services_lever",
+    "to_id": "customer_shopping_experience",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "built_in_security_lever",
+    "to_id": "security_concept",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "built_in_security_lever",
+    "to_id": "evolving_threats_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "built_in_security_lever",
+    "to_id": "customer_trust_outcome",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "cancel_old_pipeline_lever",
+    "to_id": "upcoming_jobs",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cancel_old_pipeline_lever",
+    "to_id": "resource_group_malfunction_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "collapse_behavior_lever",
+    "to_id": "gitlab_generated_attribute",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "collapse_behavior_lever",
+    "to_id": "reviewer_focus_outcome",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "contact_form_lever",
+    "to_id": "future_of_retail",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "contact_form_lever",
+    "to_id": "retail_industry_engagement",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "diff_view_preference_setting",
+    "to_id": "inline_diff_mode",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_view_preference_setting",
+    "to_id": "one_file_at_a_time",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_view_preference_setting",
+    "to_id": "side_by_side_diff_mode",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "diff_view_preference_setting",
+    "to_id": "improved_code_review_efficiency",
+    "relation": "optimizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever-cache-ttl",
+    "to_id": "top-performance",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "lever-cache-ttl",
+    "to_id": "kpi-p95-latency",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever-cache-ttl",
+    "to_id": "out-reliability",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever-query-limit",
+    "to_id": "con-error-rate",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "lever-query-limit",
+    "to_id": "risk-data-loss",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever-query-limit",
+    "to_id": "kpi-p95-latency",
+    "relation": "stabilizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever_cloud_native_adoption",
+    "to_id": "pos_software_concept",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "lever_cloud_native_adoption",
+    "to_id": "outcome_retail_innovation",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever_edge_computing_deployment",
+    "to_id": "edge_computing_concept",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "lever_edge_computing_deployment",
+    "to_id": "outcome_retail_innovation",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "lever_edge_computing_deployment",
+    "to_id": "outcome_retail_operational_stability",
+    "relation": "stabilizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_queue",
+    "to_id": "merge_train",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_queue",
+    "to_id": "merge_conflict_reduction",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_queue",
+    "to_id": "devops_efficiency",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "operational_excellence",
+    "relation": "affects",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "operational_excellence",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "retail_security",
+    "relation": "affects",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "retail_security",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "security_risk",
+    "relation": "constrains",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "security_risk",
+    "relation": "constrains",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "operational_excellence",
+    "relation": "influences",
+    "from_space": "concept",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "operational_excellence",
+    "relation": "influences",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "labor_challenges",
+    "relation": "lowers",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "labor_challenges",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "retail_business_success",
+    "relation": "raises",
+    "from_space": "concept",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_adaptable_solutions",
+    "to_id": "retail_business_success",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_architecture_lever",
+    "to_id": "modularity_concept",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modular_architecture_lever",
+    "to_id": "customer_trust_outcome",
+    "relation": "optimizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "modular_architecture_lever",
+    "to_id": "retail_scalability_outcome",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "parallel_pipeline_limit_lever",
+    "to_id": "merge_train_pipeline_limit",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "parallel_pipeline_limit_lever",
+    "to_id": "merge_train_queue_outcome",
+    "relation": "optimizes",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "process_mode_selection",
+    "to_id": "process_mode",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_selection",
+    "to_id": "outdated_deployment_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "process_mode_selection",
+    "to_id": "deployment_safety",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "push_new_commit_lever",
+    "to_id": "ci_pipeline",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "push_new_commit_lever",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "rapid_diffs_lever",
+    "to_id": "code_diff_concept",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "rapid_diffs_lever",
+    "to_id": "diff_load_time_kpi",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "remove_mr_from_train",
+    "to_id": "merge_train",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "remove_mr_from_train",
+    "to_id": "pipeline_resource_waste",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "rerun_pipeline_lever",
+    "to_id": "ci_pipeline",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "rerun_pipeline_lever",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_in_parent_pipeline",
+    "to_id": "pipeline_deadlock",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group_in_parent_pipeline",
+    "to_id": "deadlock_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_in_parent_pipeline",
+    "to_id": "pipeline_serialization",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "concurrent_execution",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "deployment_job",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "pipeline_concurrency",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "concurrent_deployment_corruption",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "concurrent_deployment_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "controlled_deployment_order",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "resource_group_lever",
+    "to_id": "deployment_safety",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "retry_failed_job_lever",
+    "to_id": "failed_pipeline",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "retry_failed_job_lever",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "skip_merge_train",
+    "to_id": "merge_train",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "skip_merge_train",
+    "to_id": "merge_train",
+    "relation": "influences",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "skip_merge_train",
+    "to_id": "pipeline_resource_waste",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "start_new_pipeline_lever",
+    "to_id": "race_condition_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "viewed_checkbox_lever",
+    "to_id": "viewed_file_tracking",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "viewed_checkbox_lever",
+    "to_id": "review_efficiency",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "whitespace_toggle_lever",
+    "to_id": "whitespace_changes",
+    "relation": "affects",
+    "from_space": "lever",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "whitespace_toggle_lever",
+    "to_id": "missed_conflict_risk",
+    "relation": "lowers",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "whitespace_toggle_lever",
+    "to_id": "review_efficiency",
+    "relation": "raises",
+    "from_space": "lever",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "beta_features_group_requirement",
+    "to_id": "gitlab_duo_chat_tool",
+    "relation": "restricts",
+    "from_space": "policy",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "pol-data-access",
+    "to_id": "user-alice",
+    "relation": "permits",
+    "from_space": "concept",
+    "to_space": "subject"
+  },
+  {
+    "from_id": "pol-data-access",
+    "to_id": "ds-events",
+    "relation": "protects",
+    "from_space": "concept",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "pol-data-access",
+    "to_id": "agent-rag",
+    "relation": "requires_approval",
+    "from_space": "concept",
+    "to_space": "subject"
+  },
+  {
+    "from_id": "resource_group_access_policy",
+    "to_id": "gitlab_ci_yml",
+    "relation": "restricts",
+    "from_space": "policy",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "rule-prod-deploy",
+    "to_id": "api-query",
+    "relation": "restricts",
+    "from_space": "policy",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "sens-pii",
+    "to_id": "ds-events",
+    "relation": "classifies",
+    "from_space": "policy",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "acli_jira_cli",
+    "to_id": "acli_workitem_link_reference_page",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_date_field",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_select_field",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_text_field",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_date_field",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_select_field",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_field_create",
+    "to_id": "example_text_field",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_project_create_cmd",
+    "to_id": "acli_project_create_examples_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_project_create_cmd",
+    "to_id": "acli_project_create_flags_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_edit",
+    "to_id": "acli_edit_options_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_edit",
+    "to_id": "acli_edit_options_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_link_create",
+    "to_id": "acli_workitem_link_reference_page",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_link_delete",
+    "to_id": "acli_workitem_link_reference_page",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_link_list",
+    "to_id": "acli_workitem_link_reference_page",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_link_type",
+    "to_id": "acli_workitem_link_reference_page",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_jira_workitem_tool",
+    "to_id": "acli_rovodev_tool",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "acli_jira_workitem_view",
+    "to_id": "acli_view_command_doc",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_tool",
+    "to_id": "example_text_field",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_tool",
+    "to_id": "jira_project_list_doc",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_tool",
+    "to_id": "jira_workitem_link_doc",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "api-query",
+    "to_id": "log-001",
+    "relation": "logged_as",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "atlassian_mcp_server",
+    "to_id": "mcp_setup_guide",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "doc-spec",
+    "to_id": "text-001",
+    "relation": "contains",
+    "from_space": "concept",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "doc_github_recovery_codes",
+    "to_id": "concept_security",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.074_GMT+9",
+    "to_id": "concept_automation",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.074_GMT+9",
+    "to_id": "concept_development",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.620_GMT+9",
+    "to_id": "concept_automation",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.620_GMT+9",
+    "to_id": "concept_development",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_59_27.794_GMT+9",
+    "to_id": "concept_automation",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "doc_sw_RPA_Workflow_2026_02_10_19_59_27.794_GMT+9",
+    "to_id": "concept_development",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ds-events",
+    "to_id": "ev-001",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "ds-events",
+    "to_id": "log-001",
+    "relation": "logged_as",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "elera_loss_prevention",
+    "to_id": "toshiba_marketing_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "elera_platform",
+    "to_id": "toshiba_offerings_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "fast_forward_merge_method",
+    "to_id": "faster_merge_throughput",
+    "relation": "constrains",
+    "from_space": "resource",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "fast_forward_merge_method",
+    "to_id": "semi_linear_merge_method",
+    "relation": "related_to",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitlab_ci",
+    "to_id": "pipeline_concurrency_example",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_ci",
+    "to_id": "process_mode_explanation",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_ci_cd",
+    "to_id": "automatic_cancellation_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_ci_cd",
+    "to_id": "merge_train_example_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_ci_yml",
+    "to_id": "deploy_resource_group_example",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_ci_yml",
+    "to_id": "process_mode_example",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_duo_pro_tool",
+    "to_id": "issue_590833_evidence",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_graphql_api",
+    "to_id": "graphql_job_query_example",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_graphql_api",
+    "to_id": "graphql_pipeline_query_example",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_org_gitlab_project",
+    "to_id": "epic_19380_evidence",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_org_gitlab_project",
+    "to_id": "issue_539581_evidence",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_org_gitlab_project",
+    "to_id": "issue_590833_evidence",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_org_gitlab_project",
+    "to_id": "issue_596236_evidence",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_project",
+    "to_id": "code_explain_walkthrough",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_project",
+    "to_id": "merge_trains_doc_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_resource_group",
+    "to_id": "gitlab_issue_436988",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "gitlab_rest_api_resource_groups",
+    "to_id": "gitlab_issue_436988",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "iot_suite",
+    "to_id": "toshiba_marketing_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "jira_project_list_command",
+    "to_id": "jira_project_list_doc",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "jira_project_list_command",
+    "to_id": "jira_project_list_doc",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "jira_workitem_api",
+    "to_id": "jira_workitem_link_doc",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "jira_workitem_link_api",
+    "to_id": "jira_workitem_link_doc",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "jira_workitem_view_command",
+    "to_id": "jira_workitem_concept",
+    "relation": "part_of",
+    "from_space": "resource",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_request_file",
+    "to_id": "code_explain_walkthrough",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "merge_request_pipelines_tool",
+    "to_id": "merge_trains_doc_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "merge_requests_merge_api",
+    "to_id": "textunit_merge_train_settings",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "merged_results_pipelines_tool",
+    "to_id": "merge_trains_doc_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "mxp_hardware",
+    "to_id": "toshiba_offerings_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "project_json_file",
+    "to_id": "acli_project_create_flags_text",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "rapid_diffs_tool",
+    "to_id": "issue_590833_evidence",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "retail_transformation_services",
+    "to_id": "toshiba_marketing_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "rovodev_api",
+    "to_id": "jira_workitem_link_doc",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "rovodev_auth_command",
+    "to_id": "jira_project_list_doc",
+    "relation": "derived_from",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "toshiba_commerce_portal",
+    "to_id": "toshiba_homepage_content",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "toshiba_commerce_portal",
+    "to_id": "toshiba_industry_page_content",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "toshiba_commerce_portal",
+    "to_id": "toshiba_marketing_page_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "toshiba_marketplace_platform",
+    "to_id": "marketplace_description_text",
+    "relation": "contains",
+    "from_space": "resource",
+    "to_space": "evidence"
+  },
+  {
+    "from_id": "acli_edit_options_text",
+    "to_id": "atlassian_document_format",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_edit_options_text",
+    "to_id": "jira_work_item",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_edit_options_text",
+    "to_id": "jql_query",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_edit_options_text",
+    "to_id": "work_item_assignee",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_edit_options_text",
+    "to_id": "work_item_filter",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_project_create_examples_text",
+    "to_id": "jira_project_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_project_create_examples_text",
+    "to_id": "company_managed_project_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_project_create_flags_text",
+    "to_id": "jira_project_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_project_create_flags_text",
+    "to_id": "company_managed_project_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_view_command_doc",
+    "to_id": "jira_work_item",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_view_command_doc",
+    "to_id": "json_output",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_view_command_doc",
+    "to_id": "work_item_fields",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_workitem_link_reference_page",
+    "to_id": "jira_workitem_link",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_workitem_link_reference_page",
+    "to_id": "jira_workitem",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "acli_workitem_link_reference_page",
+    "to_id": "workitem_link_type",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "auto_merge_history_text",
+    "to_id": "auto_merge",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "auto_merge_history_text",
+    "to_id": "merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "automatic_cancellation_text",
+    "to_id": "automatic_pipeline_cancellation",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "automatic_cancellation_text",
+    "to_id": "redundant_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "bad_config_example",
+    "to_id": "oldest_first_process_mode",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "bad_config_example",
+    "to_id": "pipeline_deadlock",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "bad_config_example",
+    "to_id": "production_resource_group",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cannot_add_mr_textunit",
+    "to_id": "failed_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cannot_add_mr_textunit",
+    "to_id": "merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cannot_add_mr_textunit",
+    "to_id": "pipelines_must_succeed_setting",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cannot_add_mr_textunit",
+    "to_id": "retry_keyword",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "cannot_add_mr_textunit",
+    "to_id": "cannot_add_mr_to_train_risk",
+    "relation": "supports",
+    "from_space": "evidence",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "code_explain_walkthrough",
+    "to_id": "code_explanation",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_explain_walkthrough",
+    "to_id": "inline_comment_management",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_explain_walkthrough",
+    "to_id": "experiment_beta_features",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "code_explain_walkthrough",
+    "to_id": "large_language_model",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "collapse_types_textunit",
+    "to_id": "collapse_generated_diff",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "collapse_types_textunit",
+    "to_id": "generated_file_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "concurrent_pipeline_problem_description",
+    "to_id": "deployment_job",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "concurrent_pipeline_problem_description",
+    "to_id": "pipeline_concurrency",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "contact_success_message",
+    "to_id": "customer_contact_request",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "deploy_resource_group_example",
+    "to_id": "resource_group",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "deploy_resource_group_example",
+    "to_id": "resource_group_keyword",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "epic_19380_evidence",
+    "to_id": "code_diff_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ev-001",
+    "to_id": "con-error-rate",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "ev-001",
+    "to_id": "claim-perf-deg",
+    "relation": "supports",
+    "from_space": "evidence",
+    "to_space": "claim"
+  },
+  {
+    "from_id": "example_date_field",
+    "to_id": "jira_custom_field",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "example_select_field",
+    "to_id": "custom_field_searcher",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "example_text_field",
+    "to_id": "custom_field_type",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "example_text_field",
+    "to_id": "jira_custom_field",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitattributes_config_example",
+    "to_id": "gitlab_generated_attribute",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "gitlab_issue_436988",
+    "to_id": "race_condition",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "good_config_example",
+    "to_id": "resource_group_in_parent_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "lever"
+  },
+  {
+    "from_id": "good_config_example",
+    "to_id": "production_resource_group",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "google_edge_blog_textunit",
+    "to_id": "edge_computing_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "google_edge_blog_textunit",
+    "to_id": "retail_innovation",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "graphql_job_query_example",
+    "to_id": "ci_job",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "graphql_job_query_example",
+    "to_id": "resource_group",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "graphql_pipeline_query_example",
+    "to_id": "ci_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "idc_report_textunit",
+    "to_id": "cloud_native_api_first",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "idc_report_textunit",
+    "to_id": "pos_software",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "issue_590833_evidence",
+    "to_id": "feature_flag_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "issue_596236_evidence",
+    "to_id": "code_diff_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_list_doc",
+    "to_id": "jira_project",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_list_doc",
+    "to_id": "json_output_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_project_list_doc",
+    "to_id": "pagination_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_link_doc",
+    "to_id": "jira_workitem_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "jira_workitem_link_doc",
+    "to_id": "workitem_linking_topic",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "log-001",
+    "to_id": "top-performance",
+    "relation": "exemplifies",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "log-001",
+    "to_id": "claim-perf-deg",
+    "relation": "supports",
+    "from_space": "evidence",
+    "to_space": "claim"
+  },
+  {
+    "from_id": "marketplace_description_text",
+    "to_id": "retail_marketplace",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mcp_setup_guide",
+    "to_id": "mcp_protocol",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mcp_setup_guide",
+    "to_id": "oauth_21_authentication",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mcp_setup_guide",
+    "to_id": "workflow_automation",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_example_text",
+    "to_id": "merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_example_text",
+    "to_id": "merge_train_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_example_text",
+    "to_id": "parallel_execution",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_train_example_text",
+    "to_id": "pipeline_failure",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_doc_text",
+    "to_id": "merge_method",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_doc_text",
+    "to_id": "merge_train_queue",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_doc_text",
+    "to_id": "merge_train_visualization",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_doc_text",
+    "to_id": "stuck_merge_request_risk",
+    "relation": "supports",
+    "from_space": "evidence",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "merge_train_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "auto_merge",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "fast_forward_merge",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "merged_results_pipeline",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "merge_trains_intro_text",
+    "to_id": "semi_linear_merge",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_description_text",
+    "to_id": "modularity_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_description_text",
+    "to_id": "retail_technology_topic",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "modularity_description_text",
+    "to_id": "unified_retail_future_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_download_instructions",
+    "to_id": "diff_version_comparison",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_example_text",
+    "to_id": "diff_gutter",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_example_text",
+    "to_id": "diff_view",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_example_text",
+    "to_id": "file_viewed_marker",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_example_text",
+    "to_id": "inline_comment",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_diff_example_text",
+    "to_id": "merge_request",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_file_comment_instructions",
+    "to_id": "merge_request_diff_comment",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "mr_file_comment_instructions",
+    "to_id": "merge_request_image_comment",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "news_section_text",
+    "to_id": "retail_industry_trends",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pinned_file_history_note",
+    "to_id": "pinned_file_feature",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pinned_file_history_note",
+    "to_id": "merge_request_diff",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_concurrency_example",
+    "to_id": "pipeline_level_concurrency_control",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "pipeline_concurrency_example",
+    "to_id": "resource_group_keyword",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_example",
+    "to_id": "resource_group",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_example",
+    "to_id": "deployment_job",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_explanation",
+    "to_id": "process_mode_newest_first",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_explanation",
+    "to_id": "process_mode_oldest_first",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_explanation",
+    "to_id": "process_mode_unordered",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_table",
+    "to_id": "process_mode",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_table",
+    "to_id": "process_mode_newest_first",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_table",
+    "to_id": "process_mode_newest_ready_first",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_table",
+    "to_id": "process_mode_oldest_first",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "process_mode_table",
+    "to_id": "process_mode_unordered",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "security_description_text",
+    "to_id": "security_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "success_message_text",
+    "to_id": "contact_form_submission",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "success_message_text",
+    "to_id": "contact_form_submission",
+    "relation": "supports",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "text-001",
+    "to_id": "ent-user-behaviour",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "text-001",
+    "to_id": "claim-perf-deg",
+    "relation": "timestamps",
+    "from_space": "evidence",
+    "to_space": "claim"
+  },
+  {
+    "from_id": "textunit_merge_train_settings",
+    "to_id": "merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "textunit_merge_train_settings",
+    "to_id": "merged_results_pipeline",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "textunit_merge_train_settings",
+    "to_id": "skip_merge_train",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "lever"
+  },
+  {
+    "from_id": "textunit_troubleshooting",
+    "to_id": "auto_merge",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "textunit_troubleshooting",
+    "to_id": "draft_merge_request",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "textunit_troubleshooting",
+    "to_id": "merge_conflict",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "textunit_troubleshooting",
+    "to_id": "unresolved_thread",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "customer_shopping_experience",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "customer_shopping_experience",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "outcome"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "operational_excellence",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "retail_advisory_services",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "retail_security",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_homepage_content",
+    "to_id": "retail_solutions",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_content",
+    "to_id": "convenience_fuel_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_content",
+    "to_id": "grocery_general_merchandise_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_content",
+    "to_id": "hospitality_entertainment_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_text",
+    "to_id": "convenience_fuel_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_text",
+    "to_id": "grocery_general_merchandise_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_text",
+    "to_id": "hospitality_entertainment_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_industry_page_text",
+    "to_id": "specialty_retail",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "epos_installations",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "epos_installations",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "loss_prevention",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "operational_excellence",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "pos_self_checkout",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "pos_self_checkout",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "retail_journey_excellence",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "retail_solutions",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "serviceability",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "modular_adaptable_solutions",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_marketing_page_text",
+    "to_id": "modular_adaptable_solutions",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "lever"
+  },
+  {
+    "from_id": "toshiba_offerings_page_text",
+    "to_id": "modularity_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_offerings_page_text",
+    "to_id": "security_concept",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "toshiba_offerings_page_text",
+    "to_id": "unified_retail_topic",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_conflicts_in_diff_section",
+    "to_id": "merge_request_conflicts",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_conflicts_in_diff_section",
+    "to_id": "merge_request_diff",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_edge_strategy_discussion",
+    "to_id": "cloud_native_architecture_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_edge_strategy_discussion",
+    "to_id": "edge_computing_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_idc_leader_claim",
+    "to_id": "cloud_native_architecture_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_idc_leader_claim",
+    "to_id": "pos_software_concept",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_mark_files_viewed_section",
+    "to_id": "viewed_file_tracking",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_mark_files_viewed_section",
+    "to_id": "merge_request",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_whitespace_changes_section",
+    "to_id": "whitespace_changes",
+    "relation": "describes",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "tu_whitespace_changes_section",
+    "to_id": "merge_request_diff",
+    "relation": "mentions",
+    "from_space": "evidence",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "agent-rag",
+    "to_id": "api-query",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "agent-rag",
+    "to_id": "ds-events",
+    "relation": "can_view",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "amazon_quick_suite_client",
+    "to_id": "atlassian_rovo_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "atlassian",
+    "to_id": "atlassian_remote_mcp_server",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "atlassian_org",
+    "to_id": "acli_tool",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "atlassian_org",
+    "to_id": "atlassian_remote_mcp_server",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "claude_client",
+    "to_id": "atlassian_rovo_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "docker_client",
+    "to_id": "atlassian_rovo_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "gitlab_dev_team",
+    "to_id": "gitlab_merge_requests_ui",
+    "relation": "can_view",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "gitlab_duo_agent",
+    "to_id": "gitlab_duo_chat_tool",
+    "relation": "manages",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "google_gemini_client",
+    "to_id": "atlassian_rovo_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "google_org",
+    "to_id": "google_distributed_cloud",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "google_org",
+    "to_id": "google_recaptcha_api",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "mcp_compatible_client",
+    "to_id": "atlassian_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "mcp_compatible_client",
+    "to_id": "confluence",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "mcp_compatible_client",
+    "to_id": "jira",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "openai_chatgpt_client",
+    "to_id": "atlassian_rovo_mcp_server",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "team-data",
+    "to_id": "proj-analytics",
+    "relation": "member_of",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce",
+    "to_id": "toshiba_commerce_portal",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce",
+    "to_id": "toshiba_enterprise_login",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce",
+    "to_id": "toshiba_forgot_password",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce",
+    "to_id": "toshiba_marketplace",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce",
+    "to_id": "toshiba_portal_api",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce_org",
+    "to_id": "google_recaptcha_api",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce_org",
+    "to_id": "elera_commerce_platform",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce_org",
+    "to_id": "toshiba_commerce_portal",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce_org",
+    "to_id": "toshiba_enterprise_login_api",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_commerce_org",
+    "to_id": "toshiba_marketplace_platform",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_global_commerce",
+    "to_id": "elera_commerce_platform",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_tgcs",
+    "to_id": "elera_loss_prevention",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_tgcs",
+    "to_id": "iot_suite",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_tgcs",
+    "to_id": "retail_transformation_services",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_tgcs_org",
+    "to_id": "elera_platform",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "toshiba_tgcs_org",
+    "to_id": "mxp_hardware",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "user-alice",
+    "to_id": "tool-dbt",
+    "relation": "can_execute",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "user-alice",
+    "to_id": "ds-events",
+    "relation": "can_view",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "user-alice",
+    "to_id": "doc-spec",
+    "relation": "owns",
+    "from_space": "subject",
+    "to_space": "concept"
+  },
+  {
+    "from_id": "user-bob",
+    "to_id": "api-query",
+    "relation": "can_edit",
+    "from_space": "subject",
+    "to_space": "resource"
+  },
+  {
+    "from_id": "user-bob",
+    "to_id": "proj-analytics",
+    "relation": "manages",
+    "from_space": "subject",
+    "to_space": "resource"
+  }
+]

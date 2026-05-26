@@ -148,6 +148,8 @@ interface Props {
   centerForce: number
   repelForce: number
   onNodeClick: (node: OcNode) => void
+  layerNodes?: OcNode[]
+  layerEdges?: OcEdge[]
 }
 
 export default function GraphView({
@@ -160,6 +162,8 @@ export default function GraphView({
   centerForce,
   repelForce,
   onNodeClick,
+  layerNodes = [],
+  layerEdges = [],
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
@@ -184,15 +188,27 @@ export default function GraphView({
         .on('zoom', (event) => g.attr('transform', event.transform)),
     )
 
-    if (nodes.length === 0) return
+    // Merge base nodes with layer nodes
+    const mergedNodes = [...nodes]
+    const baseNodeIds = new Set(nodes.map(n => n.id))
+    for (const layerNode of layerNodes) {
+      if (!baseNodeIds.has(layerNode.id)) {
+        mergedNodes.push(layerNode)
+      }
+    }
 
-    const idMap = new Map(nodes.map((node, index) => [node.id, index]))
+    // Merge base edges with layer edges
+    const mergedEdges = [...edges, ...layerEdges]
+
+    if (mergedNodes.length === 0) return
+
+    const idMap = new Map(mergedNodes.map((node, index) => [node.id, index]))
 
     type SimNode = OcNode & d3.SimulationNodeDatum
     type SimLink = { source: SimNode; target: SimNode; relation: string }
 
-    const simNodes: SimNode[] = nodes.map((node) => ({ ...node }))
-    const simLinks: SimLink[] = edges
+    const simNodes: SimNode[] = mergedNodes.map((node) => ({ ...node }))
+    const simLinks: SimLink[] = mergedEdges
       .filter((edge) => idMap.has(edge.from_id) && idMap.has(edge.to_id))
       .map((edge) => ({
         source: simNodes[idMap.get(edge.from_id)!],
@@ -313,7 +329,7 @@ export default function GraphView({
       node.attr('cx', (d) => d.x!).attr('cy', (d) => d.y!)
       label.attr('x', (d) => d.x!).attr('y', (d) => d.y!)
     })
-  }, [nodes, edges, selectedId, searchTerm, nodeSize, linkStrength, centerForce, repelForce, onNodeClick])
+  }, [nodes, edges, selectedId, searchTerm, nodeSize, linkStrength, centerForce, repelForce, onNodeClick, layerNodes, layerEdges])
 
   useEffect(() => {
     draw()

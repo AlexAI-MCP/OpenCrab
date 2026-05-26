@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 import json
 import os
+import sqlite3
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -366,6 +367,11 @@ def require_auth(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
     x_user_id: str | None = Header(default=None, alias="X-User-Id"),
 ) -> AuthContext:
+    require_auth_env = os.getenv("OPENCRAB_REQUIRE_AUTH", "").strip().lower()
+    require_auth_enabled = require_auth_env in {"1", "true", "yes", "on"}
+    if not require_auth_enabled:
+        return AuthContext(user_id=x_user_id or "anonymous", tier=_tier())
+
     expected_api_key = os.getenv("OPENCRAB_API_KEY", "").strip()
     if not expected_api_key:
         raise HTTPException(
@@ -756,19 +762,58 @@ def list_nodes(
 ) -> dict[str, Any]:
     """Return all nodes for graph visualization."""
     try:
-        raw = ctx.graph.run_query(
-            "MATCH (n) OPTIONAL MATCH (n)-[r]-() "
-            "RETURN n.id AS id, n.space AS space, n.node_type AS node_type, "
-            "properties(n) AS props, count(r) AS degree "
-            "LIMIT 500"
-        )
+        raw: list[dict[str, Any]] = []
+        local_data_dir = Path(os.getenv("LOCAL_DATA_DIR", "./opencrab_data"))
+        if not local_data_dir.is_absolute():
+            local_data_dir = (REPO_ROOT / local_data_dir).resolve()
+        local_graph_db = local_data_dir / "graph.db"
+
+        if local_graph_db.exists():
+            conn = sqlite3.connect(str(local_graph_db))
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT
+                    n.node_id AS id,
+                    COALESCE(n.space_id, 'concept') AS space,
+                    n.node_type AS node_type,
+                    n.properties AS props,
+                    (
+                        SELECT COUNT(*)
+                        FROM graph_edges e
+                        WHERE e.from_id = n.node_id OR e.to_id = n.node_id
+                    ) AS degree
+                FROM graph_nodes n
+                LIMIT 500
+                """
+            )
+            raw = [dict(row) for row in cur.fetchall()]
+            conn.close()
+        elif hasattr(ctx.graph, "run_query"):
+            raw = ctx.graph.run_query(
+                "MATCH (n) OPTIONAL MATCH (n)-[r]-() "
+                "RETURN n.id AS id, n.space AS space, n.node_type AS node_type, "
+                "properties(n) AS props, count(r) AS degree "
+                "LIMIT 500"
+            )
+
         nodes = []
         for row in (raw or []):
             nid = row.get("id")
             if not nid:
                 continue
-            props = {k: v for k, v in (row.get("props") or {}).items()
-                     if k not in ("id", "space", "node_type")}
+            props_raw = row.get("props") or {}
+            if isinstance(props_raw, str):
+                try:
+                    props_raw = json.loads(props_raw)
+                except Exception:
+                    props_raw = {}
+            props = {
+                k: v
+                for k, v in (props_raw or {}).items()
+                if k not in ("id", "space", "node_type")
+            }
             nodes.append({
                 "id": nid,
                 "space": row.get("space", "concept"),
@@ -789,12 +834,42 @@ def list_edges(
 ) -> dict[str, Any]:
     """Return all edges for graph visualization."""
     try:
-        raw = ctx.graph.run_query(
-            "MATCH (a)-[r]->(b) "
-            "RETURN a.id AS from_id, b.id AS to_id, type(r) AS relation, "
-            "a.space AS from_space, b.space AS to_space "
-            "LIMIT 2000"
-        )
+        raw: list[dict[str, Any]] = []
+        local_data_dir = Path(os.getenv("LOCAL_DATA_DIR", "./opencrab_data"))
+        if not local_data_dir.is_absolute():
+            local_data_dir = (REPO_ROOT / local_data_dir).resolve()
+        local_graph_db = local_data_dir / "graph.db"
+
+        if local_graph_db.exists():
+            conn = sqlite3.connect(str(local_graph_db))
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT
+                    e.from_id AS from_id,
+                    e.to_id AS to_id,
+                    e.relation AS relation,
+                    COALESCE(fn.space_id, 'concept') AS from_space,
+                    COALESCE(tn.space_id, 'concept') AS to_space
+                FROM graph_edges e
+                LEFT JOIN graph_nodes fn
+                    ON fn.node_type = e.from_type AND fn.node_id = e.from_id
+                LEFT JOIN graph_nodes tn
+                    ON tn.node_type = e.to_type AND tn.node_id = e.to_id
+                LIMIT 2000
+                """
+            )
+            raw = [dict(row) for row in cur.fetchall()]
+            conn.close()
+        elif hasattr(ctx.graph, "run_query"):
+            raw = ctx.graph.run_query(
+                "MATCH (a)-[r]->(b) "
+                "RETURN a.id AS from_id, b.id AS to_id, type(r) AS relation, "
+                "a.space AS from_space, b.space AS to_space "
+                "LIMIT 2000"
+            )
+
         edges = []
         for row in (raw or []):
             if not row.get("from_id") or not row.get("to_id"):

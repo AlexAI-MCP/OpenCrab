@@ -4,8 +4,11 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import FileExplorer from '../../components/FileExplorer'
 import RightPanel from '../../components/RightPanel'
-import type { OcNode, OcEdge } from '../../lib/api'
-import { getNodes, getEdges, getStatus } from '../../lib/api'
+import LayerPanel from '../../components/LayerPanel'
+import QueryInput from '../../components/QueryInput'
+import type { OcNode, OcEdge, LayerMetadata, LayerData, LayerNode, LayerEdge } from '../../lib/api'
+import { getNodes, getEdges, getStatus, getQueryLayers, getLayerData } from '../../lib/api'
+import { searchLocalSubgraph } from '../../lib/queryLayerSearch'
 
 const GraphView = dynamic(() => import('../../components/GraphView'), { ssr: false })
 
@@ -35,6 +38,13 @@ export default function DashboardPage() {
   const [showIngest, setShowIngest] = useState(false)
   const refreshTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  // Query layer state
+  const [layers, setLayers] = useState<LayerMetadata[]>([])
+  const [enabledLayerIds, setEnabledLayerIds] = useState<string[]>([])
+  const [layerDataMap, setLayerDataMap] = useState<Map<string, LayerData>>(new Map())
+  const [queryLayerNodes, setQueryLayerNodes] = useState<OcNode[]>([])
+  const [queryLayerEdges, setQueryLayerEdges] = useState<OcEdge[]>([])
+
   // Load API key from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('oc_api_key') || ''
@@ -49,17 +59,22 @@ export default function DashboardPage() {
   const fetchData = useCallback(async () => {
     const ok = await getStatus()
     setConnected(ok.ok)
-    if (!apiKey) return
     const [n, e] = await Promise.all([getNodes(apiKey), getEdges(apiKey)])
     setNodes(n.filter(node => !controls.hiddenSpaces.includes(node.space)))
     setEdges(e)
   }, [apiKey, controls.hiddenSpaces])
 
+  const fetchLayers = useCallback(async () => {
+    const index = await getQueryLayers()
+    setLayers(index.layers)
+  }, [])
+
   useEffect(() => {
     fetchData()
+    fetchLayers()
     refreshTimer.current = setInterval(fetchData, 30000)
     return () => { if (refreshTimer.current) clearInterval(refreshTimer.current) }
-  }, [fetchData])
+  }, [fetchData, fetchLayers])
 
   const selectedNode = nodes.find(n => n.id === selectedId) ?? null
 
@@ -69,6 +84,62 @@ export default function DashboardPage() {
 
   function handleControlChange(partial: Partial<GraphControls>) {
     setControls(p => ({ ...p, ...partial }))
+  }
+
+  async function handleLayerToggle(layerId: string) {
+    if (enabledLayerIds.includes(layerId)) {
+      // Disable layer
+      setEnabledLayerIds(ids => ids.filter(id => id !== layerId))
+      setLayerDataMap(map => {
+        const newMap = new Map(map)
+        newMap.delete(layerId)
+        return newMap
+      })
+    } else {
+      // Enable layer - fetch data
+      setEnabledLayerIds(ids => [...ids, layerId])
+      const data = await getLayerData(layerId)
+      if (data) {
+        setLayerDataMap(map => new Map(map).set(layerId, data))
+      }
+    }
+  }
+
+  function handleQueryRun(query: string) {
+    // Collect all nodes and edges from enabled layers
+    const allLayerNodes: LayerNode[] = []
+    const allLayerEdges: LayerEdge[] = []
+    
+    for (const layerId of enabledLayerIds) {
+      const data = layerDataMap.get(layerId)
+      if (data) {
+        allLayerNodes.push(...data.nodes)
+        allLayerEdges.push(...data.edges)
+      }
+    }
+
+    // Run local subgraph search
+    const result = searchLocalSubgraph(allLayerNodes, allLayerEdges, query, 2)
+
+    // Convert LayerNode to OcNode and LayerEdge to OcEdge for rendering
+    const ocNodes: OcNode[] = result.seeds.map(ln => ({
+      id: ln.id,
+      space: 'query_layer',
+      node_type: 'layer_node',
+      properties: { name: ln.label, ...ln.metadata },
+      degree: 0,
+    }))
+
+    const ocEdges: OcEdge[] = result.edges.map(le => ({
+      from_id: le.from,
+      to_id: le.to,
+      relation: le.relation || 'related',
+      from_space: 'query_layer',
+      to_space: 'query_layer',
+    }))
+
+    setQueryLayerNodes(ocNodes)
+    setQueryLayerEdges(ocEdges)
   }
 
   return (
@@ -101,6 +172,7 @@ export default function DashboardPage() {
           <span style={{ fontSize: 11, color: '#3a3a3a' }}>|</span>
           <span style={{ fontSize: 11, color: '#7c6f64' }}>
             {nodes.length} nodes · {edges.length} edges
+            {queryLayerNodes.length > 0 && ` · ${queryLayerNodes.length} layer nodes`}
           </span>
           <div style={{ flex: 1 }} />
           <input
@@ -127,6 +199,8 @@ export default function DashboardPage() {
             centerForce={controls.centerForce}
             repelForce={controls.repelForce}
             onNodeClick={handleNodeClick}
+            layerNodes={queryLayerNodes}
+            layerEdges={queryLayerEdges}
           />
         </div>
 
@@ -152,13 +226,24 @@ export default function DashboardPage() {
       </div>
 
       {/* Right — Controls & Detail */}
-      <RightPanel
-        selectedNode={selectedNode}
-        controls={controls}
-        onControlChange={handleControlChange}
-        apiKey={apiKey}
-        onRefresh={fetchData}
-      />
+      <div style={{ width: 340, background: '#0f0f0f', borderLeft: '1px solid rgba(248,197,55,0.12)', overflowY: 'auto' }}>
+        <div style={{ padding: 14 }}>
+          <LayerPanel
+            layers={layers}
+            enabledLayerIds={enabledLayerIds}
+            onToggle={handleLayerToggle}
+            onRefresh={fetchLayers}
+          />
+          <QueryInput onRun={handleQueryRun} />
+        </div>
+        <RightPanel
+          selectedNode={selectedNode}
+          controls={controls}
+          onControlChange={handleControlChange}
+          apiKey={apiKey}
+          onRefresh={fetchData}
+        />
+      </div>
 
       {/* Ingest Modal */}
       {showIngest && (

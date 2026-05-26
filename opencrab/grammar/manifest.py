@@ -79,7 +79,7 @@ META_EDGES: list[dict[str, Any]] = [
     {
         "from_space": "evidence",
         "to_space": "concept",
-        "relations": ["mentions", "describes", "exemplifies"],
+        "relations": ["mentions", "describes", "exemplifies", "supports"],
         "description": "Evidence surfaces conceptual knowledge.",
     },
     {
@@ -91,7 +91,7 @@ META_EDGES: list[dict[str, Any]] = [
     {
         "from_space": "concept",
         "to_space": "concept",
-        "relations": ["related_to", "subclass_of", "part_of", "influences", "depends_on"],
+        "relations": ["related_to", "subclass_of", "part_of", "influences", "depends_on", "contributes_to"],
         "description": "Inter-concept knowledge graph edges.",
     },
     {
@@ -103,13 +103,13 @@ META_EDGES: list[dict[str, Any]] = [
     {
         "from_space": "lever",
         "to_space": "outcome",
-        "relations": ["raises", "lowers", "stabilizes", "optimizes"],
+        "relations": ["raises", "lowers", "stabilizes", "optimizes", "constrains"],
         "description": "Levers directly control outcome values.",
     },
     {
         "from_space": "lever",
         "to_space": "concept",
-        "relations": ["affects"],
+        "relations": ["affects", "influences", "raises"],
         "description": "Levers influence conceptual state.",
     },
     {
@@ -129,6 +129,36 @@ META_EDGES: list[dict[str, Any]] = [
         "to_space": "subject",
         "relations": ["permits", "denies", "requires_approval"],
         "description": "Policies define what subjects are allowed to do.",
+    },
+    {
+        "from_space": "evidence",
+        "to_space": "lever",
+        "relations": ["mentions", "describes", "exemplifies"],
+        "description": "Evidence surfaces levers mentioned in source material.",
+    },
+    {
+        "from_space": "evidence",
+        "to_space": "outcome",
+        "relations": ["mentions", "describes", "exemplifies", "supports"],
+        "description": "Evidence documents or supports outcomes and risks.",
+    },
+    {
+        "from_space": "resource",
+        "to_space": "concept",
+        "relations": ["related_to", "implements", "part_of", "describes"],
+        "description": "Resources implement or relate to conceptual entities.",
+    },
+    {
+        "from_space": "resource",
+        "to_space": "outcome",
+        "relations": ["affects", "contributes_to", "constrains"],
+        "description": "Resources influence or constrain outcomes.",
+    },
+    {
+        "from_space": "resource",
+        "to_space": "resource",
+        "relations": ["contains", "depends_on", "part_of", "related_to"],
+        "description": "Resources have hierarchical and dependency relationships.",
     },
 ]
 

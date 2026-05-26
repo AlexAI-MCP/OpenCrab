@@ -1,0 +1,5746 @@
+[
+  {
+    "id": "user-alice",
+    "space": "subject",
+    "node_type": "User",
+    "properties": {
+      "name": "Alice Chen",
+      "email": "alice@example.com",
+      "role": "analyst"
+    },
+    "degree": 4
+  },
+  {
+    "id": "user-bob",
+    "space": "subject",
+    "node_type": "User",
+    "properties": {
+      "name": "Bob Kim",
+      "email": "bob@example.com",
+      "role": "engineer"
+    },
+    "degree": 2
+  },
+  {
+    "id": "team-data",
+    "space": "subject",
+    "node_type": "Team",
+    "properties": {
+      "name": "Data Team",
+      "size": 5
+    },
+    "degree": 1
+  },
+  {
+    "id": "org-acme",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "ACME Corp",
+      "industry": "technology"
+    },
+    "degree": 0
+  },
+  {
+    "id": "agent-rag",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "RAG Agent",
+      "model": "claude-3-5-sonnet"
+    },
+    "degree": 3
+  },
+  {
+    "id": "proj-analytics",
+    "space": "resource",
+    "node_type": "Project",
+    "properties": {
+      "name": "Analytics Platform",
+      "status": "active"
+    },
+    "degree": 2
+  },
+  {
+    "id": "ds-events",
+    "space": "resource",
+    "node_type": "Dataset",
+    "properties": {
+      "name": "User Events Dataset",
+      "rows": 1000000
+    },
+    "degree": 6
+  },
+  {
+    "id": "tool-dbt",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "dbt",
+      "version": "1.7"
+    },
+    "degree": 1
+  },
+  {
+    "id": "api-query",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Query API",
+      "endpoint": "/v2/query"
+    },
+    "degree": 4
+  },
+  {
+    "id": "text-001",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "text": "Alice reviewed the Q4 analytics dashboard and flagged a spike in error rates.",
+      "source": "slack"
+    },
+    "degree": 3
+  },
+  {
+    "id": "log-001",
+    "space": "evidence",
+    "node_type": "LogEntry",
+    "properties": {
+      "message": "ERROR: query timeout after 30s",
+      "timestamp": "2026-01-15T09:23:00Z",
+      "severity": "ERROR"
+    },
+    "degree": 4
+  },
+  {
+    "id": "ev-001",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "summary": "Error rate increased 40% in January 2026",
+      "confidence": 0.92
+    },
+    "degree": 3
+  },
+  {
+    "id": "con-error-rate",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Error Rate",
+      "unit": "percentage"
+    },
+    "degree": 8
+  },
+  {
+    "id": "top-performance",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "System Performance",
+      "category": "reliability"
+    },
+    "degree": 7
+  },
+  {
+    "id": "cls-kpi",
+    "space": "concept",
+    "node_type": "Class",
+    "properties": {
+      "name": "KPI Class",
+      "definition": "Measurable business indicator"
+    },
+    "degree": 1
+  },
+  {
+    "id": "claim-perf-deg",
+    "space": "claim",
+    "node_type": "Claim",
+    "properties": {
+      "statement": "System performance degraded in Q4 2025",
+      "confidence": 0.87
+    },
+    "degree": 3
+  },
+  {
+    "id": "cov-query-vol",
+    "space": "claim",
+    "node_type": "Covariate",
+    "properties": {
+      "variable": "query_volume",
+      "coefficient": 0.73,
+      "p_value": 0.001
+    },
+    "degree": 0
+  },
+  {
+    "id": "comm-perf-cluster",
+    "space": "community",
+    "node_type": "Community",
+    "properties": {
+      "label": "Performance Cluster",
+      "algorithm": "leiden",
+      "size": 12
+    },
+    "degree": 2
+  },
+  {
+    "id": "report-perf",
+    "space": "community",
+    "node_type": "CommunityReport",
+    "properties": {
+      "title": "Performance Issues Report",
+      "generated_at": "2026-01-20"
+    },
+    "degree": 1
+  },
+  {
+    "id": "out-reliability",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "System Reliability",
+      "target": 0.999,
+      "current": 0.987
+    },
+    "degree": 3
+  },
+  {
+    "id": "kpi-p95-latency",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "P95 Query Latency",
+      "target_ms": 100,
+      "current_ms": 145
+    },
+    "degree": 4
+  },
+  {
+    "id": "risk-data-loss",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Data Loss Risk",
+      "severity": "high",
+      "probability": 0.05
+    },
+    "degree": 1
+  },
+  {
+    "id": "lever-cache-ttl",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Cache TTL",
+      "unit": "seconds",
+      "current": 300,
+      "min": 60,
+      "max": 3600
+    },
+    "degree": 3
+  },
+  {
+    "id": "lever-query-limit",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Query Result Limit",
+      "unit": "rows",
+      "current": 10000,
+      "min": 1000,
+      "max": 100000
+    },
+    "degree": 3
+  },
+  {
+    "id": "sens-pii",
+    "space": "policy",
+    "node_type": "Sensitivity",
+    "properties": {
+      "name": "PII Sensitivity",
+      "level": "restricted"
+    },
+    "degree": 1
+  },
+  {
+    "id": "rule-prod-deploy",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Production Deployment",
+      "approvers_required": 2
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "ACLI",
+      "description": "Atlassian Command Line Interface (ACLI) - a CLI tool for interacting with Atlassian Cloud products",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/"
+    },
+    "degree": 4
+  },
+  {
+    "id": "jira_workitem_link_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira workitem link",
+      "description": "ACLI command for linking Jira work items",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_command_group",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira",
+      "description": "ACLI command group for Jira operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "admin_command_group",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "admin",
+      "description": "ACLI command group for admin operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/admin/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_workitem_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item",
+      "description": "A unit of work tracked in Jira, viewable and manageable via ACLI"
+    },
+    "degree": 10
+  },
+  {
+    "id": "workitem_linking_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Work Item Linking",
+      "description": "The concept of creating associations or relationships between Jira work items"
+    },
+    "degree": 3
+  },
+  {
+    "id": "cli_automation_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "CLI Automation",
+      "description": "Use of command-line interfaces to automate interactions with Atlassian Cloud products"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_org",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Atlassian",
+      "description": "Atlassian - the company that develops ACLI, Jira, and related developer tools",
+      "url": "https://www.atlassian.com/"
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_workitem_link_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem link",
+      "description": "Link work items commands in Jira via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link/",
+      "last_updated": "2024-10-03"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_workitem_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Jira Work Item Commands",
+      "description": "Set of CLI commands for managing Jira work items via acli",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-view/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "rovodev_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "rovodev",
+      "description": "Rovo Dev command group within ACLI, including auth subcommand",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "workitem_linking_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Work Item Linking",
+      "description": "The concept of creating relationships/links between Jira work items using the ACLI link command"
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_workitem_link_doc",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "jira-workitem-link reference page",
+      "description": "Documentation page listing ACLI jira workitem subcommands and the link command reference",
+      "source": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link/",
+      "last_updated": "2024-10-03"
+    },
+    "degree": 6
+  },
+  {
+    "id": "acli_jira_workitem",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem",
+      "description": "Parent CLI command group for Jira work item operations.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_link_create",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem link create",
+      "description": "Create links between work items",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link-create"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_link_delete",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem link delete",
+      "description": "Delete links between work items",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link-delete"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_link_list",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem link list",
+      "description": "List all the links of a work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link-list"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_link_type",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem link type",
+      "description": "Get available work item link types",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link-type"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_cli",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Atlassian CLI (acli) - Jira",
+      "description": "Atlassian CLI toolset providing command-line access to Jira work item operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_workitem_link",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item Link",
+      "description": "A relationship between two Jira work items, with typed link categories"
+    },
+    "degree": 3
+  },
+  {
+    "id": "jira_workitem",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item",
+      "description": "A work item (issue, task, story, bug, etc.) in Jira that can be created, viewed, and edited"
+    },
+    "degree": 7
+  },
+  {
+    "id": "workitem_link_type",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Work Item Link Type",
+      "description": "A classification of the relationship between two Jira work items (e.g. blocks, relates to, duplicates)"
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_workitem_link_reference_page",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli jira workitem link reference page",
+      "description": "Documentation listing the acli jira workitem link sub-commands",
+      "source": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-link"
+    },
+    "degree": 8
+  },
+  {
+    "id": "toshiba_commerce_org",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Global Commerce Solutions",
+      "description": "Toshiba's commerce division providing retail technology solutions across multiple industries",
+      "website": "https://commerce.toshiba.com"
+    },
+    "degree": 5
+  },
+  {
+    "id": "toshiba_commerce_portal",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Toshiba Commerce Portal",
+      "description": "Web portal for Toshiba Commerce account sign-in and management",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home"
+    },
+    "degree": 5
+  },
+  {
+    "id": "toshiba_enterprise_login_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Enterprise Login API",
+      "description": "IBM Security-based external IDP login endpoint for enterprise users",
+      "url": "https://www.toshibacommerce.com/mga/sps/authsvc"
+    },
+    "degree": 1
+  },
+  {
+    "id": "retail_solutions",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Innovative Retail Solutions",
+      "description": "Modular and adaptable retail technology solutions for in-store, online, and mobile shopping experiences"
+    },
+    "degree": 8
+  },
+  {
+    "id": "operational_excellence",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Operational Excellence",
+      "description": "Adapting to market needs and ensuring efficient, agile, and secure retail operations"
+    },
+    "degree": 7
+  },
+  {
+    "id": "modular_adaptable_solutions",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Modular Adaptable Solutions",
+      "description": "Technology approach that allows experimentation, addresses labor challenges, and enhances security through modularity"
+    },
+    "degree": 7
+  },
+  {
+    "id": "retail_journey_excellence",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Journey to Excellence",
+      "description": "Framework leveraging deep retail expertise, advisory services, and cutting-edge technologies to design customer retail journeys"
+    },
+    "degree": 3
+  },
+  {
+    "id": "customer_shopping_experience",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Customer Shopping Experience",
+      "description": "Memorable and unique shopping experiences for customers across online, in-store, and mobile channels"
+    },
+    "degree": 4
+  },
+  {
+    "id": "business_success",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Business Success",
+      "description": "Sustained business success driven by intentional solutions and efficient operations"
+    },
+    "degree": 3
+  },
+  {
+    "id": "security_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Security Risk",
+      "description": "Security challenges in retail technology addressed through modular and adaptable solutions"
+    },
+    "degree": 1
+  },
+  {
+    "id": "advisory_services_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Advisory Services",
+      "description": "Toshiba advisory services that help retailers design and optimize their retail journeys"
+    },
+    "degree": 3
+  },
+  {
+    "id": "toshiba_marketing_page_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Toshiba Commerce Marketing Page",
+      "description": "Marketing page content describing Toshiba's retail solutions vision: Craft Unique Journeys, Innovate with Confidence, Be Agile & Secure, Sustain Your Success",
+      "source": "https://commerce.toshiba.com/wps/portal/marketing"
+    },
+    "degree": 12
+  },
+  {
+    "id": "toshiba_global_commerce_solutions",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Global Commerce Solutions",
+      "description": "A division of Toshiba focused on retail commerce technology solutions, including POS systems and retail industry innovations.",
+      "website": "https://commerce.toshiba.com"
+    },
+    "degree": 0
+  },
+  {
+    "id": "convenience_fuel_retail",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Convenience & Fuel Retail",
+      "description": "High-velocity retail segment focused on accelerating transactions and maximizing efficiency for convenience stores and fuel stations"
+    },
+    "degree": 5
+  },
+  {
+    "id": "grocery_general_merchandise_retail",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Grocery & General Merchandise Retail",
+      "description": "Modern grocery retail solutions focused on frictionless experiences and operational agility"
+    },
+    "degree": 6
+  },
+  {
+    "id": "hospitality_entertainment_retail",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Hospitality & Entertainment Retail",
+      "description": "Retail solutions for hospitality and entertainment venues including check-in, concessions, and show experiences"
+    },
+    "degree": 4
+  },
+  {
+    "id": "specialty_retail",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Specialty Retail",
+      "description": "Retail solutions tailored for specialty retail segments"
+    },
+    "degree": 2
+  },
+  {
+    "id": "transaction_acceleration",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Transaction Acceleration",
+      "description": "KPI measuring speed and throughput of retail transactions in high-velocity environments"
+    },
+    "degree": 1
+  },
+  {
+    "id": "operational_agility",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Operational Agility",
+      "description": "KPI measuring flexibility and responsiveness of retail operations"
+    },
+    "degree": 2
+  },
+  {
+    "id": "frictionless_customer_experience",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Frictionless Customer Experience",
+      "description": "Outcome of removing barriers and streamlining the customer journey in retail settings"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_industry_page_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Toshiba Industry Solutions Page Content",
+      "description": "Marketing text describing Toshiba's retail solutions across convenience/fuel, grocery, hospitality/entertainment, and specialty retail industries",
+      "source_url": "https://commerce.toshiba.com/wps/portal/marketing"
+    },
+    "degree": 4
+  },
+  {
+    "id": "toshiba_tgcs_org",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Global Commerce Solutions",
+      "description": "Provider of retail commerce technology solutions including hardware and software platforms",
+      "website": "https://commerce.toshiba.com"
+    },
+    "degree": 2
+  },
+  {
+    "id": "mxp_hardware",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "MxP",
+      "description": "Toshiba modular hardware product supporting retail point-of-sale and commerce operations",
+      "url": "https://commerce.toshiba.com/.../hardware/mxp",
+      "category": "hardware"
+    },
+    "degree": 2
+  },
+  {
+    "id": "elera_platform",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "ELERA",
+      "description": "Toshiba software solutions platform supporting unified retail commerce",
+      "url": "https://commerce.toshiba.com/.../software/solutions-platform/elera",
+      "category": "software"
+    },
+    "degree": 2
+  },
+  {
+    "id": "modularity_description_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Modularity Section Text",
+      "description": "Adaptable solutions designed to grow with your business. Modular hardware and software allow configuration, upgrade, and expansion without disruption.",
+      "source": "toshiba_marketing_page"
+    },
+    "degree": 3
+  },
+  {
+    "id": "security_description_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Security Section Text",
+      "description": "Built-in protection safeguarding data, transactions, and devices against evolving threats while maintaining customer trust and compliance.",
+      "source": "toshiba_marketing_page"
+    },
+    "degree": 1
+  },
+  {
+    "id": "modularity_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Modularity",
+      "description": "Adaptable, configurable, and expandable system design allowing upgrades without disruption; technology that evolves alongside retail needs"
+    },
+    "degree": 8
+  },
+  {
+    "id": "security_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Security",
+      "description": "Built-in protection for data, transactions, and devices against evolving threats; supports customer trust and regulatory compliance"
+    },
+    "degree": 9
+  },
+  {
+    "id": "retail_technology_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Technology",
+      "description": "The domain of hardware and software solutions designed to support and modernize retail operations."
+    },
+    "degree": 3
+  },
+  {
+    "id": "unified_retail_future_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Unified Retail Future",
+      "description": "A strategic vision for smarter, more integrated retail operations enabled by adaptable and secure technology platforms."
+    },
+    "degree": 3
+  },
+  {
+    "id": "retail_scalability_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retail Scalability",
+      "description": "The ability of retail businesses to grow and adapt their technology infrastructure without disruption."
+    },
+    "degree": 2
+  },
+  {
+    "id": "customer_trust_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Customer Trust",
+      "description": "Maintaining and strengthening customer trust through secure and compliant retail transactions"
+    },
+    "degree": 4
+  },
+  {
+    "id": "modular_architecture_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Modular Architecture",
+      "description": "Configurable, upgradeable hardware and software systems that allow retailers to expand without disruption"
+    },
+    "degree": 3
+  },
+  {
+    "id": "built_in_security_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Built-in Security",
+      "description": "Integrated security features protecting data, transactions, and devices in retail commerce systems"
+    },
+    "degree": 3
+  },
+  {
+    "id": "toshiba_tgcs",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Global Commerce Solutions",
+      "description": "Trusted partner for retail commerce experiences, #1 worldwide share of EPOS installations, 205k+ POS and self-checkout units",
+      "url": "https://commerce.toshiba.com"
+    },
+    "degree": 3
+  },
+  {
+    "id": "iot_suite",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "IoT Suite",
+      "description": "IoT suite software solution offered by Toshiba TGCS",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/.../?1dmy&urile=wcm%3apath%3a%2Fen-us%2Fhome%2Fsoftware%2Fiot-suite"
+    },
+    "degree": 2
+  },
+  {
+    "id": "elera_loss_prevention",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "ELERA® Loss Prevention",
+      "description": "Loss prevention software solution under the ELERA brand and IoT Suite offering by Toshiba TGCS",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/.../?1dmy&urile=wcm%3apath%3a%2Fen-us%2Fhome%2Fsoftware%2Fiot-suite%2Floss-prevention"
+    },
+    "degree": 2
+  },
+  {
+    "id": "retail_transformation_services",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Retail Transformation Services",
+      "description": "Implementation and transformation services for retail operations offered by Toshiba TGCS",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/.../?1dmy&urile=wcm%3apath%3a%2Fen-us%2Fhome%2Fservices%2Fimplement%2Fretail-services"
+    },
+    "degree": 2
+  },
+  {
+    "id": "serviceability",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Serviceability",
+      "description": "Maximizing uptime and minimizing effort through easy maintenance, quick repairs, and hassle-free updates to keep systems running smoothly"
+    },
+    "degree": 4
+  },
+  {
+    "id": "loss_prevention",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Loss Prevention",
+      "description": "Retail loss prevention capability addressing shrinkage and theft in commerce environments"
+    },
+    "degree": 3
+  },
+  {
+    "id": "epos_installations",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "EPOS Installations",
+      "description": "Electronic Point of Sale installations; Toshiba holds #1 worldwide market share"
+    },
+    "degree": 5
+  },
+  {
+    "id": "pos_self_checkout",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "POS and Self-Checkout",
+      "description": "Point of Sale and self-checkout units; 205k+ units deployed globally"
+    },
+    "degree": 5
+  },
+  {
+    "id": "epos_market_share_kpi",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "EPOS Market Share",
+      "description": "#1 worldwide share of EPOS installations",
+      "value": "#1 worldwide"
+    },
+    "degree": 1
+  },
+  {
+    "id": "pos_units_kpi",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "POS and Self-Checkout Units",
+      "description": "205,000+ POS and self-checkout units deployed",
+      "value": "205k+"
+    },
+    "degree": 1
+  },
+  {
+    "id": "retail_loss_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Retail Loss Risk",
+      "description": "Risk of inventory shrinkage and theft in retail commerce environments"
+    },
+    "degree": 2
+  },
+  {
+    "id": "system_uptime_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Maximized System Uptime",
+      "description": "Outcome of serviceability: systems running smoothly and business remaining productive"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_commerce",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Commerce",
+      "description": "Toshiba's retail commerce division offering innovative retail solutions",
+      "url": "https://commerce.toshiba.com"
+    },
+    "degree": 5
+  },
+  {
+    "id": "toshiba_marketplace",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Toshiba Commerce Marketplace",
+      "description": "A platform connecting retailers and solution providers, offering tools and partnerships to foster growth and success",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "retail_technology",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Technology",
+      "description": "The domain of technology solutions and platforms serving the retail industry"
+    },
+    "degree": 3
+  },
+  {
+    "id": "marketplace_platform",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Marketplace Platform",
+      "description": "A robust platform concept connecting retailers with solution providers and enabling partnerships"
+    },
+    "degree": 3
+  },
+  {
+    "id": "retailer_growth_success",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retailer Growth and Success",
+      "description": "The intended outcome of fostering growth and success for retailers using the Toshiba Commerce Marketplace"
+    },
+    "degree": 2
+  },
+  {
+    "id": "top_retailers_community",
+    "space": "community",
+    "node_type": "Community",
+    "properties": {
+      "name": "Top Retailers Community",
+      "description": "The community of top retailers connected through the Toshiba Commerce Marketplace"
+    },
+    "degree": 2
+  },
+  {
+    "id": "idc_org",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "IDC (International Data Corporation)",
+      "description": "Research and analysis firm that publishes MarketScape vendor assessments"
+    },
+    "degree": 0
+  },
+  {
+    "id": "google_org",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Google",
+      "description": "Technology company providing Google Distributed Cloud and edge computing solutions for retail"
+    },
+    "degree": 2
+  },
+  {
+    "id": "keswani_agent",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Keswani",
+      "description": "Speaker/participant in the NRF Video Spotlight discussion on modern edge strategy"
+    },
+    "degree": 0
+  },
+  {
+    "id": "lakoski_agent",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Lakoski",
+      "description": "Speaker/participant in the NRF Video Spotlight discussion on modern edge strategy"
+    },
+    "degree": 0
+  },
+  {
+    "id": "elera_commerce_platform",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "ELERA® Commerce Platform",
+      "description": "Toshiba's cloud-native commerce platform that extends cloud capabilities into physical retail stores",
+      "owner": "Toshiba Global Commerce Solutions"
+    },
+    "degree": 2
+  },
+  {
+    "id": "google_distributed_cloud",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Google Distributed Cloud",
+      "description": "Google's distributed cloud infrastructure enabling edge computing in retail store environments"
+    },
+    "degree": 1
+  },
+  {
+    "id": "tu_idc_leader_claim",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Toshiba IDC Leader Recognition",
+      "description": "IDC covers the evolution of POS systems from transaction terminals to comprehensive commerce hubs, along with cloud-native, API-first, microservices architectures; Toshiba named a Leader",
+      "source_doc": "idc_marketscape_pos_2026_article"
+    },
+    "degree": 2
+  },
+  {
+    "id": "tu_edge_strategy_discussion",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Edge Strategy Discussion Text",
+      "description": "Keswani and Lakoski explore how retailers can build a modern edge strategy supporting operational stability and long-term innovation via edge computing and cloud integration",
+      "source_doc": "nrf_video_spotlight_google_edge"
+    },
+    "degree": 2
+  },
+  {
+    "id": "tu_nrf_2026_event_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "NRF 2026 Event Description",
+      "description": "Retail's rapid revolution is here; journey, challenges, and growth badges described in NRF 2026 event context",
+      "source_doc": "nrf_2026_event_article"
+    },
+    "degree": 0
+  },
+  {
+    "id": "pos_software_concept",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Point-of-Sale (POS) Software",
+      "description": "Software systems used in retail for transaction processing and commerce management, evolving into comprehensive commerce hubs"
+    },
+    "degree": 4
+  },
+  {
+    "id": "edge_computing_concept",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Edge Computing",
+      "description": "Computing paradigm allowing retailers to process critical information directly within store environments while maintaining cloud integration"
+    },
+    "degree": 5
+  },
+  {
+    "id": "cloud_native_architecture_concept",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Cloud-Native, API-First, Microservices Architecture",
+      "description": "Modern software architecture supporting retailer extension, configuration, and self-enablement in commerce platforms"
+    },
+    "degree": 5
+  },
+  {
+    "id": "retail_technology_concept",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Technology",
+      "description": "Broad domain covering POS systems, commerce platforms, edge computing, and digital transformation in retail"
+    },
+    "degree": 2
+  },
+  {
+    "id": "outcome_retail_operational_stability",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retail Operational Stability",
+      "description": "Sustained and reliable retail operations enabled through modern edge and cloud-native strategies"
+    },
+    "degree": 2
+  },
+  {
+    "id": "outcome_retail_innovation",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Long-Term Retail Innovation",
+      "description": "Ability for retailers to deploy new solutions more quickly and achieve long-term innovation through flexible commerce platforms"
+    },
+    "degree": 3
+  },
+  {
+    "id": "lever_cloud_native_adoption",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Adoption of Cloud-Native, API-First Architecture",
+      "description": "Adopting cloud-native, API-first, microservices architectures to enable retailer self-enablement and faster innovation"
+    },
+    "degree": 2
+  },
+  {
+    "id": "lever_edge_computing_deployment",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Edge Computing Deployment in Stores",
+      "description": "Deploying edge computing within physical store environments to process critical information locally"
+    },
+    "degree": 3
+  },
+  {
+    "id": "future_of_retail",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Future of Retail",
+      "description": "Overarching theme covering company announcements, industry trends, and Toshiba's strategic role in shaping retail innovation."
+    },
+    "degree": 5
+  },
+  {
+    "id": "retail_segments",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Segments",
+      "description": "Categories of retail including Fashion & Apparel, Food Service, Gas & Convenience, Grocery, Mass Merchandise, Pharmacy/Drug Store, and Specialty"
+    },
+    "degree": 1
+  },
+  {
+    "id": "email_marketing_consent",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Email Marketing Consent",
+      "description": "User opt-in for Toshiba Global Commerce Solutions email marketing communications"
+    },
+    "degree": 1
+  },
+  {
+    "id": "retail_industry_engagement",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retail Industry Engagement",
+      "description": "Desired outcome of connecting with retailers, partners, suppliers, and analysts to drive commerce solution adoption."
+    },
+    "degree": 2
+  },
+  {
+    "id": "toshiba_team_members",
+    "space": "subject",
+    "node_type": "Team",
+    "properties": {
+      "name": "Toshiba Support Team",
+      "description": "Team members who follow up on customer contact form submissions"
+    },
+    "degree": 0
+  },
+  {
+    "id": "recaptcha_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "reCAPTCHA",
+      "description": "Google reCAPTCHA bot-detection tool used on the contact form page"
+    },
+    "degree": 0
+  },
+  {
+    "id": "contact_success_message",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Contact Form Success Message",
+      "description": "Confirmation message displayed after a user successfully submits a contact form: 'Thank you for reaching out. One of our team members will be in contact soon.'",
+      "source_url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "customer_contact_request",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Customer Contact Request",
+      "description": "The act of a user reaching out to Toshiba via the marketing portal contact form"
+    },
+    "degree": 2
+  },
+  {
+    "id": "customer_followup_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Customer Follow-Up",
+      "description": "A Toshiba team member contacts the user following a successful form submission"
+    },
+    "degree": 1
+  },
+  {
+    "id": "google_recaptcha_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Google reCAPTCHA API",
+      "description": "Google reCAPTCHA v2 image challenge API used for bot verification on the Toshiba Commerce site",
+      "endpoint": "https://www.google.com/recaptcha/api2/payload",
+      "site_key": "6LfEPr0ZAAAAAKeWnaDdJplumzeVbvrxPPSSSQ92"
+    },
+    "degree": 2
+  },
+  {
+    "id": "recaptcha_challenge",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "reCAPTCHA Challenge",
+      "description": "A CAPTCHA mechanism using image-based challenges served by Google to distinguish humans from bots"
+    },
+    "degree": 2
+  },
+  {
+    "id": "bot_abuse_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Bot Abuse Risk",
+      "description": "Risk of automated bots accessing or abusing the commerce marketing portal without CAPTCHA protection"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_train",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Train",
+      "description": "A queue mechanism for merge requests to ensure all changes work together before merging to the default branch"
+    },
+    "degree": 26
+  },
+  {
+    "id": "merge_train_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Train Pipeline",
+      "description": "A CI pipeline that verifies changes can merge into the default branch as part of a merge train"
+    },
+    "degree": 13
+  },
+  {
+    "id": "merged_results_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merged Results Pipeline",
+      "description": "A pipeline that runs on the combined changes of source and target branches; the first merge train pipeline is equivalent to this"
+    },
+    "degree": 4
+  },
+  {
+    "id": "merge_request",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request",
+      "description": "A GitLab mechanism to propose, review, and merge code changes into a branch"
+    },
+    "degree": 9
+  },
+  {
+    "id": "auto_merge",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Auto-Merge (Set to auto-merge)",
+      "description": "Feature introduced in GitLab 16.0 replacing 'Start merge train' and 'Start merge train when pipeline succeeds' buttons"
+    },
+    "degree": 6
+  },
+  {
+    "id": "fast_forward_merge",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Fast-Forward Merge",
+      "description": "A merge method in GitLab; revert of fast-forwarded commits is supported from GitLab 16.9 under specific conditions"
+    },
+    "degree": 2
+  },
+  {
+    "id": "semi_linear_merge",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Semi-Linear Merge",
+      "description": "A merge commit with semi-linear history method supported by merge trains since GitLab 16.5"
+    },
+    "degree": 2
+  },
+  {
+    "id": "default_branch",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Default Branch",
+      "description": "The primary branch in a GitLab project where merge requests are merged into"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merge_conflict_reduction",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Reduced Merge Conflicts",
+      "description": "Reduction of conflicts between merge requests when merging frequently to the default branch"
+    },
+    "degree": 2
+  },
+  {
+    "id": "devops_efficiency",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "DevOps Efficiency",
+      "description": "Improved efficiency for DevOps teams through the use of merge trains"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_queue",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Merge Queue",
+      "description": "Queuing mechanism provided by merge trains to serialize and validate merge requests"
+    },
+    "degree": 3
+  },
+  {
+    "id": "merge_trains_intro_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Merge Trains Introduction",
+      "description": "Introductory text describing merge trains, their purpose, and workflow from the GitLab documentation"
+    },
+    "degree": 6
+  },
+  {
+    "id": "gitlab_ci_cd",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab CI/CD",
+      "description": "GitLab's continuous integration and delivery system that manages pipelines and merge trains"
+    },
+    "degree": 2
+  },
+  {
+    "id": "target_branch",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Target Branch",
+      "description": "The branch that the merge request proposes to merge changes into; used as the comparison baseline in the diff"
+    },
+    "degree": 3
+  },
+  {
+    "id": "automatic_pipeline_cancellation",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Automatic Pipeline Cancellation",
+      "description": "GitLab CI/CD feature that detects and cancels redundant pipelines to conserve resources"
+    },
+    "degree": 6
+  },
+  {
+    "id": "redundant_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Redundant Pipeline",
+      "description": "A merge train pipeline that is no longer valid because the combined changes it was comparing against have changed"
+    },
+    "degree": 4
+  },
+  {
+    "id": "pipeline_failure",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipeline Failure",
+      "description": "A condition where a merge train pipeline does not complete successfully, causing removal of its merge request from the train"
+    },
+    "degree": 3
+  },
+  {
+    "id": "parallel_execution",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Parallel Execution",
+      "description": "The simultaneous running of multiple merge train pipelines to speed up validation and prevent commits from breaking the default branch"
+    },
+    "degree": 2
+  },
+  {
+    "id": "default_branch_stability",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Default Branch Stability",
+      "description": "The goal of preventing broken commits from entering the default branch"
+    },
+    "degree": 2
+  },
+  {
+    "id": "pipeline_resource_waste",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Pipeline Resource Waste",
+      "description": "Unnecessary consumption of CI/CD compute resources by redundant pipelines"
+    },
+    "degree": 4
+  },
+  {
+    "id": "skip_merge_train",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Skip Merge Train and Merge Immediately",
+      "description": "An action that bypasses the merge train queue and merges directly, triggering cancellation of related redundant pipelines"
+    },
+    "degree": 4
+  },
+  {
+    "id": "remove_mr_from_train",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Remove Merge Request from Merge Train",
+      "description": "An action that removes a merge request from the queue, causing downstream pipelines to be canceled and recreated"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_train_example_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Merge Train ABC Example",
+      "description": "Textual example describing three merge requests A, B, C on a merge train and the behavior when pipeline B fails"
+    },
+    "degree": 5
+  },
+  {
+    "id": "automatic_cancellation_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Automatic Pipeline Cancellation Description",
+      "description": "Documentation section describing when and why GitLab cancels redundant merge train pipelines"
+    },
+    "degree": 3
+  },
+  {
+    "id": "gitlab_project",
+    "space": "resource",
+    "node_type": "Project",
+    "properties": {
+      "name": "GitLab Project",
+      "description": "A GitLab project containing merge requests, commits, and a repository"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_trains_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merge Trains",
+      "description": "GitLab CI feature that queues merge requests and runs pipelines for combined changes before merging"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_pipelines_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merge Request Pipelines",
+      "description": "Pipelines configured to run on merge requests, prerequisite for merge trains"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merged_results_pipelines_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merged Results Pipelines",
+      "description": "Pipelines that run on the merged result of the source and target branch, must be enabled for merge trains"
+    },
+    "degree": 1
+  },
+  {
+    "id": "auto_merge_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Auto-Merge (Set to auto-merge)",
+      "description": "Feature to automatically merge a merge request when its pipeline succeeds, used when a pipeline is already running on a merge train"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_train_queue",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Train Queue",
+      "description": "The ordered queue of merge requests waiting to be merged via the merge train"
+    },
+    "degree": 4
+  },
+  {
+    "id": "merge_method",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Method",
+      "description": "The method used to merge commits; in GitLab 16.4 and earlier must be 'Merge commit'; from 16.5 any method is supported"
+    },
+    "degree": 3
+  },
+  {
+    "id": "merge_train_visualization",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Merge Train Visualization",
+      "description": "Visual representation of the merge train queue introduced in GitLab 17.3"
+    },
+    "degree": 1
+  },
+  {
+    "id": "maintainer_role_requirement",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Maintainer Role Requirement",
+      "description": "User must have the Maintainer role to enable merge trains"
+    },
+    "degree": 0
+  },
+  {
+    "id": "stuck_merge_request_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Stuck Merge Request Risk",
+      "description": "Merge requests may become stuck in an unresolved state or pipelines dropped if merge request pipelines are not configured correctly"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merge_train_started_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Merge Train Started",
+      "description": "A new merge train is started and the merge request becomes the first in the queue"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merge_trains_doc_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Merge Trains Documentation Text",
+      "description": "Source documentation text from docs.gitlab.com describing how to enable, start, and view merge trains",
+      "source": "https://docs.gitlab.com/ci/pipelines/merge_trains"
+    },
+    "degree": 7
+  },
+  {
+    "id": "ci_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "CI Pipeline",
+      "description": "A GitLab CI pipeline containing jobs, accessible via pipeline details page and pipeline path"
+    },
+    "degree": 11
+  },
+  {
+    "id": "merge_train_pipeline_limit",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Train Parallel Pipeline Limit",
+      "description": "Instance-level limit on the number of pipelines a merge train can run in parallel; default is 20, configurable via administration settings"
+    },
+    "degree": 3
+  },
+  {
+    "id": "merge_train_queue_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Merge Train Queue Management",
+      "description": "Merge requests beyond the parallel pipeline limit are queued indefinitely until a pipeline slot becomes available"
+    },
+    "degree": 2
+  },
+  {
+    "id": "parallel_pipeline_limit_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Parallel Pipeline Limit Setting",
+      "description": "Administrative control to adjust the maximum number of merge train pipelines that run in parallel; default is 20"
+    },
+    "degree": 2
+  },
+  {
+    "id": "auto_merge_history_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Auto-Merge Feature History",
+      "description": "Version history entries for auto-merge on merge trains: introduced GitLab 17.2 behind flag, enabled on GitLab.com 17.2, default 17.4, GA 17.7 with flag removed"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_immediately_option",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merge Immediately Option",
+      "description": "Option to merge a merge request immediately, bypassing the merge train queue, which cancels existing train pipelines and restarts the train"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_trains_skip_train_feature",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merge Immediately Without Restarting Merge Train Pipelines",
+      "description": "Experimental feature (flag: merge_trains_skip_train) introduced in GitLab 16.5, enabled in 16.10, allowing merge requests to skip the merge train without restarting running pipelines",
+      "status": "Experiment",
+      "feature_flag": "merge_trains_skip_train",
+      "introduced_version": "GitLab 16.5",
+      "enabled_version": "GitLab 16.10",
+      "default_state": "available on Self-Managed and GitLab.com and GitLab Dedicated"
+    },
+    "degree": 0
+  },
+  {
+    "id": "fast_forward_merge_method",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Fast-Forward Merge Method",
+      "description": "A Git merge method that requires the source branch to be up to date with the target branch; incompatible with merge immediately and skip train features"
+    },
+    "degree": 2
+  },
+  {
+    "id": "semi_linear_merge_method",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Semi-Linear Merge Method",
+      "description": "A Git merge method incompatible with the skip-train feature"
+    },
+    "degree": 2
+  },
+  {
+    "id": "faster_merge_throughput",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Faster Merge Throughput",
+      "description": "The desired outcome of quickly merging security fixes, bug fixes, or minor documentation updates without waiting for the full merge train to complete"
+    },
+    "degree": 3
+  },
+  {
+    "id": "gitlab_administrator",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "GitLab Administrator",
+      "description": "Administrator of a GitLab Self-Managed instance who can enable or disable the merge_trains_skip_train feature flag"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_requests_merge_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Merge Requests Merge API Endpoint",
+      "description": "GitLab API endpoint to merge a merge request, supports skip_merge_train attribute",
+      "url": "https://docs.gitlab.com/api/merge_requests/#merge-a-merge-request"
+    },
+    "degree": 1
+  },
+  {
+    "id": "draft_merge_request",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Draft Merge Request",
+      "description": "A merge request marked as draft, which causes it to be dropped from the merge train"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_conflict",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Conflict",
+      "description": "A conflict between branches that causes a merge request to be dropped from the merge train"
+    },
+    "degree": 2
+  },
+  {
+    "id": "unresolved_thread",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Unresolved Conversation Thread",
+      "description": "An open discussion thread on a merge request that, when all-threads-must-be-resolved is enabled, causes the MR to be dropped from the merge train"
+    },
+    "degree": 2
+  },
+  {
+    "id": "risk_mr_dropped_from_train",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Merge Request Dropped from Merge Train",
+      "description": "Risk that a merge request is automatically dropped from the merge train if it becomes unmergeable during pipeline execution"
+    },
+    "degree": 4
+  },
+  {
+    "id": "policy_all_threads_resolved",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "All Threads Must Be Resolved",
+      "description": "A merge request setting that requires all conversation threads to be resolved before merging; unresolved threads cause MR to be dropped from merge train",
+      "url": "https://docs.gitlab.com/user/project/merge_requests/#prevent-merge-unless-all-threads-are-resolved"
+    },
+    "degree": 0
+  },
+  {
+    "id": "textunit_merge_train_settings",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Merge Train Settings Instructions",
+      "description": "Step-by-step instructions to enable merged results pipelines and merge trains in GitLab project settings"
+    },
+    "degree": 4
+  },
+  {
+    "id": "textunit_troubleshooting",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Merge Train Troubleshooting Section",
+      "description": "Documentation section covering common issues: MR dropped from train, cannot use auto-merge, cannot retry pipeline"
+    },
+    "degree": 4
+  },
+  {
+    "id": "retry_keyword",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "retry keyword",
+      "description": "A GitLab CI YAML keyword that allows a job to be retried automatically if it fails",
+      "url": "https://docs.gitlab.com/ci/yaml/#retry"
+    },
+    "degree": 2
+  },
+  {
+    "id": "pipelines_must_succeed_setting",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipelines must succeed",
+      "description": "A GitLab project setting that requires a successful pipeline before a merge request can be merged",
+      "url": "https://docs.gitlab.com/user/project/merge_requests/auto_merge/#require-a-successful-pipeline-for-merge"
+    },
+    "degree": 2
+  },
+  {
+    "id": "failed_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Failed Pipeline",
+      "description": "A CI pipeline that did not complete successfully, blocking merge train re-entry"
+    },
+    "degree": 4
+  },
+  {
+    "id": "cannot_add_mr_to_train_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Cannot Add Merge Request to Merge Train",
+      "description": "Risk condition where a merge request cannot be added to a merge train because the latest pipeline failed and Pipelines must succeed is enabled",
+      "related_issue": "https://gitlab.com/gitlab-org/gitlab/-/issues/35135"
+    },
+    "degree": 6
+  },
+  {
+    "id": "retry_failed_job_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Retry Failed Job",
+      "description": "Action of retrying a failed CI job to attempt pipeline success without pushing new code"
+    },
+    "degree": 2
+  },
+  {
+    "id": "rerun_pipeline_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Rerun Whole Pipeline",
+      "description": "Action of re-triggering the entire CI pipeline from the Pipelines tab"
+    },
+    "degree": 2
+  },
+  {
+    "id": "push_new_commit_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Push New Commit",
+      "description": "Action of pushing a new commit that fixes the issue, which also triggers a new pipeline"
+    },
+    "degree": 2
+  },
+  {
+    "id": "cannot_add_mr_textunit",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Cannot Add MR to Merge Train Text",
+      "description": "Documentation section describing the error condition and remediation steps when a merge request cannot be added to a merge train",
+      "source": "merge_trains_doc"
+    },
+    "degree": 5
+  },
+  {
+    "id": "jira_workitem_attachment_delete_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira workitem attachment delete",
+      "description": "ACLI command to delete attachments from a Jira work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-attachment-delete"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_workitem_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem",
+      "description": "CLI command group for Jira work item operations",
+      "source_url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_attachment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Attachment",
+      "description": "A file or media object attached to a Jira work item"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem",
+      "description": "Jira work item commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_attachment_delete_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem attachment-delete",
+      "description": "CLI command to delete an attachment from a Jira work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-attachment-delete/",
+      "last_updated": "2024-10-03"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_attachment_list_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem attachment-list",
+      "description": "CLI command to list attachments on a Jira work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-attachment-list/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_rovodev_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli rovodev",
+      "description": "Rovo Dev command group in the Atlassian CLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_rovodev_auth_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli rovodev auth",
+      "description": "Authentication command for the Rovo Dev CLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev-auth/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "attachment_management_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Attachment Management",
+      "description": "The ability to add, list, and delete file attachments associated with Jira work items"
+    },
+    "degree": 1
+  },
+  {
+    "id": "cli_command_reference_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "CLI Command Reference",
+      "description": "Reference documentation topic covering available ACLI commands for interacting with Atlassian products such as Jira."
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_workitem_attachment_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem attachment",
+      "description": "Work item attachments commands for Jira via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-attachment"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_workitem_attachment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item Attachment",
+      "description": "Attachments associated with Jira work items (issues)"
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_reference_commands",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "ACLI Reference Commands",
+      "description": "Reference documentation for ACLI command-line interface commands"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_rovo_mcp_server",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Atlassian Rovo MCP Server",
+      "description": "Remote MCP server provided by Atlassian for connecting AI clients to Jira, Confluence, and Compass",
+      "endpoint_legacy": "https://mcp.atlassian.com/v1/sse",
+      "endpoint_current": "https://mcp.atlassian.com/v1/mcp/authv2",
+      "deprecation_date": "2026-06-30"
+    },
+    "degree": 5
+  },
+  {
+    "id": "atlassian_api_token",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Atlassian API Token",
+      "description": "API token used for authenticating MCP clients against the Atlassian Rovo MCP Server",
+      "url": "https://id.atlassian.com/manage-profile/security/api-tokens"
+    },
+    "degree": 0
+  },
+  {
+    "id": "oauth_2_1",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "OAuth 2.1",
+      "description": "Authorization protocol used as the primary authentication flow for MCP clients connecting to Atlassian Rovo MCP Server"
+    },
+    "degree": 1
+  },
+  {
+    "id": "api_token_auth",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "API Token Authentication",
+      "description": "Authentication method via API tokens for MCP clients; can be enabled or disabled by organization admins"
+    },
+    "degree": 2
+  },
+  {
+    "id": "openai_chatgpt_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "OpenAI ChatGPT",
+      "description": "Supported MCP client from OpenAI",
+      "url": "https://platform.openai.com/docs/overview"
+    },
+    "degree": 1
+  },
+  {
+    "id": "claude_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Claude",
+      "description": "Supported MCP client from Anthropic",
+      "url": "https://www.anthropic.com/claude"
+    },
+    "degree": 1
+  },
+  {
+    "id": "docker_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Docker",
+      "description": "Supported MCP client from Docker",
+      "url": "http://mcp.docker.com"
+    },
+    "degree": 1
+  },
+  {
+    "id": "google_gemini_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Google Gemini",
+      "description": "Supported MCP client from Google",
+      "url": "https://github.com/google-gemini/gemini-cli"
+    },
+    "degree": 1
+  },
+  {
+    "id": "amazon_quick_suite_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "Amazon Quick Suite",
+      "description": "Supported MCP client from Amazon AWS",
+      "url": "https://docs.aws.amazon.com/quicksuite/latest/userguide/mcp-integration.html"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_cloud_site",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Atlassian Cloud Site",
+      "description": "Cloud-hosted Atlassian environment with Jira, Compass, and/or Confluence required as a prerequisite"
+    },
+    "degree": 0
+  },
+  {
+    "id": "sse_endpoint_deprecation_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "SSE Endpoint Deprecation Risk",
+      "description": "After 30th June 2026, usage of https://mcp.atlassian.com/v1/sse as server endpoint will no longer be supported, risking broken integrations for clients that have not migrated"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_remote_mcp_server",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Atlassian Remote MCP Server",
+      "description": "Atlassian's remote Model Context Protocol server product"
+    },
+    "degree": 2
+  },
+  {
+    "id": "mcp_client_security_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "MCP Client Security Risk",
+      "description": "Potential security risks introduced by MCP clients when connecting to MCP servers."
+    },
+    "degree": 1
+  },
+  {
+    "id": "mcp_client",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "MCP Client",
+      "description": "A client application that communicates with MCP (Model Context Protocol) servers."
+    },
+    "degree": 2
+  },
+  {
+    "id": "mcp_server",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "MCP Server",
+      "description": "A Model Context Protocol server that exposes tools and data to MCP clients."
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_field_create_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira field create",
+      "description": "ACLI command to create a Jira field",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field-create/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_field_delete_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira field delete",
+      "description": "ACLI command to delete a Jira field",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field-delete/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_field_cancel_delete_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira field cancel-delete",
+      "description": "ACLI command to cancel deletion of a Jira field",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field-cancel-delete/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_field_group",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira field",
+      "description": "ACLI command group for managing Jira fields",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_auth_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira auth",
+      "description": "ACLI command for Jira authentication",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-auth/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_board_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira board",
+      "description": "ACLI command for Jira board operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-board/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_dashboard_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira dashboard",
+      "description": "ACLI command for Jira dashboard operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-dashboard/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_field_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Field",
+      "description": "A configurable data field within Jira used to capture issue attributes"
+    },
+    "degree": 2
+  },
+  {
+    "id": "cli_commands_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "CLI Commands",
+      "description": "Command-line interface commands used to automate and manage Atlassian cloud resources"
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_jira_field_create",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira field create",
+      "description": "CLI command to create a custom field in Jira",
+      "syntax": "acli jira field create [flags]",
+      "last_updated": "2024-10-03"
+    },
+    "degree": 6
+  },
+  {
+    "id": "acli_jira_field",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira field",
+      "description": "Parent CLI command group for Jira field commands"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_custom_field_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Jira Custom Field API",
+      "description": "Atlassian Jira API endpoint for creating and managing custom fields"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_custom_field",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Custom Field",
+      "description": "A user-defined field in Jira that extends default issue fields, configurable with a name, type, description, and searcher key"
+    },
+    "degree": 4
+  },
+  {
+    "id": "custom_field_type",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Custom Field Type",
+      "description": "The type identifier for a Jira custom field, e.g. textfield, select, datepicker, using com.atlassian.jira.plugin.system.customfieldtypes namespace"
+    },
+    "degree": 2
+  },
+  {
+    "id": "custom_field_searcher",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Custom Field Searcher Key",
+      "description": "Optional searcher key that enables searching on a custom field, e.g. multiselectsearcher"
+    },
+    "degree": 2
+  },
+  {
+    "id": "example_text_field",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Example: Create a text field",
+      "content": "acli jira field create --name \"Customer Name\" --type \"com.atlassian.jira.plugin.system.customfieldtypes:textfield\""
+    },
+    "degree": 5
+  },
+  {
+    "id": "example_select_field",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Example: Create a select field with searcher",
+      "content": "acli jira field create --name \"Priority Level\" --type \"com.atlassian.jira.plugin.system.customfieldtypes:select\" --searcherKey \"com.atlassian.jira.plugin.system.customfieldtypes:multiselectsearcher\""
+    },
+    "degree": 3
+  },
+  {
+    "id": "example_date_field",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Example: Create a field with description",
+      "content": "acli jira field create --name \"Release Date\" --type \"com.atlassian.jira.plugin.system.customfieldtypes:datepicker\" --description \"The planned release date for this feature\""
+    },
+    "degree": 3
+  },
+  {
+    "id": "jira_workitem_view_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira workitem view",
+      "description": "ACLI command to view a Jira work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-view"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_cli_reference",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Atlassian CLI Reference",
+      "description": "Reference documentation for all ACLI commands including admin, jira, feedback subcommands"
+    },
+    "degree": 1
+  },
+  {
+    "id": "rovodev_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "rovodev",
+      "description": "Rovo Dev CLI tool available via acli, including authentication support",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_workitem_comment_management",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Jira Work Item Comment Management",
+      "description": "Set of CLI operations for managing comments on Jira work items: comment-create, comment-delete, comment-list, comment-update, comment-visibility"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_workitem_attachment_management",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Jira Work Item Attachment Management",
+      "description": "Set of CLI operations for managing attachments on Jira work items: attachment-delete, attachment-list"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_view",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem view",
+      "description": "CLI command to view a Jira work item by key, with options to display in web browser or return specific fields as JSON.",
+      "example_usage": "acli jira workitem view KEY-123 --web"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_work_item",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item",
+      "description": "A unit of work in Jira (e.g. issue, task, story) that can be created, edited, and queried."
+    },
+    "degree": 6
+  },
+  {
+    "id": "work_item_fields",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Work Item Fields",
+      "description": "Fields associated with a Jira work item. Supports '*all', '*navigable', specific field names, or exclusion via minus prefix. Default: key,issuetype,summary,status,assignee,description."
+    },
+    "degree": 2
+  },
+  {
+    "id": "json_output",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "JSON Output",
+      "description": "Output format option for CLI commands that generates machine-readable JSON instead of default text output."
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_view_command_doc",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli jira workitem view documentation",
+      "description": "Reference documentation for the 'acli jira workitem view' command including options --fields, --help, --json, and --web.",
+      "source": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-view"
+    },
+    "degree": 4
+  },
+  {
+    "id": "jira_cli_commands",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Jira CLI Commands",
+      "description": "ACLI reference commands for Jira, including auth, board, dashboard, field, filter, project, sprint, and workitem subcommands",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "admin_cli_commands",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Admin CLI Commands",
+      "description": "ACLI reference commands for admin operations, including auth and user subcommands",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/admin/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_board",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Board",
+      "description": "CLI subcommand for managing Jira boards via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-board/"
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_sprint",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Sprint",
+      "description": "A time-boxed iteration in Jira used in agile project management"
+    },
+    "degree": 3
+  },
+  {
+    "id": "jira_project",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Project",
+      "description": "A Jira project container for work items and boards"
+    },
+    "degree": 6
+  },
+  {
+    "id": "jira_auth",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Auth",
+      "description": "CLI subcommand for handling Jira authentication via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-auth/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_dashboard",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Dashboard",
+      "description": "CLI subcommand for managing Jira dashboards via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-dashboard/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_filter",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Filter",
+      "description": "CLI subcommand for managing Jira filters via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-filter/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_field",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Field",
+      "description": "CLI subcommand for managing Jira fields via ACLI",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_auth_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira auth",
+      "description": "Authenticate to use Atlassian CLI.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-auth"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_board_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira board",
+      "description": "Jira board commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-board"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_dashboard_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira dashboard",
+      "description": "Jira dashboard commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-dashboard"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_field_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira field",
+      "description": "Jira field commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-field"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_filter_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira filter",
+      "description": "Jira filter commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-filter"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_project_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira project",
+      "description": "Jira project commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_sprint_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira sprint",
+      "description": "Jira sprint commands.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-sprint"
+    },
+    "degree": 0
+  },
+  {
+    "id": "atlassian_jira",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Atlassian Jira",
+      "description": "Atlassian's project tracking and issue management platform accessible via CLI."
+    },
+    "degree": 1
+  },
+  {
+    "id": "cli_authentication",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "CLI Authentication",
+      "description": "The process of authenticating a user or agent to use the Atlassian CLI."
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Resource Group",
+      "description": "A GitLab CI/CD mechanism to strategically control the concurrency of jobs, ensuring deployment jobs run one at a time"
+    },
+    "degree": 17
+  },
+  {
+    "id": "pipeline_concurrency",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipeline Concurrency",
+      "description": "The default behavior of GitLab CI/CD where pipelines run simultaneously; improves feedback loop in merge requests"
+    },
+    "degree": 5
+  },
+  {
+    "id": "deployment_job",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Deployment Job",
+      "description": "A CI/CD job (e.g., 'deploy') that pushes changes to a target environment such as production"
+    },
+    "degree": 6
+  },
+  {
+    "id": "build_job",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Build Job",
+      "description": "A CI/CD job (e.g., 'build') that compiles or packages code; can run concurrently without risk"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_cicd_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "GitLab CI/CD Pipeline",
+      "description": "Automated sequence of stages and jobs triggered by commits; multiple pipelines can run simultaneously by default"
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group_keyword",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "resource_group keyword",
+      "description": "A YAML keyword in .gitlab-ci.yml used to assign a job to a named resource group, limiting its concurrency",
+      "reference": "https://docs.gitlab.com/ci/yaml/#resource_group"
+    },
+    "degree": 11
+  },
+  {
+    "id": "gitlab_ci_yml",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": ".gitlab-ci.yml",
+      "description": "GitLab CI/CD pipeline configuration file stored in the repository root"
+    },
+    "degree": 3
+  },
+  {
+    "id": "concurrent_deployment_corruption",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Concurrent Deployment Corruption",
+      "description": "Risk of infrastructure being left in a corrupted or confused state when multiple deployment scripts run simultaneously to the same environment"
+    },
+    "degree": 4
+  },
+  {
+    "id": "pipeline_efficiency",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Pipeline Efficiency",
+      "description": "The degree to which pipelines maximize throughput by running non-conflicting jobs concurrently"
+    },
+    "degree": 2
+  },
+  {
+    "id": "deployment_safety",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Deployment Safety",
+      "description": "Assurance that deployment jobs to production run one at a time, preventing race conditions and corruption"
+    },
+    "degree": 6
+  },
+  {
+    "id": "resource_group_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Resource Group Configuration",
+      "description": "Assigning the resource_group keyword to concurrency-sensitive jobs to serialize their execution"
+    },
+    "degree": 7
+  },
+  {
+    "id": "deploy_resource_group_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Deploy Resource Group YAML Example",
+      "description": "YAML snippet showing resource_group: production applied to the deploy job to prevent concurrent deployments",
+      "content": "deploy:\n  # ...\n  resource_group: production"
+    },
+    "degree": 3
+  },
+  {
+    "id": "concurrent_pipeline_problem_description",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Concurrent Pipeline Problem Description",
+      "description": "Text explaining that multiple pipelines starting simultaneously can cause concurrent deploy jobs to harm the production environment"
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group_access_policy",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Resource Group Configuration Access Policy",
+      "description": "Requires the Developer, Maintainer, or Owner role to configure CI/CD pipelines and resource groups"
+    },
+    "degree": 1
+  },
+  {
+    "id": "process_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Process Mode",
+      "description": "A setting on a resource group that determines the order in which waiting jobs are picked for execution when a resource becomes free."
+    },
+    "degree": 11
+  },
+  {
+    "id": "process_mode_unordered",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Unordered Process Mode",
+      "description": "Default process mode. Processes jobs whenever a job is ready to run, without regard to pipeline order."
+    },
+    "degree": 5
+  },
+  {
+    "id": "process_mode_oldest_first",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Oldest First Process Mode",
+      "description": "When a resource is free, picks the first job from upcoming jobs sorted by pipeline ID in ascending order. Safer for continuous deployments."
+    },
+    "degree": 5
+  },
+  {
+    "id": "process_mode_newest_first",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Newest First Process Mode",
+      "description": "When a resource is free, picks the first job from upcoming jobs sorted by pipeline ID in descending order. Prevents outdated deployment jobs. Jobs must be idempotent."
+    },
+    "degree": 7
+  },
+  {
+    "id": "process_mode_newest_ready_first",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Newest Ready First Process Mode",
+      "description": "When a resource is free, picks the first job from upcoming jobs waiting on the resource, sorted by pipeline ID in descending order. Faster than newest_first. Jobs must be idempotent."
+    },
+    "degree": 4
+  },
+  {
+    "id": "pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipeline",
+      "description": "A GitLab CI/CD pipeline consisting of stages and jobs, identified by a pipeline ID."
+    },
+    "degree": 4
+  },
+  {
+    "id": "ci_job",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "CI Job",
+      "description": "A unit of work in a GitLab CI/CD pipeline, such as a build or deploy job."
+    },
+    "degree": 4
+  },
+  {
+    "id": "idempotency",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Idempotency",
+      "description": "Property required of jobs used with newest_first or newest_ready_first modes, ensuring repeated execution produces the same result."
+    },
+    "degree": 2
+  },
+  {
+    "id": "continuous_deployment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Continuous Deployment",
+      "description": "A practice of automatically deploying every change that passes CI, where deployment order and safety are important."
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_resource_group_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "GitLab Resource Group API",
+      "description": "API endpoint for editing an existing resource group, including updating its process_mode.",
+      "url": "https://docs.gitlab.com/api/resource_groups/#update-a-resource-group"
+    },
+    "degree": 0
+  },
+  {
+    "id": "outdated_deployment_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Outdated Deployment Risk",
+      "description": "Risk of deploying an older pipeline's artifacts after a newer one, causing regression or inconsistency in production."
+    },
+    "degree": 2
+  },
+  {
+    "id": "process_mode_selection",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Process Mode Selection",
+      "description": "Choosing the appropriate resource group process mode to balance deployment speed, order, and safety."
+    },
+    "degree": 3
+  },
+  {
+    "id": "process_mode_table",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Process Mode Comparison Table",
+      "description": "Table describing unordered, oldest_first, newest_first, and newest_ready_first process modes with use cases.",
+      "source": "https://docs.gitlab.com/ci/resource_groups/"
+    },
+    "degree": 5
+  },
+  {
+    "id": "process_mode_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Process Mode Example",
+      "description": "Example .gitlab-ci.yml with build and deploy jobs, and three concurrent pipelines demonstrating process mode differences.",
+      "source": "https://docs.gitlab.com/ci/resource_groups/"
+    },
+    "degree": 3
+  },
+  {
+    "id": "trigger_keyword",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "trigger Keyword",
+      "description": "GitLab CI/CD keyword used to trigger downstream pipelines including cross-project and parent-child pipelines"
+    },
+    "degree": 2
+  },
+  {
+    "id": "trigger_strategy_keyword",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "trigger:strategy Keyword",
+      "description": "GitLab CI/CD keyword that ensures the resource group lock is not released until the downstream pipeline finishes"
+    },
+    "degree": 2
+  },
+  {
+    "id": "pipeline_level_concurrency_control",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipeline-Level Concurrency Control",
+      "description": "Mechanism to control concurrent execution of deployment pipelines across cross-project and parent-child pipeline configurations"
+    },
+    "degree": 5
+  },
+  {
+    "id": "parent_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Parent Pipeline",
+      "description": "The top-level GitLab CI pipeline (.gitlab-ci.yml) that triggers child/downstream pipelines; contains build, test, and deploy stages"
+    },
+    "degree": 2
+  },
+  {
+    "id": "child_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Child Pipeline (Deployment)",
+      "description": "Downstream pipeline triggered by the parent pipeline (deploy.gitlab-ci.yml); contains provision and deploy stages targeting production environment"
+    },
+    "degree": 3
+  },
+  {
+    "id": "deployment_pipeline",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Deployment Pipeline",
+      "description": "A pipeline responsible for deploying to environments such as AWS-production; controlled by resource_group to prevent concurrent deployments"
+    },
+    "degree": 1
+  },
+  {
+    "id": "concurrent_execution",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Concurrent Execution",
+      "description": "The simultaneous running of multiple jobs or pipelines, which resource_group is designed to prevent for sensitive deployment scenarios"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_ci",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab CI/CD",
+      "description": "GitLab's continuous integration and deployment platform that provides resource_group, trigger, and related concurrency control features"
+    },
+    "degree": 2
+  },
+  {
+    "id": "concurrent_deployment_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Concurrent Deployment Risk",
+      "description": "Risk of multiple deployment pipelines running simultaneously, potentially causing conflicts or instability in target environments"
+    },
+    "degree": 3
+  },
+  {
+    "id": "controlled_deployment_order",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Controlled Deployment Order",
+      "description": "Ensuring deployments execute sequentially in a defined order, preventing race conditions and environment conflicts"
+    },
+    "degree": 2
+  },
+  {
+    "id": "process_mode_explanation",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Process Mode Behavior Description",
+      "description": "Text describing the behavior of unordered, oldest_first, and newest_first process modes for resource groups"
+    },
+    "degree": 4
+  },
+  {
+    "id": "pipeline_concurrency_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Pipeline-Level Concurrency Control Example",
+      "description": "YAML example and explanation showing how resource_group and trigger keywords work together to control cross-project/parent-child pipeline concurrency"
+    },
+    "degree": 3
+  },
+  {
+    "id": "oldest_first_process_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "oldest_first Process Mode",
+      "description": "A resource group process mode that enforces jobs to be executed in pipeline order, starting from the oldest pipeline"
+    },
+    "degree": 3
+  },
+  {
+    "id": "pipeline_deadlock",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pipeline Deadlock",
+      "description": "A situation where a parent and child pipeline mutually wait for each other to release a shared resource group, causing neither to complete"
+    },
+    "degree": 5
+  },
+  {
+    "id": "strategy_mirror",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "strategy: mirror",
+      "description": "A trigger strategy option that makes the triggering job wait until the downstream pipeline has finished"
+    },
+    "degree": 1
+  },
+  {
+    "id": "production_resource_group",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Production Resource Group",
+      "description": "A named resource group called 'production' used to serialize access to production deployment jobs"
+    },
+    "degree": 3
+  },
+  {
+    "id": "waiting_for_resource_state",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Waiting for Resource State",
+      "description": "A job state where a CI job is stuck waiting to acquire a resource group lock, indicated by 'Waiting for resource: <resource_group>'"
+    },
+    "degree": 1
+  },
+  {
+    "id": "ci_pipeline_configuration",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "CI Pipeline Configuration",
+      "description": "The YAML-based configuration that defines stages, jobs, triggers, and resource groups in GitLab CI"
+    },
+    "degree": 1
+  },
+  {
+    "id": "deadlock_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Deadlock Risk in Pipelines",
+      "description": "Risk of parent and child pipelines deadlocking when both require the same resource group under oldest_first process mode"
+    },
+    "degree": 3
+  },
+  {
+    "id": "pipeline_serialization",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Pipeline Serialization",
+      "description": "Controlled sequential execution of pipeline jobs accessing a shared resource group to prevent race conditions"
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group_in_parent_pipeline",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Specify resource_group in Parent Pipeline",
+      "description": "Best practice lever: assigning the resource_group keyword to the triggering job in the parent pipeline instead of only in the child pipeline to avoid deadlocks"
+    },
+    "degree": 4
+  },
+  {
+    "id": "bad_config_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Bad Pipeline Configuration Example",
+      "description": "YAML example showing a deadlock-prone setup where resource_group is only specified on deploy job in parent pipeline while child pipeline also requires the same resource group",
+      "content_summary": "Parent pipeline test job triggers child pipeline with strategy:mirror; deploy job uses resource_group:production; child also requires production resource group causing deadlock"
+    },
+    "degree": 3
+  },
+  {
+    "id": "good_config_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Good Pipeline Configuration Example",
+      "description": "YAML example showing the recommended fix: specifying resource_group on the test trigger job in the parent pipeline to prevent deadlock",
+      "content_summary": "Parent pipeline test job has resource_group:production alongside trigger, preventing child pipeline from independently competing for the resource"
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group_acquisition_rule",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Resource Group Acquisition Rule",
+      "description": "Implicit rule enforced by GitLab CI: only one job at a time may hold a resource group lock; others wait in queue according to process mode"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_resource_group",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Resource Group",
+      "description": "A GitLab CI/CD feature that controls pipeline job concurrency and resource access"
+    },
+    "degree": 1
+  },
+  {
+    "id": "oldest_first_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Oldest First",
+      "description": "A process mode where the oldest pipeline job in the queue is assigned the resource first"
+    },
+    "degree": 2
+  },
+  {
+    "id": "newest_first_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Newest First",
+      "description": "A process mode where the newest pipeline job in the queue is assigned the resource first"
+    },
+    "degree": 1
+  },
+  {
+    "id": "race_condition",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Race Condition",
+      "description": "A known issue in complex or busy pipelines where resource group concurrency control may not work correctly"
+    },
+    "degree": 3
+  },
+  {
+    "id": "upcoming_jobs",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Upcoming Jobs",
+      "description": "Jobs queued to use a resource group but not yet assigned or running"
+    },
+    "degree": 3
+  },
+  {
+    "id": "gitlab_rest_api_resource_groups",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "GitLab REST API - Resource Groups",
+      "description": "REST API endpoint to list upcoming jobs for a specific resource group",
+      "url": "https://docs.gitlab.com/api/resource_groups/#list-upcoming-jobs-for-a-specific-resource-group"
+    },
+    "degree": 1
+  },
+  {
+    "id": "gitlab_graphql_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "GitLab GraphQL API",
+      "description": "GraphQL interface used to retrieve detailed job information within a resource group context",
+      "url": "https://docs.gitlab.com/ci/resource_groups/#get-job-details-through-graphql"
+    },
+    "degree": 2
+  },
+  {
+    "id": "resource_group_malfunction_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Resource Group Malfunction Risk",
+      "description": "Risk that the resource group feature is not working correctly, causing jobs to be blocked or resources not properly assigned"
+    },
+    "degree": 3
+  },
+  {
+    "id": "race_condition_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Race Condition Risk",
+      "description": "Risk of encountering a race condition in complex or busy pipelines with multiple child pipelines or simultaneous pipeline runs"
+    },
+    "degree": 3
+  },
+  {
+    "id": "gitlab_issue_436988",
+    "space": "evidence",
+    "node_type": "LogEntry",
+    "properties": {
+      "name": "GitLab Issue 436988",
+      "description": "Tracked GitLab issue documenting the known race condition in complex or busy pipelines",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/436988"
+    },
+    "degree": 3
+  },
+  {
+    "id": "cancel_old_pipeline_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Cancel Old Pipeline or Job",
+      "description": "Action to cancel an older pipeline or its job to unblock the resource group queue"
+    },
+    "degree": 2
+  },
+  {
+    "id": "start_new_pipeline_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Start New Pipeline",
+      "description": "Workaround action of starting a fresh pipeline to recover from a race condition or stuck resource group"
+    },
+    "degree": 1
+  },
+  {
+    "id": "interactive_graphql_explorer",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Interactive GraphQL Explorer",
+      "description": "Interactive tool for running GraphQL queries against the GitLab API",
+      "url": "https://docs.gitlab.com/api/graphql/#interactive-graphql-explorer"
+    },
+    "degree": 0
+  },
+  {
+    "id": "trigger_job",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Trigger Job",
+      "description": "A CI job that triggers downstream pipelines; not accessible from the GitLab UI in pipeline-level concurrency control scenarios"
+    },
+    "degree": 2
+  },
+  {
+    "id": "stuck_job_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Stuck Job Risk",
+      "description": "Risk of CI jobs becoming stuck, requiring identification via GraphQL API and issue reporting to resolve"
+    },
+    "degree": 2
+  },
+  {
+    "id": "graphql_job_query_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "GraphQL Job Query Example",
+      "description": "GraphQL query example showing how to retrieve job name, status, detailedStatus action path and buttonTitle for a given project and job ID"
+    },
+    "degree": 3
+  },
+  {
+    "id": "graphql_pipeline_query_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "GraphQL Pipeline Query Example",
+      "description": "GraphQL query example showing how to retrieve job status and pipeline path for a job currently using a resource group"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_issue_tracker",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Issue Tracker",
+      "description": "GitLab issue tracker for reporting problems with resource groups and stuck jobs",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/new"
+    },
+    "degree": 0
+  },
+  {
+    "id": "diff_view",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Diff View",
+      "description": "A display showing the difference between the current state of files and the proposed changes, with removed lines in red (minus sign) and added lines in green (plus sign)"
+    },
+    "degree": 6
+  },
+  {
+    "id": "source_branch",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Source Branch",
+      "description": "The branch containing proposed changes in a merge request, used as the base for the diff comparison"
+    },
+    "degree": 2
+  },
+  {
+    "id": "file_viewed_marker",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "File Viewed Marker",
+      "description": "A checkbox in the diff file header that allows users to mark a file as viewed until it changes again"
+    },
+    "degree": 2
+  },
+  {
+    "id": "inline_comment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Inline Comment",
+      "description": "A comment added to a specific line or file within a merge request diff, accessible by hovering over line numbers in the gutter"
+    },
+    "degree": 2
+  },
+  {
+    "id": "diff_gutter",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Diff Gutter",
+      "description": "The left-side area of a diff view containing line numbers, navigation aids (expand context), and comment interaction controls"
+    },
+    "degree": 2
+  },
+  {
+    "id": "syntax_highlighting",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Syntax Highlighting",
+      "description": "Color-coded display theme used in diffs to visually distinguish added and removed lines of code"
+    },
+    "degree": 1
+  },
+  {
+    "id": "mr_diff_example_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "MR Diff Example Description",
+      "description": "Textual explanation and screenshot reference showing a merge request diff with added and removed lines of code, including file header elements and gutter navigation",
+      "source_url": "https://docs.gitlab.com/user/project/merge_requests/changes"
+    },
+    "degree": 5
+  },
+  {
+    "id": "gitlab_merge_request_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Merge Request Tool",
+      "description": "GitLab feature for proposing, reviewing, and merging code changes via a diff-based interface"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_merge_requests_ui",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Merge Requests UI",
+      "description": "GitLab interface for viewing and managing merge requests, including file changes and diffs",
+      "url": "https://docs.gitlab.com/user/project/merge_requests/changes/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merge_request_diff",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request Diff",
+      "description": "The set of file-level changes introduced by a merge request, viewable as a diff"
+    },
+    "degree": 10
+  },
+  {
+    "id": "file_browser",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "File Browser",
+      "description": "A UI component in GitLab merge requests that shows changed files in tree or list view, toggled via button or F key"
+    },
+    "degree": 5
+  },
+  {
+    "id": "pinned_file_feature",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pinned File (Linked File First)",
+      "description": "GitLab feature allowing a specific file to be shown first in a merge request changes list via a shareable link; introduced in GitLab 16.9, GA in 17.4",
+      "feature_flag": "pinned_file",
+      "introduced_version": "16.9",
+      "ga_version": "17.4",
+      "tiers": [
+        "Free",
+        "Premium",
+        "Ultimate"
+      ],
+      "offering": "GitLab.com"
+    },
+    "degree": 4
+  },
+  {
+    "id": "file_collapse_performance",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "File Collapse for Performance",
+      "description": "GitLab automatically collapses files with many changes to improve performance, showing 'Some changes are not shown' message"
+    },
+    "degree": 3
+  },
+  {
+    "id": "code_review_workflow",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Code Review Workflow",
+      "description": "The process of reviewing code changes in merge requests, including navigating file diffs and sharing specific file views"
+    },
+    "degree": 5
+  },
+  {
+    "id": "review_performance",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Merge Request Review Performance",
+      "description": "The efficiency and speed of reviewing large merge requests with many changed files"
+    },
+    "degree": 2
+  },
+  {
+    "id": "reviewer_collaboration",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Reviewer Collaboration",
+      "description": "The ability for team members to share and focus on specific files within a merge request"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_dev_team",
+    "space": "subject",
+    "node_type": "Team",
+    "properties": {
+      "name": "Development Team",
+      "description": "Team members sharing and reviewing merge request links and file changes"
+    },
+    "degree": 1
+  },
+  {
+    "id": "pinned_file_history_note",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Pinned File Feature History",
+      "description": "Text noting the introduction of pinned_file flag in GitLab 16.9 and its general availability in GitLab 17.4",
+      "source_issue": "https://gitlab.com/gitlab-org/gitlab/-/issues/387246",
+      "source_mr": "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/162503"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitattributes_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": ".gitattributes",
+      "description": "Git attributes file used to mark files or paths as generated, controlling collapse behavior in merge request diffs",
+      "path": "root directory of project"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_platform",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab",
+      "description": "DevOps platform providing merge request diff viewing, collapse of generated files, and code review tooling"
+    },
+    "degree": 0
+  },
+  {
+    "id": "generated_file_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Generated File",
+      "description": "Files automatically produced by tooling or compilers (e.g. package-lock.json, minified JS/CSS, Go protobuf outputs) that rarely require code review"
+    },
+    "degree": 2
+  },
+  {
+    "id": "collapse_generated_diff",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Collapse Generated Diff Files",
+      "description": "Feature introduced in GitLab 16.8 (GA in 16.11) that collapses generated files in merge request diffs by default to help reviewers focus on relevant changes",
+      "feature_flag": "collapse_generated_diff_files",
+      "introduced_version": "GitLab 16.8",
+      "generally_available_version": "GitLab 16.11"
+    },
+    "degree": 5
+  },
+  {
+    "id": "gitlab_generated_attribute",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "gitlab-generated attribute",
+      "description": "A .gitattributes attribute used to mark files or paths as generated, controlling whether they are collapsed in merge request diffs"
+    },
+    "degree": 3
+  },
+  {
+    "id": "code_review_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Code Review",
+      "description": "The process of reviewing code changes in merge requests, facilitated by GitLab diff views"
+    },
+    "degree": 1
+  },
+  {
+    "id": "collapse_types_textunit",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Collapsed File Types List",
+      "description": "Enumeration of file types GitLab collapses by default: .nib/.xcworkspacedata/.xcurserstate, package-lock.json/Gopkg.lock, node_modules, minified JS/CSS, source maps, generated Go/protobuf files",
+      "source": "gitlab_mr_changes_doc"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitattributes_config_example",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "gitattributes Configuration Example",
+      "description": "Example .gitattributes configuration showing how to collapse *.txt files, docs/** directory, and prevent package-lock.json from collapsing using gitlab-generated attribute",
+      "source": "gitlab_mr_changes_doc"
+    },
+    "degree": 1
+  },
+  {
+    "id": "collapse_behavior_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Configure Collapse Behavior",
+      "description": "Mechanism allowing users to set the gitlab-generated attribute in .gitattributes to control which files are collapsed or expanded in merge request diffs"
+    },
+    "degree": 2
+  },
+  {
+    "id": "reviewer_focus_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Reviewer Focus Improvement",
+      "description": "Reviewers can focus on files actually needed for code review by collapsing auto-generated files in merge request diffs"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_merge_request_changes_tab",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Merge Request Changes Tab",
+      "description": "GitLab UI tab showing file diffs and changes in a merge request",
+      "url": "https://docs.gitlab.com/user/project/merge_requests/changes/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_user_preferences",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab User Preferences",
+      "description": "User settings panel in GitLab allowing configuration of UI behaviors including merge request display"
+    },
+    "degree": 0
+  },
+  {
+    "id": "one_file_at_a_time",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "One File at a Time",
+      "description": "A review setting that shows only a single file diff at a time during merge request review"
+    },
+    "degree": 5
+  },
+  {
+    "id": "inline_diff_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Inline Diff Mode",
+      "description": "A diff viewing mode that shows old and new versions of changed lines vertically; best for single-line changes"
+    },
+    "degree": 3
+  },
+  {
+    "id": "side_by_side_diff_mode",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Side-by-Side Diff Mode",
+      "description": "A diff viewing mode that shows old and new versions in separate columns; best for large sequential line changes"
+    },
+    "degree": 3
+  },
+  {
+    "id": "keyboard_shortcuts",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Keyboard Shortcuts",
+      "description": "GitLab keyboard shortcut feature enabling navigation between files in merge request review using keys like [, ], k, j"
+    },
+    "degree": 1
+  },
+  {
+    "id": "merge_request_review",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Merge Request Review",
+      "description": "The process of reviewing code changes submitted in a merge request on GitLab"
+    },
+    "degree": 1
+  },
+  {
+    "id": "improved_code_review_efficiency",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Improved Code Review Efficiency",
+      "description": "Better focus and reduced cognitive load during merge request review by controlling how diffs are displayed"
+    },
+    "degree": 4
+  },
+  {
+    "id": "diff_view_preference_setting",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Diff View Preference Setting",
+      "description": "User-controlled setting to switch between inline and side-by-side diff modes and one-file-at-a-time navigation"
+    },
+    "degree": 4
+  },
+  {
+    "id": "rapid_diffs_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Rapid Diffs",
+      "description": "A faster way to load and interact with code changes in merge requests, reducing time before the first file is visible when reviewing a diff.",
+      "status": "beta",
+      "introduced_in": "GitLab 18.0",
+      "enabled_in": "GitLab 19.0",
+      "feature_flag": "rapid_diffs_on_mr_show",
+      "default": "disabled in 18.0, enabled in 19.0"
+    },
+    "degree": 1
+  },
+  {
+    "id": "classic_diff_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Classic Diff",
+      "description": "The classic diff loading experience for merge requests in GitLab, predating Rapid Diffs."
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_duo_pro_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Duo Pro",
+      "description": "GitLab add-on providing AI features including code explanation in merge requests.",
+      "tier": "Premium, Ultimate",
+      "offering": "GitLab.com, GitLab Self-Managed, GitLab Dedicated"
+    },
+    "degree": 1
+  },
+  {
+    "id": "gitlab_duo_amazon_q_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Duo with Amazon Q",
+      "description": "GitLab add-on integrating Amazon Q Developer as the LLM for code explanation features.",
+      "llm": "Amazon Q Developer"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_org_gitlab_project",
+    "space": "resource",
+    "node_type": "Project",
+    "properties": {
+      "name": "gitlab-org/gitlab",
+      "description": "Main GitLab open-source project on GitLab.com where feature issues and epics are tracked.",
+      "url": "https://gitlab.com/gitlab-org/gitlab"
+    },
+    "degree": 4
+  },
+  {
+    "id": "issue_590833_evidence",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "Issue 590833",
+      "description": "GitLab issue introducing Rapid Diffs feature flag rapid_diffs_on_mr_show in GitLab 18.0.",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/590833",
+      "version": "GitLab 18.0"
+    },
+    "degree": 4
+  },
+  {
+    "id": "issue_539581_evidence",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "Issue 539581",
+      "description": "GitLab issue tracking enablement of Rapid Diffs on GitLab.com and Self-Managed in GitLab 19.0.",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/539581",
+      "version": "GitLab 19.0"
+    },
+    "degree": 1
+  },
+  {
+    "id": "issue_596236_evidence",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "Feedback Issue 596236",
+      "description": "GitLab issue listing known limitations and collecting feedback for Rapid Diffs beta.",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/596236"
+    },
+    "degree": 2
+  },
+  {
+    "id": "epic_19380_evidence",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "Epic 19380",
+      "description": "GitLab epic tracking the feature parity roadmap for Rapid Diffs vs classic diff experience.",
+      "url": "https://gitlab.com/groups/gitlab-org/-/epics/19380"
+    },
+    "degree": 2
+  },
+  {
+    "id": "merge_request_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request",
+      "description": "A GitLab workflow mechanism for proposing, reviewing, and merging code changes into a target branch."
+    },
+    "degree": 2
+  },
+  {
+    "id": "code_diff_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Code Diff",
+      "description": "The visual representation of changes between two versions of code files in a merge request."
+    },
+    "degree": 6
+  },
+  {
+    "id": "feature_flag_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Feature Flag",
+      "description": "A configuration mechanism in GitLab to enable or disable features for specific environments or users.",
+      "flag_name": "rapid_diffs_on_mr_show"
+    },
+    "degree": 2
+  },
+  {
+    "id": "explain_code_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Explain Code",
+      "description": "AI-powered feature in GitLab merge requests that explains code changes using an LLM (default or Amazon Q Developer).",
+      "tiers": "Premium, Ultimate",
+      "add_ons": "GitLab Duo Pro, GitLab Duo Enterprise, GitLab Duo with Amazon Q"
+    },
+    "degree": 1
+  },
+  {
+    "id": "diff_load_time_kpi",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "Diff Load Time",
+      "description": "Time before the reviewer sees the first file when reviewing a diff. Rapid Diffs aims to reduce this."
+    },
+    "degree": 2
+  },
+  {
+    "id": "rapid_diffs_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Enable Rapid Diffs",
+      "description": "User-controlled preference to switch between Rapid Diffs and classic diff loading experience in merge requests."
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_duo_agent",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "GitLab Duo",
+      "description": "AI assistant powered by a large language model that explains code and provides chat-based support within GitLab"
+    },
+    "degree": 1
+  },
+  {
+    "id": "gitlab_duo_chat_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Duo Chat",
+      "description": "AI chat tool integrated into GitLab that explains selected code snippets and answers developer questions"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_ide_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab IDE Integration",
+      "description": "IDE integration for GitLab Duo Chat that allows code explanation within the developer's IDE"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": "Merge Request File",
+      "description": "A file within a merge request diff, viewable at a specific SHA, whose selected lines can be explained by GitLab Duo"
+    },
+    "degree": 1
+  },
+  {
+    "id": "code_explanation",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Code Explanation",
+      "description": "The process of using GitLab Duo to generate natural-language explanations of selected code snippets in merge requests, files, or the IDE"
+    },
+    "degree": 5
+  },
+  {
+    "id": "inline_comment_management",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Inline Comment Management",
+      "description": "The ability to expand or collapse inline comments on code lines within a merge request diff to reduce visual noise during review"
+    },
+    "degree": 2
+  },
+  {
+    "id": "experiment_beta_features",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Experiment and Beta Features",
+      "description": "A GitLab group-level setting that must be enabled for users to access experimental and beta AI features such as code explanation"
+    },
+    "degree": 2
+  },
+  {
+    "id": "large_language_model",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Large Language Model (LLM)",
+      "description": "The underlying AI model used by GitLab Duo to generate code explanations; results may not always be correct and should be used with caution"
+    },
+    "degree": 4
+  },
+  {
+    "id": "llm_accuracy_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "LLM Accuracy Risk",
+      "description": "Risk that the large language model produces incorrect or misleading code explanations; GitLab cannot guarantee correctness"
+    },
+    "degree": 1
+  },
+  {
+    "id": "improved_code_comprehension",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Improved Code Comprehension",
+      "description": "The desired outcome of using GitLab Duo code explanation: developers better understand unfamiliar code more quickly"
+    },
+    "degree": 2
+  },
+  {
+    "id": "beta_features_group_requirement",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Beta Features Group Membership Requirement",
+      "description": "Users must belong to at least one group with experiment and beta features enabled to use GitLab Duo code explanation"
+    },
+    "degree": 1
+  },
+  {
+    "id": "code_explain_walkthrough",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "Code Explain Walkthrough",
+      "description": "Step-by-step instructions and screenshot evidence documenting how to invoke GitLab Duo code explanation within a merge request"
+    },
+    "degree": 6
+  },
+  {
+    "id": "whitespace_changes",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Whitespace Changes",
+      "description": "Changes in a diff that consist only of whitespace (spaces, tabs, newlines) and can obscure substantive code changes."
+    },
+    "degree": 4
+  },
+  {
+    "id": "merge_request_conflicts",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request Conflicts",
+      "description": "Conflicts that arise when the source branch and target branch have incompatible changes, shown as alerts per conflicted file in the diff."
+    },
+    "degree": 2
+  },
+  {
+    "id": "viewed_file_tracking",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Viewed File Tracking",
+      "description": "A GitLab feature allowing reviewers to mark files as viewed during a merge request review so they are hidden on subsequent reviews unless changed."
+    },
+    "degree": 3
+  },
+  {
+    "id": "inline_comment_expansion",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Inline Comment Expansion",
+      "description": "The ability to expand collapsed comments attached to specific lines in a merge request diff by selecting the user avatar in the gutter margin."
+    },
+    "degree": 1
+  },
+  {
+    "id": "tu_whitespace_changes_section",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Ignore Whitespace Changes Section",
+      "description": "Documentation section explaining how to hide or show whitespace changes in a merge request diff using the Preferences menu.",
+      "source": "gitlab_merge_request_changes_doc"
+    },
+    "degree": 2
+  },
+  {
+    "id": "tu_mark_files_viewed_section",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Mark Files as Viewed Section",
+      "description": "Documentation section explaining how to mark files as viewed to streamline repeated reviews of large merge requests.",
+      "source": "gitlab_merge_request_changes_doc"
+    },
+    "degree": 2
+  },
+  {
+    "id": "tu_conflicts_in_diff_section",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Show Merge Request Conflicts in Diff Section",
+      "description": "Documentation section explaining how GitLab compares source and target branches and displays conflict alerts in the diff.",
+      "source": "gitlab_merge_request_changes_doc"
+    },
+    "degree": 2
+  },
+  {
+    "id": "review_efficiency",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Code Review Efficiency",
+      "description": "The speed and accuracy with which reviewers can assess merge request changes, influenced by diff clarity and tooling."
+    },
+    "degree": 5
+  },
+  {
+    "id": "missed_conflict_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Missed Merge Conflict Risk",
+      "description": "The risk that a reviewer fails to notice conflicting changes between source and target branches, leading to broken merges."
+    },
+    "degree": 2
+  },
+  {
+    "id": "whitespace_toggle_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Show/Hide Whitespace Changes Toggle",
+      "description": "A user-controlled preference that hides or shows whitespace-only changes in the merge request diff."
+    },
+    "degree": 3
+  },
+  {
+    "id": "viewed_checkbox_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Viewed Checkbox",
+      "description": "A per-file checkbox that marks a file as reviewed, hiding it from subsequent diff views until the file changes again."
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_merge_requests",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Merge Requests",
+      "description": "GitLab feature for managing and reviewing code changes via merge requests",
+      "url": "https://docs.gitlab.com/user/project/merge_requests/changes/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_code_quality",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Code Quality",
+      "description": "Code quality findings shown in the merge request changes view",
+      "url": "https://docs.gitlab.com/ci/testing/code_quality/#merge-request-changes-view"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_sast",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab SAST",
+      "description": "Static Application Security Testing findings shown in the merge request changes view",
+      "url": "https://docs.gitlab.com/user/application_security/sast/#merge-request-changes-view"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_diff_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": "Merge Request Diff",
+      "description": "A downloadable diff file representing the changes in a merge request, accessible by appending .diff to the merge request URL",
+      "format": "diff",
+      "example_url": "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/000000.diff"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_patch_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": "Merge Request Patch File",
+      "description": "A downloadable patch file representing the changes in a merge request, accessible by appending .patch to the merge request URL",
+      "format": "patch",
+      "example_url": "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/000000.patch"
+    },
+    "degree": 0
+  },
+  {
+    "id": "git_apply_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "git apply",
+      "description": "Git CLI command used to apply a diff or patch file to a repository"
+    },
+    "degree": 0
+  },
+  {
+    "id": "git_am_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "git am",
+      "description": "Git CLI command used to apply patch files from mailbox format, uses -p1 option by default",
+      "reference_url": "https://git-scm.com/docs/git-am"
+    },
+    "degree": 0
+  },
+  {
+    "id": "curl_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "curl",
+      "description": "Command-line tool used to download merge request diffs and patches from GitLab URLs"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_changes",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request Changes",
+      "description": "The set of code modifications included in a GitLab merge request, which can be reviewed, analyzed for quality/security, and downloaded as diff or patch files"
+    },
+    "degree": 2
+  },
+  {
+    "id": "code_quality_findings",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Code Quality Findings",
+      "description": "Results from static code quality analysis surfaced in the merge request changes view"
+    },
+    "degree": 3
+  },
+  {
+    "id": "static_analysis_findings",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Static Analysis Findings",
+      "description": "Security-related findings from SAST surfaced in the merge request changes view"
+    },
+    "degree": 3
+  },
+  {
+    "id": "code_security_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Code Security and Quality Assurance",
+      "description": "The outcome of identifying and resolving code quality and security issues before merging"
+    },
+    "degree": 2
+  },
+  {
+    "id": "gitlab_merge_request_diff_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Merge Request Diff/Patch Download",
+      "description": "Tool for downloading merge request diffs or patches by appending .diff or .patch to the merge request URL"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_merge_request_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "GitLab Merge Request API",
+      "description": "API endpoint for accessing merge request diffs with parameters diff_id and start_sha",
+      "example_url": "https://gitlab.com/gitlab-org/gitlab/-/merge_requests/123456/diffs.diff?diff_id=525410&start_sha=a1b2c3d4"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_request_diff_comment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request File Comment",
+      "description": "Comments added to a merge request diff file that persist across rebases and file changes, introduced in GitLab 16.1"
+    },
+    "degree": 4
+  },
+  {
+    "id": "merge_request_image_comment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Request Image Comment",
+      "description": "Comments or threads added to images within merge requests and commit detail views"
+    },
+    "degree": 2
+  },
+  {
+    "id": "diff_version_comparison",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Diff Version Comparison",
+      "description": "Capability to compare different diff versions of a merge request before downloading as .diff or .patch files"
+    },
+    "degree": 2
+  },
+  {
+    "id": "mr_diff_download_instructions",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "MR Diff Download Instructions",
+      "description": "Step-by-step instructions for downloading merge request diffs by appending .diff or .patch to the URL"
+    },
+    "degree": 1
+  },
+  {
+    "id": "mr_file_comment_instructions",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "MR File Comment Instructions",
+      "description": "Step-by-step instructions for adding a comment to a merge request diff file via the GitLab UI"
+    },
+    "degree": 2
+  },
+  {
+    "id": "persistent_code_review_comments",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Persistent Code Review Comments",
+      "description": "Comments on merge request files that persist across rebases and file changes, improving code review continuity"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_project_create_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira project create",
+      "description": "ACLI command to create a new Jira project",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project-create"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_project_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira project",
+      "description": "ACLI command group for Jira project operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_project_management",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Project Management",
+      "description": "Concept of managing Jira projects via CLI, including listing, creating, and archiving"
+    },
+    "degree": 3
+  },
+  {
+    "id": "atlassian_cloud_cli",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Atlassian Cloud CLI",
+      "description": "Command-line tooling for interacting with Atlassian Cloud services"
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_jira_project_create_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira project create",
+      "description": "CLI command to create a Jira project – a collection of work items (stories, bugs, tasks, etc)",
+      "synopsis": "acli jira project create [flags]",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project-create/"
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_jira_project_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira project",
+      "description": "Parent command grouping all Jira project-related CLI commands",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_sprint_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira sprint",
+      "description": "CLI command for managing Jira sprints",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-sprint/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem",
+      "description": "CLI command for managing Jira work items",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_rovodev_cmd",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli rovodev",
+      "description": "CLI command group for Rovo Dev operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "project_json_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": "project.json",
+      "description": "JSON file containing project details used for project creation via the --from-json flag; can be generated using --generate-json flag"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_project_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Project",
+      "description": "A collection of work items (stories, bugs, tasks) typically used to represent development work for a product, project, or service in Jira"
+    },
+    "degree": 5
+  },
+  {
+    "id": "jira_work_item_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Jira Work Item",
+      "description": "A unit of work tracked in Jira, which can be created, edited, assigned, archived, commented on, searched, transitioned, and managed via the ACLI tool."
+    },
+    "degree": 2
+  },
+  {
+    "id": "company_managed_project_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Company Managed Project",
+      "description": "A type of Jira project that can be cloned/used as a source for creating new projects via the --from-project flag"
+    },
+    "degree": 3
+  },
+  {
+    "id": "acli_project_create_flags_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli jira project create flags documentation",
+      "description": "Documentation of all flags available for acli jira project create: --description, --from-json, --from-project, --generate-json, --help, --key, --lead-email, --name, --url",
+      "source": "Options section of acli jira project create reference page"
+    },
+    "degree": 4
+  },
+  {
+    "id": "acli_project_create_examples_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli jira project create usage examples",
+      "description": "Example commands: create from existing project, provide optional fields, generate JSON, create from JSON file",
+      "source": "Examples section of acli jira project create reference page"
+    },
+    "degree": 3
+  },
+  {
+    "id": "jira_project_created_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Jira Project Created",
+      "description": "Successful creation of a new Jira project with specified key, name, description, and other attributes"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_enterprise_login",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Toshiba Enterprise Login",
+      "description": "IBM Security-based enterprise identity provider login endpoint",
+      "url": "https://www.toshibacommerce.com/mga/sps/authsvc?PolicyId=urn:ibm:security:authentication:asf:externalIDPLogin"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_forgot_password",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Toshiba Forgot Password Service",
+      "description": "Password recovery service for Toshiba Commerce accounts",
+      "url": "https://www.toshibacommerce.com/tgcs109/tsim/forgotpassword.do"
+    },
+    "degree": 1
+  },
+  {
+    "id": "customer_shopping_experience",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Customer Shopping Experience",
+      "description": "Personalized and memorable shopping journeys for customers across online, in-store, and mobile channels"
+    },
+    "degree": 4
+  },
+  {
+    "id": "retail_security",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Security",
+      "description": "Enhancing security in retail environments through modular, adaptable technology solutions"
+    },
+    "degree": 4
+  },
+  {
+    "id": "retail_advisory_services",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Advisory Services",
+      "description": "Deep retail expertise and advisory services to design personalized and flexible retail journeys"
+    },
+    "degree": 2
+  },
+  {
+    "id": "retail_business_success",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retail Business Success",
+      "description": "Driving business success through intentional solutions and efficient operations"
+    },
+    "degree": 4
+  },
+  {
+    "id": "labor_challenges",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Labor Challenges",
+      "description": "Workforce and staffing challenges in retail environments addressed through technology innovation"
+    },
+    "degree": 1
+  },
+  {
+    "id": "modular_adaptable_solutions",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Modular Adaptable Solutions",
+      "description": "Flexible, modular retail technology solutions that allow experimentation and adaptation to market changes"
+    },
+    "degree": 7
+  },
+  {
+    "id": "toshiba_homepage_content",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Toshiba Commerce Homepage Content",
+      "description": "Marketing content from Toshiba Commerce homepage describing retail solution pillars: Craft Unique Journeys, Innovate with Confidence, Be Agile & Secure, Sustain Your Success",
+      "source": "https://commerce.toshiba.com"
+    },
+    "degree": 6
+  },
+  {
+    "id": "retail_industry_solutions",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Retail Industry Solutions",
+      "description": "Broad category of commerce technology solutions tailored to specific retail verticals"
+    },
+    "degree": 4
+  },
+  {
+    "id": "transaction_acceleration",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Transaction Acceleration",
+      "description": "Outcome of speeding up point-of-sale and commerce transactions in high-velocity retail environments"
+    },
+    "degree": 1
+  },
+  {
+    "id": "operational_agility",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Operational Agility",
+      "description": "Outcome of maximizing flexibility and responsiveness in retail operations"
+    },
+    "degree": 2
+  },
+  {
+    "id": "toshiba_industry_page_content",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Toshiba Commerce Industry Page Content",
+      "description": "Web content from commerce.toshiba.com describing industry verticals: Convenience & Fuel, Grocery & General Merchandise, Hospitality & Entertainment",
+      "source": "https://commerce.toshiba.com"
+    },
+    "degree": 4
+  },
+  {
+    "id": "unified_retail_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Unified Retail",
+      "description": "Vision of a smarter, more unified retail future enabled by integrated commerce technology"
+    },
+    "degree": 3
+  },
+  {
+    "id": "regulatory_compliance_outcome",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Regulatory Compliance",
+      "description": "Adherence to compliance requirements enabled by built-in security in Toshiba offerings"
+    },
+    "degree": 1
+  },
+  {
+    "id": "evolving_threats_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Evolving Security Threats",
+      "description": "Risk of data breaches, transaction fraud, and device compromise from evolving cyber threats in retail environments"
+    },
+    "degree": 2
+  },
+  {
+    "id": "toshiba_offerings_page_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Understanding Toshiba's Offerings Page",
+      "description": "Web content describing Toshiba's modular and secure retail commerce solutions including MxP and ELERA products",
+      "source": "https://commerce.toshiba.com"
+    },
+    "degree": 5
+  },
+  {
+    "id": "epos_installations",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "EPOS Installations",
+      "description": "Electronic Point of Sale installations; Toshiba holds #1 worldwide share"
+    },
+    "degree": 5
+  },
+  {
+    "id": "pos_self_checkout",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "POS and Self-Checkout Units",
+      "description": "Point of sale and self-checkout hardware units; 205k+ deployed worldwide by Toshiba TGCS"
+    },
+    "degree": 5
+  },
+  {
+    "id": "worldwide_epos_share_kpi",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "#1 Worldwide EPOS Share",
+      "description": "Toshiba TGCS holds the #1 worldwide share of EPOS installations",
+      "value": "#1",
+      "metric": "Worldwide share of EPOS installations"
+    },
+    "degree": 1
+  },
+  {
+    "id": "pos_units_deployed_kpi",
+    "space": "outcome",
+    "node_type": "KPI",
+    "properties": {
+      "name": "205k+ POS and Self-Checkout Units",
+      "description": "Over 205,000 POS and self-checkout units deployed",
+      "value": "205000+",
+      "metric": "POS and self-checkout units deployed"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_marketplace_platform",
+    "space": "resource",
+    "node_type": "Project",
+    "properties": {
+      "name": "Toshiba Commerce Marketplace",
+      "description": "A robust platform connecting retailers with solutions providers, tools, and partnerships to foster growth and success",
+      "url": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/"
+    },
+    "degree": 2
+  },
+  {
+    "id": "retail_marketplace",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Retail Marketplace",
+      "description": "A digital or physical marketplace concept connecting retailers and solution providers"
+    },
+    "degree": 3
+  },
+  {
+    "id": "retail_industry_trends",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Industry Trends",
+      "description": "Latest developments and trends shaping the future of the retail sector"
+    },
+    "degree": 2
+  },
+  {
+    "id": "retail_growth_success",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Retail Growth and Success",
+      "description": "Fostering growth and success for retailers and solution providers through marketplace partnerships"
+    },
+    "degree": 1
+  },
+  {
+    "id": "marketplace_description_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Marketplace Description",
+      "description": "Toshiba Commerce's Marketplace connects you with top retailers, providing a robust platform to present your solutions. It equips you with the necessary tools and partnerships to foster growth and success.",
+      "source": "https://commerce.toshiba.com"
+    },
+    "degree": 2
+  },
+  {
+    "id": "news_section_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "News Section Description",
+      "description": "Latest company announcements, industry trends, and Toshiba's role in shaping the future of retail.",
+      "source": "https://commerce.toshiba.com"
+    },
+    "degree": 1
+  },
+  {
+    "id": "toshiba_global_commerce",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Toshiba Global Commerce Solutions",
+      "description": "Provider of retail commerce technology solutions including POS software and the ELERA Commerce Platform",
+      "website": "https://commerce.toshiba.com"
+    },
+    "degree": 1
+  },
+  {
+    "id": "pos_software",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Point-of-Sale (POS) Software",
+      "description": "Software systems evolving from transaction terminals to comprehensive commerce hubs, used in grocery and food store retail"
+    },
+    "degree": 3
+  },
+  {
+    "id": "edge_computing_retail",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Edge Computing in Retail",
+      "description": "Processing critical information directly within store environments while maintaining integration with cloud infrastructure"
+    },
+    "degree": 5
+  },
+  {
+    "id": "cloud_native_api_first",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Cloud-Native API-First Microservices Architecture",
+      "description": "Modern architecture paradigm supporting retailer extension, configuration, and self-enablement for POS and commerce platforms"
+    },
+    "degree": 5
+  },
+  {
+    "id": "retail_innovation",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Retail Innovation",
+      "description": "Rapid revolution in retail technology, operational stability, and long-term innovation strategies"
+    },
+    "degree": 3
+  },
+  {
+    "id": "faster_retail_solution_deployment",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Faster Retail Solution Deployment",
+      "description": "Retailers can deploy new solutions more quickly through the combination of Google Distributed Cloud and ELERA Commerce Platform"
+    },
+    "degree": 2
+  },
+  {
+    "id": "operational_stability_retail",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Operational Stability in Retail",
+      "description": "Modern edge strategy supports both operational stability and long-term innovation for retailers"
+    },
+    "degree": 2
+  },
+  {
+    "id": "idc_report_textunit",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "IDC MarketScape POS Report Excerpt",
+      "description": "IDC covers the evolution of POS systems from transaction terminals to comprehensive commerce hubs and movement toward cloud-native, API-first, microservices architectures"
+    },
+    "degree": 2
+  },
+  {
+    "id": "google_edge_blog_textunit",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Google Edge Strategy Blog Text",
+      "description": "Keswani and Lakoski explore how retailers can build a modern edge strategy; edge computing allows retailers to process critical information directly within store environments"
+    },
+    "degree": 2
+  },
+  {
+    "id": "retail_segment",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Retail Segment",
+      "description": "Categorization of retail industry verticals including Fashion & Apparel, Food Service, Gas & Convenience, Grocery, Mass Merchandise, Pharmacy/Drug Store, and Specialty."
+    },
+    "degree": 2
+  },
+  {
+    "id": "business_partner_type",
+    "space": "concept",
+    "node_type": "Class",
+    "properties": {
+      "name": "Business Partner Type",
+      "description": "Classification of individuals interacting with Toshiba: Business Partner, Retailer, Supplier, Press/Analyst, Toshiba Employee, Other."
+    },
+    "degree": 1
+  },
+  {
+    "id": "contact_form_lever",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Contact / Lead Generation Form",
+      "description": "Web form enabling prospective partners, retailers, and other stakeholders to start a conversation with Toshiba Global Commerce Solutions."
+    },
+    "degree": 2
+  },
+  {
+    "id": "toshiba_support_team",
+    "space": "subject",
+    "node_type": "Team",
+    "properties": {
+      "name": "Toshiba Support Team",
+      "description": "Team members who follow up on customer contact form submissions"
+    },
+    "degree": 0
+  },
+  {
+    "id": "toshiba_portal_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Toshiba WPS Portal API",
+      "description": "IBM WebSphere Portal (WPS) content handler API serving deferred JavaScript and markup modules for the Toshiba commerce portal",
+      "url": "https://commerce.toshiba.com/wps/contenthandler/marketing/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "contact_form_submission",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Contact Form Submission",
+      "description": "The act of a user reaching out via a web contact form, resulting in a success confirmation and follow-up by a team member"
+    },
+    "degree": 4
+  },
+  {
+    "id": "recaptcha_verification",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "reCAPTCHA Verification",
+      "description": "Google reCAPTCHA challenge (crosswalk image selection) used to verify human users on the portal"
+    },
+    "degree": 1
+  },
+  {
+    "id": "deferred_module_loading",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Deferred Module Loading",
+      "description": "Portal UI pattern where JavaScript and markup modules (skin, context menu, drag-and-drop, toolbar, content targeting) are loaded asynchronously via mashup collection endpoints"
+    },
+    "degree": 1
+  },
+  {
+    "id": "success_message_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Success Message",
+      "description": "Text confirming contact form submission: 'Thank you for reaching out. One of our team members will be in contact soon.'",
+      "source": "https://commerce.toshiba.com/wps/portal/marketing/Home/tgcs/home/"
+    },
+    "degree": 2
+  },
+  {
+    "id": "customer_contact_followup",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Customer Contact Follow-Up",
+      "description": "A Toshiba team member contacts the customer who submitted the contact form"
+    },
+    "degree": 2
+  },
+  {
+    "id": "captcha_verification",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "CAPTCHA Verification",
+      "description": "A challenge-response mechanism used to verify that a user is human rather than an automated bot"
+    },
+    "degree": 2
+  },
+  {
+    "id": "bot_access_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "Bot Access Risk",
+      "description": "Risk of automated bots accessing or scraping the Toshiba Commerce platform without human verification"
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_project_list_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira project list",
+      "description": "ACLI command to list Jira projects",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project-list"
+    },
+    "degree": 2
+  },
+  {
+    "id": "admin_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "admin",
+      "description": "ACLI command group for admin operations",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/admin/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "cli_authentication",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "CLI Authentication",
+      "description": "Authentication mechanisms for ACLI with Atlassian cloud services"
+    },
+    "degree": 2
+  },
+  {
+    "id": "jira_sprint_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira sprint",
+      "description": "CLI command group for Jira sprint operations",
+      "source_url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-sprint/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "rovodev_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "rovodev",
+      "description": "CLI command group for Rovo Dev operations",
+      "source_url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 0
+  },
+  {
+    "id": "rovodev_auth_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "rovodev auth",
+      "description": "CLI command for Rovo Dev authentication",
+      "source_url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev-auth/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "jira_project_list_doc",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli jira project list reference documentation",
+      "description": "Official reference documentation for the acli jira project list command, including options and examples",
+      "last_updated": "2024-10-03",
+      "source_url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-project-list/"
+    },
+    "degree": 7
+  },
+  {
+    "id": "pagination_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Pagination",
+      "description": "Mechanism for fetching all pages of results via HTTP requests, used in acli list commands via --paginate flag"
+    },
+    "degree": 2
+  },
+  {
+    "id": "json_output_concept",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "JSON Output",
+      "description": "Structured JSON format output option for acli commands, enabled via --json flag"
+    },
+    "degree": 2
+  },
+  {
+    "id": "atlassian_mcp_server",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Atlassian Rovo MCP Server",
+      "description": "Remote MCP server hosted at mcp.atlassian.com that supports automation and workflow integrations with Atlassian products",
+      "url": "https://mcp.atlassian.com/v1/mcp/authv2"
+    },
+    "degree": 2
+  },
+  {
+    "id": "atlassian_mcp_sse_endpoint",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "Atlassian MCP SSE Endpoint (deprecated)",
+      "description": "Legacy SSE endpoint https://mcp.atlassian.com/v1/sse, deprecated after 30th June 2026",
+      "url": "https://mcp.atlassian.com/v1/sse",
+      "deprecation_date": "2026-06-30"
+    },
+    "degree": 0
+  },
+  {
+    "id": "atlassian_mcp_app",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Atlassian MCP App",
+      "description": "Marketplace app that site admins may need to install to enable MCP access when User Installed Apps is blocked"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Jira",
+      "description": "Atlassian project and issue tracking tool accessible via MCP server"
+    },
+    "degree": 1
+  },
+  {
+    "id": "confluence",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "Confluence",
+      "description": "Atlassian wiki and collaboration tool accessible via MCP server"
+    },
+    "degree": 1
+  },
+  {
+    "id": "mcp_compatible_client",
+    "space": "subject",
+    "node_type": "Agent",
+    "properties": {
+      "name": "MCP-Compatible Client",
+      "description": "Third-party MCP client tools (CRM platforms, automation services, custom-built tools) that implement the MCP protocol and support OAuth 2.1 authentication"
+    },
+    "degree": 3
+  },
+  {
+    "id": "oauth_21_authentication",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "OAuth 2.1 Authentication",
+      "description": "Authentication protocol required for MCP client connections to the Atlassian MCP server"
+    },
+    "degree": 3
+  },
+  {
+    "id": "mcp_protocol",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "MCP Protocol",
+      "description": "Model Context Protocol standard that clients must implement to connect to the Atlassian Rovo MCP Server"
+    },
+    "degree": 3
+  },
+  {
+    "id": "workflow_automation",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Workflow Automation",
+      "description": "Automation and workflow integration capabilities enabled by connecting MCP-compatible tools to the Atlassian MCP server"
+    },
+    "degree": 2
+  },
+  {
+    "id": "site_admin_app_install_rule",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Site Admin App Installation Requirement",
+      "description": "Rule requiring site admins to install the Atlassian MCP App if User Installed Apps is blocked in the organization"
+    },
+    "degree": 0
+  },
+  {
+    "id": "mcp_setup_guide",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "MCP Client Setup Guide",
+      "description": "Documentation page from Atlassian support describing configuration steps, prerequisites, and tips for connecting MCP-compatible clients to the Atlassian Rovo MCP Server",
+      "source": "https://support.atlassian.com/atlassian-rovo-mcp-server/docs/using-with-other-supported-mcp-clients"
+    },
+    "degree": 4
+  },
+  {
+    "id": "successful_mcp_client_connection",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Successful MCP Client Connection",
+      "description": "Outcome where third-party MCP clients are successfully connected to Atlassian Rovo MCP Server and can perform actions on Jira and Confluence"
+    },
+    "degree": 3
+  },
+  {
+    "id": "atlassian",
+    "space": "subject",
+    "node_type": "Org",
+    "properties": {
+      "name": "Atlassian",
+      "description": "Company providing the Rovo MCP Server and related support resources"
+    },
+    "degree": 1
+  },
+  {
+    "id": "atlassian_rovo_mcp_server_topic",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "atlassian-rovo-mcp-server",
+      "description": "Topic tag used in the Atlassian Community for Rovo MCP Server discussions"
+    },
+    "degree": 0
+  },
+  {
+    "id": "jira_workitem_edit_command",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "jira workitem edit",
+      "description": "ACLI command to edit a Jira work item",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-edit"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_edit_api",
+    "space": "resource",
+    "node_type": "API",
+    "properties": {
+      "name": "acli jira workitem edit",
+      "description": "Edit a Jira work item or multiple work items.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-edit/",
+      "last_updated": "2024-10-03"
+    },
+    "degree": 0
+  },
+  {
+    "id": "acli_jira_workitem_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "ACLI Jira Workitem",
+      "description": "Atlassian CLI tool for managing Jira work items with subcommands including archive, assign, create, edit, delete, search, transition, and more.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_rovodev_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "rovodev",
+      "description": "Atlassian CLI rovodev command group, including rovodev auth.",
+      "url": "https://developer.atlassian.com/cloud/acli/reference/commands/rovodev/"
+    },
+    "degree": 1
+  },
+  {
+    "id": "acli_jira_workitem_edit",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "acli jira workitem edit",
+      "description": "CLI command to edit Jira work items, supporting JSON input/output, JQL queries, filter IDs, and direct field editing."
+    },
+    "degree": 2
+  },
+  {
+    "id": "workitem_json_file",
+    "space": "resource",
+    "node_type": "File",
+    "properties": {
+      "name": "workitem.json",
+      "description": "JSON file containing work item definition used as input for the workitem edit command via --from-json flag."
+    },
+    "degree": 0
+  },
+  {
+    "id": "atlassian_document_format",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Atlassian Document Format (ADF)",
+      "description": "A structured JSON-based format used by Atlassian products to represent rich text content such as descriptions."
+    },
+    "degree": 2
+  },
+  {
+    "id": "jql_query",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "JQL Query",
+      "description": "Jira Query Language expression used to filter and select work items for bulk editing."
+    },
+    "degree": 2
+  },
+  {
+    "id": "work_item_assignee",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Work Item Assignee",
+      "description": "The user assigned to a Jira work item; can be set by email, account ID, '@me', or 'default'."
+    },
+    "degree": 2
+  },
+  {
+    "id": "work_item_filter",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Work Item Filter",
+      "description": "A saved Jira filter identified by Filter ID, used to select a set of work items for editing."
+    },
+    "degree": 2
+  },
+  {
+    "id": "acli_edit_options_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "acli workitem edit options reference",
+      "description": "Documentation block listing all CLI flags for the acli jira workitem edit command including --assignee, --description, --jql, --from-json, --generate-json, --key, --labels, --summary, --type, and others.",
+      "source": "https://developer.atlassian.com/cloud/acli/reference/commands/jira-workitem-edit"
+    },
+    "degree": 7
+  },
+  {
+    "id": "revert_commit",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Revert Commit",
+      "description": "A new commit that reverses the changes of a previous bad commit, preserving audit trail rather than erasing history"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_commit_method",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Merge Commit Method",
+      "description": "A project merge method in GitLab that creates a merge commit, required for reverting a merge request via UI"
+    },
+    "degree": 0
+  },
+  {
+    "id": "audit_trail",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Audit Trail",
+      "description": "A clear, traceable history of changes in a version control system, preserved by revert commits"
+    },
+    "degree": 0
+  },
+  {
+    "id": "version_control",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Version Control",
+      "description": "System that tracks and manages changes to code, enabling fixes and reversions of mistakes"
+    },
+    "degree": 0
+  },
+  {
+    "id": "squashed_commits",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Squashed Commits",
+      "description": "Commits combined into a single commit; enables revert of fast-forwarded commits from GitLab UI in 16.9+"
+    },
+    "degree": 0
+  },
+  {
+    "id": "access_control",
+    "space": "concept",
+    "node_type": "Concept",
+    "properties": {
+      "name": "Access Control",
+      "description": "Project access controls and processes that revert commits must follow"
+    },
+    "degree": 0
+  },
+  {
+    "id": "code_mistake_remediation",
+    "space": "outcome",
+    "node_type": "Outcome",
+    "properties": {
+      "name": "Code Mistake Remediation",
+      "description": "The outcome of successfully reverting bad code changes to restore correct project state"
+    },
+    "degree": 0
+  },
+  {
+    "id": "history_gap_risk",
+    "space": "outcome",
+    "node_type": "Risk",
+    "properties": {
+      "name": "History Gap Risk",
+      "description": "Risk of losing traceability if changes are erased from history rather than reverted cleanly"
+    },
+    "degree": 0
+  },
+  {
+    "id": "revert_merge_request_action",
+    "space": "lever",
+    "node_type": "Lever",
+    "properties": {
+      "name": "Revert Merge Request Action",
+      "description": "The GitLab UI action to revert all changes introduced by a merged merge request"
+    },
+    "degree": 0
+  },
+  {
+    "id": "merge_commit_method_requirement",
+    "space": "policy",
+    "node_type": "ApprovalRule",
+    "properties": {
+      "name": "Merge Commit Method Requirement",
+      "description": "Project must use Merge Commit merge method (set in Settings > Merge requests) to revert a merge request via UI"
+    },
+    "degree": 0
+  },
+  {
+    "id": "revert_mr_steps_text",
+    "space": "evidence",
+    "node_type": "TextUnit",
+    "properties": {
+      "name": "Revert Merge Request Steps",
+      "description": "Step-by-step instructions for reverting a merge request in GitLab UI, including branch selection and immediate revert option"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_issue_22236",
+    "space": "evidence",
+    "node_type": "Evidence",
+    "properties": {
+      "name": "GitLab Issue 22236",
+      "description": "Issue tracking fast-forward revert support in GitLab UI, resolved in GitLab 16.9",
+      "url": "https://gitlab.com/gitlab-org/gitlab/-/issues/22236"
+    },
+    "degree": 0
+  },
+  {
+    "id": "gitlab_revert_tool",
+    "space": "resource",
+    "node_type": "Tool",
+    "properties": {
+      "name": "GitLab Revert Feature",
+      "description": "The GitLab UI Options > Revert functionality that allows reverting a commit to a branch or via a new merge request"
+    },
+    "degree": 0
+  },
+  {
+    "id": "concept_automation",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Automation",
+      "description": "Documents related to automation"
+    },
+    "degree": 3
+  },
+  {
+    "id": "concept_security",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Security",
+      "description": "Documents related to security"
+    },
+    "degree": 1
+  },
+  {
+    "id": "concept_development",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Development",
+      "description": "Documents related to development"
+    },
+    "degree": 3
+  },
+  {
+    "id": "concept_documentation",
+    "space": "concept",
+    "node_type": "Topic",
+    "properties": {
+      "name": "Documentation",
+      "description": "Documents related to documentation"
+    },
+    "degree": 0
+  },
+  {
+    "id": "doc_github_recovery_codes",
+    "space": "resource",
+    "node_type": "Document",
+    "properties": {
+      "name": "github-recovery-codes.txt",
+      "title": "github-recovery-codes",
+      "path": "C:\\Users\\amore\\Downloads\\github-recovery-codes.txt",
+      "size_bytes": 206,
+      "modified": "2026-05-14T23:43:33.392382+00:00"
+    },
+    "degree": 1
+  },
+  {
+    "id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.074_GMT+9",
+    "space": "resource",
+    "node_type": "Document",
+    "properties": {
+      "name": "sw-RPA Workflow-2026-02-10 19_55_45.074 GMT+9.txt",
+      "title": "sw-RPA Workflow-2026-02-10 19_55_45.074 GMT+9",
+      "path": "C:\\Users\\amore\\Downloads\\sw-RPA Workflow-2026-02-10 19_55_45.074 GMT+9.txt",
+      "size_bytes": 1036,
+      "modified": "2026-02-10T10:55:45.653278+00:00"
+    },
+    "degree": 2
+  },
+  {
+    "id": "doc_sw_RPA_Workflow_2026_02_10_19_55_45.620_GMT+9",
+    "space": "resource",
+    "node_type": "Document",
+    "properties": {
+      "name": "sw-RPA Workflow-2026-02-10 19_55_45.620 GMT+9.txt",
+      "title": "sw-RPA Workflow-2026-02-10 19_55_45.620 GMT+9",
+      "path": "C:\\Users\\amore\\Downloads\\sw-RPA Workflow-2026-02-10 19_55_45.620 GMT+9.txt",
+      "size_bytes": 1109,
+      "modified": "2026-02-10T10:55:55.789595+00:00"
+    },
+    "degree": 2
+  },
+  {
+    "id": "doc_sw_RPA_Workflow_2026_02_10_19_59_27.794_GMT+9",
+    "space": "resource",
+    "node_type": "Document",
+    "properties": {
+      "name": "sw-RPA Workflow-2026-02-10 19_59_27.794 GMT+9.txt",
+      "title": "sw-RPA Workflow-2026-02-10 19_59_27.794 GMT+9",
+      "path": "C:\\Users\\amore\\Downloads\\sw-RPA Workflow-2026-02-10 19_59_27.794 GMT+9.txt",
+      "size_bytes": 1004,
+      "modified": "2026-02-10T10:59:52.174478+00:00"
+    },
+    "degree": 2
+  }
+]
