@@ -122,13 +122,24 @@ export default function DashboardPage() {
     const result = searchLocalSubgraph(allLayerNodes, allLayerEdges, query, 2)
 
     // Convert LayerNode to OcNode and LayerEdge to OcEdge for rendering
-    const ocNodes: OcNode[] = result.seeds.map(ln => ({
-      id: ln.id,
-      space: 'query_layer',
-      node_type: 'layer_node',
-      properties: { name: ln.label, ...ln.metadata },
-      degree: 0,
-    }))
+    // Collect all node IDs referenced by result edges plus seeds
+    const overlayNodeIds = new Set<string>(result.seeds.map(n => n.id))
+    for (const edge of result.edges) {
+      overlayNodeIds.add(edge.from)
+      overlayNodeIds.add(edge.to)
+    }
+    // Map allLayerNodes by id for fast lookup
+    const nodeMap = new Map(allLayerNodes.map(n => [n.id, n]))
+    const ocNodes: OcNode[] = Array.from(overlayNodeIds)
+      .map(id => nodeMap.get(id))
+      .filter((ln): ln is LayerNode => Boolean(ln))
+      .map(ln => ({
+        id: ln.id,
+        space: 'query_layer',
+        node_type: 'layer_node',
+        properties: { name: ln.label, ...ln.metadata },
+        degree: 0,
+      }))
 
     const ocEdges: OcEdge[] = result.edges.map(le => ({
       from_id: le.from,
