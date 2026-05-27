@@ -183,3 +183,31 @@ A: "내 Downloads 폴더를 다시 팩으로 만들어줘" 요청
 
 - OpenCrab Pack v1 포맷: `C:\Users\amore\OpenCrab\docs\opencrab-pack-v1.md`
 - MetaOntology 9-Space: `concept`, `resource`, `subject`, `evidence`, `claim`, `outcome`, `lever`, `policy`, `community`
+
+---
+
+## 🗂️ Query Layer 사용법
+
+### 1. CLI로 관계 시각화
+
+```bash
+opencrab query-viz "ELERA와 acli의 관계는?" --max-hops 3 --limit 20
+```
+- 관계 그래프를 CLI에서 바로 확인
+- `--max-hops`, `--limit` 등 옵션으로 탐색 범위 조절
+
+### 2. 대시보드에서 활용
+
+1. 웹 UI에서 "Query Layer" 메뉴 클릭
+2. 관계 질의 입력 (예: "ELERA와 acli의 관계는?")
+3. 시각화 결과 확인 및 그래프 내 노드/엣지 탐색
+4. 필요시 결과를 PNG/SVG로 내보내기
+
+### 3. layers-index.json 구조
+
+- 경로: `apps/web/public/query-layers/layers-index.json`
+- 예시:
+  ```json
+  {"layers": [], "version": "1.0", "last_updated": null}
+  ```
+- 추후 관계 레이어가 추가되면 `layers` 배열에 정보가 저장됨
