@@ -114,6 +114,9 @@ def test_build_layer_payload_includes_seed_and_neighbors() -> None:
         }
         assert required_fields.issubset(edge.keys())
 
+    # Verify top-level node_count and edge_count
+    assert payload["node_count"] == len(payload["nodes"])
+    assert payload["edge_count"] == len(payload["edges"])
     # Verify metadata
     assert payload["metadata"]["total_nodes"] == len(payload["nodes"])
     assert payload["metadata"]["total_edges"] == len(payload["edges"])

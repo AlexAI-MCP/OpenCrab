@@ -139,6 +139,8 @@ def build_layer_payload(
         "source": "cli",
         "nodes": node_list,
         "edges": edge_list,
+        "node_count": len(node_list),
+        "edge_count": len(edge_list),
         "metadata": {
             "total_nodes": len(node_list),
             "total_edges": len(edge_list),
