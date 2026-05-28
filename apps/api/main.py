@@ -769,27 +769,26 @@ def list_nodes(
         local_graph_db = local_data_dir / "graph.db"
 
         if local_graph_db.exists():
-            conn = sqlite3.connect(str(local_graph_db))
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-            cur.execute(
-                """
-                SELECT
-                    n.node_id AS id,
-                    COALESCE(n.space_id, 'concept') AS space,
-                    n.node_type AS node_type,
-                    n.properties AS props,
-                    (
-                        SELECT COUNT(*)
-                        FROM graph_edges e
-                        WHERE e.from_id = n.node_id OR e.to_id = n.node_id
-                    ) AS degree
-                FROM graph_nodes n
-                LIMIT 500
-                """
-            )
-            raw = [dict(row) for row in cur.fetchall()]
-            conn.close()
+            with sqlite3.connect(str(local_graph_db)) as conn:
+                conn.row_factory = sqlite3.Row
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                    SELECT
+                        n.node_id AS id,
+                        COALESCE(n.space_id, 'concept') AS space,
+                        n.node_type AS node_type,
+                        n.properties AS props,
+                        (
+                            SELECT COUNT(*)
+                            FROM graph_edges e
+                            WHERE e.from_id = n.node_id OR e.to_id = n.node_id
+                        ) AS degree
+                    FROM graph_nodes n
+                    LIMIT 500
+                    """
+                )
+                raw = [dict(row) for row in cur.fetchall()]
         elif hasattr(ctx.graph, "run_query"):
             raw = ctx.graph.run_query(
                 "MATCH (n) OPTIONAL MATCH (n)-[r]-() "
@@ -841,27 +840,26 @@ def list_edges(
         local_graph_db = local_data_dir / "graph.db"
 
         if local_graph_db.exists():
-            conn = sqlite3.connect(str(local_graph_db))
-            conn.row_factory = sqlite3.Row
-            cur = conn.cursor()
-            cur.execute(
-                """
-                SELECT
-                    e.from_id AS from_id,
-                    e.to_id AS to_id,
-                    e.relation AS relation,
-                    COALESCE(fn.space_id, 'concept') AS from_space,
-                    COALESCE(tn.space_id, 'concept') AS to_space
-                FROM graph_edges e
-                LEFT JOIN graph_nodes fn
-                    ON fn.node_type = e.from_type AND fn.node_id = e.from_id
-                LEFT JOIN graph_nodes tn
-                    ON tn.node_type = e.to_type AND tn.node_id = e.to_id
-                LIMIT 2000
-                """
-            )
-            raw = [dict(row) for row in cur.fetchall()]
-            conn.close()
+            with sqlite3.connect(str(local_graph_db)) as conn:
+                conn.row_factory = sqlite3.Row
+                cur = conn.cursor()
+                cur.execute(
+                    """
+                    SELECT
+                        e.from_id AS from_id,
+                        e.to_id AS to_id,
+                        e.relation AS relation,
+                        COALESCE(fn.space_id, 'concept') AS from_space,
+                        COALESCE(tn.space_id, 'concept') AS to_space
+                    FROM graph_edges e
+                    LEFT JOIN graph_nodes fn
+                        ON fn.node_type = e.from_type AND fn.node_id = e.from_id
+                    LEFT JOIN graph_nodes tn
+                        ON tn.node_type = e.to_type AND tn.node_id = e.to_id
+                    LIMIT 2000
+                    """
+                )
+                raw = [dict(row) for row in cur.fetchall()]
         elif hasattr(ctx.graph, "run_query"):
             raw = ctx.graph.run_query(
                 "MATCH (a)-[r]->(b) "

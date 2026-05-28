@@ -2,7 +2,6 @@
 
 import os
 import json
-import tempfile
 import threading
 from typing import Any, Dict
 
@@ -41,16 +40,6 @@ def write_layer(store_dir: str, layer: Dict[str, Any]) -> None:
         meta["enabled"] = layer.get("enabled", True)
         # Prepend to layers
         index["layers"] = [meta] + [l for l in index["layers"] if l.get("id") != layer_id]
-        # Write to temp file in same directory, then replace atomically
-        fd, temp_path = tempfile.mkstemp(dir=store_dir, suffix=".json", text=True)
-        try:
-            with os.fdopen(fd, "w", encoding="utf-8") as f:
-                json.dump(index, f)
-            os.replace(temp_path, index_path)
-        except:
-            try:
-                os.unlink(temp_path)
-            except:
-                pass
-            raise
-
+        # Lock serializes read/write in-process, so direct overwrite is sufficient here.
+        with open(index_path, "w", encoding="utf-8") as f:
+            json.dump(index, f)
