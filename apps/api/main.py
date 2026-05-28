@@ -367,8 +367,8 @@ def require_auth(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
     x_user_id: str | None = Header(default=None, alias="X-User-Id"),
 ) -> AuthContext:
-    require_auth_env = os.getenv("OPENCRAB_REQUIRE_AUTH", "").strip().lower()
-    require_auth_enabled = require_auth_env in {"1", "true", "yes", "on"}
+    require_auth_env = os.getenv("OPENCRAB_REQUIRE_AUTH", "true").strip().lower()
+    require_auth_enabled = require_auth_env not in {"0", "false", "no", "off"}
     if not require_auth_enabled:
         return AuthContext(user_id=x_user_id or "anonymous", tier=_tier())
 
