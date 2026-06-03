@@ -23,8 +23,10 @@ load_dotenv(REPO_ROOT / ".env", override=False)
 from opencrab.config import get_settings
 from opencrab.grammar.manifest import SPACES
 from opencrab.grammar.validator import describe_grammar, validate_edge, validate_node
+from opencrab.ontology.builder import OntologyBuilder
 from opencrab.ontology.impact import ImpactEngine
 from opencrab.ontology.query import HybridQuery
+from opencrab.ontology.semantic import write_semantic_graph
 from opencrab.stores.factory import make_doc_store, make_graph_store, make_sql_store, make_vector_store
 
 logger = logging.getLogger("opencrab.api")
@@ -88,6 +90,7 @@ class ApiContext:
     vector: Any
     docs: Any
     sql: Any
+    builder: OntologyBuilder
     hybrid: HybridQuery
     impact: ImpactEngine
 
@@ -312,6 +315,7 @@ def _build_context() -> ApiContext:
         vector=vector,
         docs=docs,
         sql=sql,
+        builder=OntologyBuilder(graph, docs, sql),
         hybrid=HybridQuery(vector, graph),
         impact=ImpactEngine(graph, sql),
     )
@@ -486,6 +490,17 @@ def ingest_text(
         result["stores"]["documents"] = "ok"
     else:
         result["stores"]["documents"] = "unavailable"
+
+    try:
+        result["ontology"] = write_semantic_graph(
+            ctx.builder,
+            source_id=source_id,
+            text=payload.text,
+            metadata=metadata,
+        )
+    except Exception as exc:
+        logger.warning("Semantic graph ingest failed for %s: %s", source_id, exc)
+        result["ontology"] = {"mode": "semantic_graph", "errors": [str(exc)]}
 
     _log_event(
         ctx.docs,

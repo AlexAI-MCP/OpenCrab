@@ -243,19 +243,42 @@ class TestToolDispatch:
             mongo = MagicMock()
             mongo.available = True
             mongo.upsert_source.return_value = "mongo-id-1"
+            builder = MagicMock()
             mock_ctx.return_value = {
-                "builder": MagicMock(), "rebac": MagicMock(),
+                "builder": builder, "rebac": MagicMock(),
                 "impact": MagicMock(), "hybrid": hybrid, "mongo": mongo,
                 "billing": MagicMock(),
             }
             result = dispatch_tool("ontology_ingest", {
-                "text": "This is a test document about ontologies.",
+                "text": "OpenCrab Runtime Protocol PASS\nThe evidence graph write completed.",
                 "source_id": "src1",
-                "metadata": {"space": "evidence"},
+                "metadata": {"title": "OpenCrab Runtime Protocol"},
             })
             assert result["source_id"] == "src1"
             assert "chromadb" in result["stores"]
             assert result["text_length"] > 0
+            assert result["ontology"]["mode"] == "sentence_graph"
+            assert result["ontology"]["document_node_id"]
+            assert result["ontology"]["evidence_node_id"]
+            assert result["ontology"]["concept_node_id"]
+            assert result["ontology"]["status_node_id"]
+            assert result["ontology"]["judgment_node_id"]
+            assert set(result["ontology"]["sentence_nodes"]) == {
+                "document",
+                "evidence",
+                "concept",
+                "status",
+                "judgment",
+            }
+            assert builder.add_node.call_count == 5
+            assert builder.add_edge.call_count >= 3
+
+            node_calls = builder.add_node.call_args_list
+            assert any(call.kwargs["space"] == "resource" and call.kwargs["node_type"] == "Document" for call in node_calls)
+            assert any(call.kwargs["space"] == "evidence" and call.kwargs["node_type"] == "TextUnit" for call in node_calls)
+            assert any(call.kwargs["space"] == "concept" and call.kwargs["node_type"] == "Concept" for call in node_calls)
+            assert any(call.kwargs["space"] == "claim" and call.kwargs["node_type"] == "Claim" for call in node_calls)
+            assert all("sentence" in call.kwargs["properties"] for call in node_calls)
 
 
 # ---------------------------------------------------------------------------

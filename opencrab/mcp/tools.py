@@ -22,6 +22,8 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
+from opencrab.ontology.semantic import write_semantic_graph
+
 logger = logging.getLogger(__name__)
 
 
@@ -504,10 +506,11 @@ def ontology_ingest(
     metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
-    Ingest a text document into the vector store.
+    Ingest a text document into vector/document stores and the ontology graph.
 
-    The text is embedded and stored in ChromaDB. A source record is
-    also created in MongoDB if available.
+    The graph shape is semantic by default:
+    resource:Document -> evidence:TextUnit -> concept:Concept / claim:Claim.
+    This avoids the older keyword-only pattern that created filler word nodes.
 
     Parameters
     ----------
@@ -544,6 +547,20 @@ def ontology_ingest(
     else:
         result["stores"]["mongodb"] = "unavailable"
 
+    # Ingest into ontology graph as five source-backed sentence nodes.
+    try:
+        graph_result = write_semantic_graph(
+            ctx["builder"],
+            source_id=source_id,
+            text=text,
+            metadata=meta,
+        )
+        ctx["hybrid"].invalidate_bm25_cache()
+    except Exception as exc:
+        logger.error("ontology_ingest semantic graph write failed: %s", exc)
+        graph_result = {"mode": "sentence_graph", "errors": [str(exc)]}
+
+    result["ontology"] = graph_result
     result["text_length"] = len(text)
     result["metadata"] = meta
     return result
@@ -1222,7 +1239,7 @@ TOOL_SCHEMAS: dict[str, dict[str, Any]] = {
         },
     },
     "ontology_ingest": {
-        "description": "Ingest a text document into the vector and document stores.",
+        "description": "Ingest a text document into vector/document stores and a source-backed semantic graph.",
         "inputSchema": {
             "type": "object",
             "properties": {
