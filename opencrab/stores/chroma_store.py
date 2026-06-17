@@ -26,12 +26,18 @@ class ChromaStore:
         collection_name: str,
         local_mode: bool = False,
         local_path: str = "./opencrab_data/chroma",
+        embedding_function: Any = None,
+        # embedding_function: ChromaDB EmbeddingFunction 인스턴스.
+        # None 이면 ChromaDB 기본 EF(all-MiniLM-L6-v2 ONNX, 384d) 사용 — 기존 동작.
+        # ResilientEmbeddingFunction(KURE-v1) 을 주입하면 KURE 로 전환.
+        # 변경 이유: 임베딩 모델을 외부에서 주입받아 교체 가능하게 함.
     ) -> None:
         self._host = host
         self._port = port
         self._collection_name = collection_name
         self._local_mode = local_mode
         self._local_path = local_path
+        self._embedding_function = embedding_function
         self._client: Any = None
         self._collection: Any = None
         self._available = False
@@ -58,6 +64,9 @@ class ChromaStore:
             self._collection = self._client.get_or_create_collection(
                 name=self._collection_name,
                 metadata={"hnsw:space": "cosine"},
+                # embedding_function=None 이면 Chroma 기본 EF(minilm) 적용.
+                # ResilientEF(KURE) 주입 시 해당 EF 로 add/query 자동 수행.
+                embedding_function=self._embedding_function,
             )
             self._available = True
         except Exception as exc:
@@ -233,6 +242,7 @@ class ChromaStore:
         self._collection = self._client.get_or_create_collection(
             name=self._collection_name,
             metadata={"hnsw:space": "cosine"},
+            embedding_function=self._embedding_function,
         )
         logger.info("ChromaDB: collection '%s' reset.", self._collection_name)
 
