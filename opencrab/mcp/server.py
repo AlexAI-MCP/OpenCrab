@@ -88,6 +88,16 @@ class MCPServer:
             logger.error("Parse error: %s", exc)
             return self._error_response(None, PARSE_ERROR, f"Parse error: {exc}")
 
+        return self.handle_request(request)
+
+    def handle_request(self, request: dict[str, Any]) -> dict[str, Any] | None:
+        """
+        Transport-agnostic JSON-RPC handler.
+
+        Accepts an already-parsed request dict and returns a response dict,
+        or None for notifications (which must NOT be answered). Shared by the
+        stdio loop (``_handle_raw``) and the HTTP transport (``http_app``).
+        """
         # JSON-RPC notifications have no "id" field — must NOT be responded to
         is_notification = "id" not in request
         req_id = request.get("id")
@@ -151,7 +161,10 @@ class MCPServer:
         Returns server capabilities and protocol version.
         """
         return {
-            "protocolVersion": "2024-11-05",
+            # Echo the client's requested protocol version when present so both
+            # the 2024-11-05 (stdio) and 2025-03-26 (Streamable HTTP) handshakes
+            # are honoured; fall back to the baseline version otherwise.
+            "protocolVersion": params.get("protocolVersion", "2024-11-05"),
             "capabilities": {
                 "tools": {"listChanged": False},
             },

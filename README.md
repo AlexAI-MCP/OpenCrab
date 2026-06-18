@@ -110,6 +110,36 @@ Or add it manually:
 }
 ```
 
+#### Streamable HTTP transport
+
+`opencrab serve` also speaks MCP over HTTP directly (Streamable HTTP,
+`2025-03-26`) — no external stdio→HTTP bridge required:
+
+```bash
+# unauthenticated, loopback
+opencrab serve --transport http --port 8765
+
+# expose on a trusted network with optional bearer auth
+opencrab serve --transport http --host 0.0.0.0 --port 8765 \
+  --auth-token-file /path/to/token
+```
+
+The `/mcp` endpoint is stateless. When a token is configured (via
+`--auth-token` / `--auth-token-file` or `OPENCRAB_MCP_TOKEN` /
+`OPENCRAB_MCP_TOKEN_FILE`), clients must send `Authorization: Bearer <token>`.
+Run a single worker (the default) — the local chroma client is single-process.
+
+```json
+{
+  "mcpServers": {
+    "opencrab": {
+      "type": "http",
+      "url": "http://<host>:8765/mcp"
+    }
+  }
+}
+```
+
 ## CrabHarness
 
 [`crabharness/`](./crabharness/) is the mission-first control plane for

@@ -66,6 +66,12 @@ class Settings(BaseSettings):
     # ------------------------------------------------------------------
     mcp_server_name: str = Field(default="opencrab", alias="MCP_SERVER_NAME")
     mcp_server_version: str = Field(default="0.1.0", alias="MCP_SERVER_VERSION")
+    # HTTP transport (opencrab serve --transport http). Bind host defaults to
+    # loopback; expose on a trusted network via --host 0.0.0.0. The bearer token
+    # is NOT read from config — it comes from --auth-token(-file) or
+    # OPENCRAB_MCP_TOKEN(_FILE) to keep secrets out of the settings object.
+    mcp_http_host: str = Field(default="127.0.0.1", alias="MCP_HTTP_HOST")
+    mcp_http_port: int = Field(default=8765, alias="MCP_HTTP_PORT")
 
     # ------------------------------------------------------------------
     # Logging

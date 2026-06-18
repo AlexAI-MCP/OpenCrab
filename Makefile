@@ -1,4 +1,4 @@
-.PHONY: help install dev-install status serve query manifest lint format test coverage seed
+.PHONY: help install dev-install status serve serve-http query manifest lint format test coverage seed
 
 PYTHON := python
 PIP    := pip
@@ -11,7 +11,8 @@ help:
 	@echo "  make install       Install package"
 	@echo "  make dev-install   Install with dev extras"
 	@echo "  make status        Check store connections"
-	@echo "  make serve         Start MCP server on stdio"
+	@echo "  make serve         Start MCP server on stdio (default)"
+	@echo "  make serve-http    Start MCP server over Streamable HTTP"
 	@echo "  make manifest      Print MetaOntology grammar"
 	@echo "  make seed          Seed databases with example data"
 	@echo "  make lint          Run ruff linter"
@@ -30,6 +31,9 @@ status:
 
 serve:
 	$(PYTHON) -m opencrab.cli serve
+
+serve-http:
+	$(PYTHON) -m opencrab.cli serve --transport http
 
 manifest:
 	$(PYTHON) -m opencrab.cli manifest

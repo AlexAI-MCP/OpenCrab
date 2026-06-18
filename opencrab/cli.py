@@ -3,7 +3,7 @@ OpenCrab CLI — Click command interface.
 
 Commands:
   init      Create .env from template
-  serve     Start the MCP server (stdio)
+  serve     Start the MCP server (stdio default, or --transport http)
   status    Check all store connections
   ingest    Ingest files from a path
   extract   LLM-extract nodes/edges from files into the graph
@@ -102,14 +102,66 @@ LOG_LEVEL=INFO
 
 
 @main.command()
-def serve() -> None:
-    """Start the OpenCrab MCP server on stdio (for Claude Code integration)."""
-    # Suppress all non-error logging to keep stdio clean
-    logging.basicConfig(level=logging.ERROR, stream=sys.stderr)
-    from opencrab.mcp.server import MCPServer
+@click.option(
+    "--transport",
+    type=click.Choice(["stdio", "http"]),
+    default="stdio",
+    show_default=True,
+    help="stdio: local Claude Code integration. http: Streamable HTTP MCP.",
+)
+@click.option("--host", default=None, help="HTTP bind host (http only). Defaults to config.")
+@click.option("--port", default=None, type=int, help="HTTP bind port (http only). Defaults to config.")
+@click.option(
+    "--auth-token",
+    default=None,
+    help="Bearer token for the HTTP transport. Unset + no token source = no auth.",
+)
+@click.option("--auth-token-file", default=None, help="Path to a file holding the bearer token (http only).")
+def serve(
+    transport: str,
+    host: str | None,
+    port: int | None,
+    auth_token: str | None,
+    auth_token_file: str | None,
+) -> None:
+    """Start the OpenCrab MCP server (stdio by default, or Streamable HTTP)."""
+    if transport == "stdio":
+        # Suppress all non-error logging to keep the stdio JSON-RPC channel clean.
+        logging.basicConfig(level=logging.ERROR, stream=sys.stderr)
+        from opencrab.mcp.server import MCPServer
 
-    server = MCPServer()
-    server.run()
+        MCPServer().run()
+        return
+
+    # transport == "http"
+    from opencrab.config import get_settings
+    from opencrab.mcp.http_app import _resolve_token, create_app
+
+    cfg = get_settings()
+    bind_host = host or cfg.mcp_http_host
+    bind_port = port or cfg.mcp_http_port
+    token = _resolve_token(auth_token, auth_token_file)
+
+    # HTTP can log normally — stdout is not a protocol channel here.
+    logging.basicConfig(
+        level=getattr(logging, cfg.log_level.upper(), logging.INFO),
+        stream=sys.stderr,
+    )
+    mode = "auth" if token else "OPEN(no-auth)"
+    console.print(
+        f"[green]OpenCrab MCP (Streamable HTTP, {mode}) → http://{bind_host}:{bind_port}/mcp[/green]"
+    )
+
+    import uvicorn
+
+    # Single worker: the chroma PersistentClient is single-process only.
+    uvicorn.run(
+        create_app(auth_token=token),
+        host=bind_host,
+        port=bind_port,
+        workers=1,
+        log_level=cfg.log_level.lower(),
+    )
 
 
 # ---------------------------------------------------------------------------
