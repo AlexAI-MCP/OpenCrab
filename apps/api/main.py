@@ -756,7 +756,9 @@ def list_nodes(
 ) -> dict[str, Any]:
     """Return all nodes for graph visualization."""
     try:
-        raw = ctx.graph.run_query(
+        # run_cypher is the graph-store method name (as _resolve_node_types
+        # above already calls it); run_query is defined by no store in this repo.
+        raw = ctx.graph.run_cypher(
             "MATCH (n) OPTIONAL MATCH (n)-[r]-() "
             "RETURN n.id AS id, n.space AS space, n.node_type AS node_type, "
             "properties(n) AS props, count(r) AS degree "
@@ -789,7 +791,7 @@ def list_edges(
 ) -> dict[str, Any]:
     """Return all edges for graph visualization."""
     try:
-        raw = ctx.graph.run_query(
+        raw = ctx.graph.run_cypher(
             "MATCH (a)-[r]->(b) "
             "RETURN a.id AS from_id, b.id AS to_id, type(r) AS relation, "
             "a.space AS from_space, b.space AS to_space "
