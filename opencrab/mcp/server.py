@@ -22,6 +22,7 @@ import sys
 from typing import Any
 
 from opencrab.config import get_settings
+from opencrab.mcp.compact import encode_tool_result
 from opencrab.mcp.tools import TOOLS, dispatch_tool
 
 logger = logging.getLogger(__name__)
@@ -191,9 +192,10 @@ class MCPServer:
             result = {"error": str(exc)}
 
         # MCP content format: wrap result in a content list
-        # Use ensure_ascii=True to avoid invalid Unicode surrogates (e.g. from
-        # Korean/CJK data) crashing the Claude API JSON parser.
-        content_text = json.dumps(result, ensure_ascii=True, default=str)
+        # By default ensure_ascii=True avoids invalid Unicode surrogates (e.g. from
+        # Korean/CJK data) crashing the Claude API JSON parser; OPENCRAB_COMPACT_RESULTS
+        # sends characters instead and replaces lone surrogates (see compact.py).
+        content_text = encode_tool_result(name, result)
         return {
             "content": [
                 {

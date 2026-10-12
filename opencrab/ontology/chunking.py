@@ -304,8 +304,13 @@ def _is_table(lines: list[str]) -> bool:
     )
 
 
-def _with_header(title: str, path: tuple[str, ...], body: str) -> str:
+def chunk_header(title: str, path: tuple[str, ...]) -> str:
+    """The lines that open every chunk's text: document title, then section path."""
     header = f"문서: {title}"
     if path:
         header += "\n절: " + " > ".join(path)
-    return f"{header}\n\n{body}"
+    return header
+
+
+def _with_header(title: str, path: tuple[str, ...], body: str) -> str:
+    return f"{chunk_header(title, path)}\n\n{body}"
