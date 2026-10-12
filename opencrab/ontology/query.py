@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from opencrab.ontology import chunking
+from opencrab.ontology.chunk_bm25 import ChunkBM25
 from opencrab.stores.chroma_store import ChromaStore
 from opencrab.stores.neo4j_store import Neo4jStore
 
@@ -234,6 +235,7 @@ class HybridQuery:
         self._bm25_cache: Any = None
         self._bm25_cache_size: int = 0
         self._bm25_dirty: bool = True
+        self._chunk_bm25 = ChunkBM25(chroma)
 
     def invalidate_bm25_cache(self) -> None:
         """Mark the BM25 index stale so it is rebuilt on the next query."""
@@ -288,6 +290,11 @@ class HybridQuery:
             bm25_hits = self._bm25_search(question, spaces, profile.bm25_limit)
             if bm25_hits:
                 result_lists.append(bm25_hits)
+        if use_bm25 and chunking.chunking_enabled():
+            # Chunk hits are not graph nodes, so they never become graph anchors.
+            chunk_hits = self._chunk_bm25.search(question, spaces, profile.bm25_limit)
+            if chunk_hits:
+                result_lists.append(chunk_hits)
 
         # --- Stage 3: Graph expansion from vector and BM25 anchor nodes ---
         anchor_ids = _ordered_unique(
@@ -563,6 +570,8 @@ class HybridQuery:
             if ids:
                 # One call, not batches: a failure cannot leave half the chunks rewritten.
                 self._chroma.upsert_texts(texts=[c.text for c in chunks], metadatas=metadatas, ids=ids)
+            # Stored text changed: drop the keyword index even if the delete below fails.
+            self._chunk_bm25.invalidate()
             stale = sorted(previous - set(ids))
             if stale:
                 self._chroma.delete(stale)

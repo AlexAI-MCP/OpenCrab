@@ -219,6 +219,16 @@ class ChromaStore:
             raise RuntimeError("ChromaDB is not available.")
         return list(self._collection.get(where=where, include=[])["ids"])
 
+    def list_where(self, where: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+        """Return up to ``limit`` documents (id, document, metadata) matching ``where``."""
+        if not self._available:
+            raise RuntimeError("ChromaDB is not available.")
+        result = self._collection.get(where=where, limit=limit, include=["documents", "metadatas"])
+        return [
+            {"id": rid, "document": doc, "metadata": meta or {}}
+            for rid, doc, meta in zip(result["ids"], result["documents"], result["metadatas"])
+        ]
+
     def existing_ids(self, ids: list[str]) -> list[str]:
         """Return the subset of ``ids`` already stored in the collection."""
         if not self._available:

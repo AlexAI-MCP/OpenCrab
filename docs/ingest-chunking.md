@@ -17,8 +17,11 @@ OPENCRAB_CHUNKING=1 opencrab serve
 | --- | --- | --- |
 | `OPENCRAB_CHUNKING` | off | `1`/`true`/`yes`/`on` enables chunking |
 | `OPENCRAB_CHUNK_MAX_CHARS` | `1200` | Maximum body characters per chunk (header excluded) |
+| `OPENCRAB_CHUNK_BM25_LIMIT` | `10000` | Maximum chunks in the keyword index (see below) |
 
-Both are read from the process environment, not from `.env`.
+All are read from the process environment, not from `.env`. Set
+`OPENCRAB_CHUNKING` for the ingest process and for the process that answers
+queries (`opencrab serve`).
 
 ## Splitting Rules
 
@@ -87,9 +90,31 @@ the whole-document record written before chunking was enabled.
 The ingest result reports `chunks` and `vector_ids`. The MCP `ontology_ingest`
 tool passes on only `stores`, where the Chroma entry reads `ok (<n> chunks)`.
 
+## Keyword Search over Chunks
+
+With chunking on, `ontology_query` also runs BM25 over the chunk records
+(`chunk_index` present) and feeds those hits into the same RRF rerank as the
+vector and node-BM25 results. It uses the node index's tokenizer, so Korean
+words also match by 2- and 3-character n-grams. Only the stored chunk text is
+indexed. Chunk hits never become graph-expansion anchors.
+
+The index is built on the first query and cached:
+
+- A query that starts after a chunked ingest in the same process returns sees
+  the new text, even if a rebuild was already running. Graph node and edge
+  writes do not trigger a rebuild.
+- Only one rebuild runs at a time; concurrent queries wait for it.
+- Ingest from another process is noticed only when the collection's record
+  count changes. A re-ingest that keeps the same number of records is not
+  seen until that process restarts.
+- Only the first `OPENCRAB_CHUNK_BM25_LIMIT` chunks are indexed, and a warning
+  is logged when more chunks than that exist. The index is in memory and searched by a
+  linear scan. With 5,000 synthetic ~1,000-character Korean chunks, building
+  took 10-25 s, memory was 450-750 MB, and each query took about 0.2 s.
+
+The `query_bm25` MCP tool still searches graph nodes only.
+
 ## Not Covered Yet
 
-- BM25 (`query_bm25` and the BM25 leg of `ontology_query`) indexes graph nodes
-  only, so chunks are reachable through vector search alone.
 - Query results return the full chunk text.
 - The embedding model is still Chroma's default English model.

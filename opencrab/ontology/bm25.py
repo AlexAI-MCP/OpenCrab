@@ -136,16 +136,25 @@ class BM25Index:
     # ------------------------------------------------------------------
 
     @classmethod
-    def build(cls, nodes: list[dict[str, Any]]) -> "BM25Index":
+    def build(
+        cls,
+        nodes: list[dict[str, Any]],
+        texts: list[str] | None = None,
+    ) -> "BM25Index":
         """
         Build a BM25 index from a list of node dicts.
 
         Each dict must have at least 'node_id', 'space', 'node_type'.
-        Properties are read from the 'properties' sub-dict.
+        Properties are read from the 'properties' sub-dict. When ``texts`` is
+        given, ``texts[i]`` is indexed for ``nodes[i]`` instead of the text
+        assembled from its fields.
         """
+        if texts is not None and len(texts) != len(nodes):
+            raise ValueError("texts must have one entry per node")
         idx = cls()
         idx._docs = nodes
-        idx._tokens = [_tokenize(_node_text(n)) for n in nodes]
+        sources = texts if texts is not None else [_node_text(n) for n in nodes]
+        idx._tokens = [_tokenize(t) for t in sources]
 
         # Document frequency
         for toks in idx._tokens:
