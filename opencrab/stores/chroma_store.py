@@ -213,6 +213,20 @@ class ChromaStore:
             }
         return None
 
+    def ids_where(self, where: dict[str, Any]) -> list[str]:
+        """Return the IDs of documents whose metadata matches ``where``."""
+        if not self._available:
+            raise RuntimeError("ChromaDB is not available.")
+        return list(self._collection.get(where=where, include=[])["ids"])
+
+    def existing_ids(self, ids: list[str]) -> list[str]:
+        """Return the subset of ``ids`` already stored in the collection."""
+        if not self._available:
+            raise RuntimeError("ChromaDB is not available.")
+        if not ids:
+            return []
+        return list(self._collection.get(ids=ids, include=[])["ids"])
+
     def delete(self, ids: list[str]) -> None:
         """Delete documents by their IDs."""
         if not self._available:

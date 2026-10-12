@@ -19,6 +19,7 @@ import os
 from dataclasses import dataclass, field
 from typing import Any
 
+from opencrab.ontology import chunking
 from opencrab.stores.chroma_store import ChromaStore
 from opencrab.stores.neo4j_store import Neo4jStore
 
@@ -191,6 +192,33 @@ def _property_text(props: dict[str, Any], relation_type: str = "") -> str:
     if len(parts) <= 1:
         parts.append(str(props))
     return " ".join(parts)[:4000]
+
+
+def _chunk_records(
+    chunks: list[chunking.Chunk],
+    source_id: str,
+    title: str,
+    metadata: dict[str, Any],
+) -> tuple[list[str], list[dict[str, Any]]]:
+    """Build Chroma ids and metadata for each chunk of one source."""
+    ids = [f"{source_id}#{c.index}" for c in chunks]
+    base = {k: v for k, v in metadata.items() if k != "node_id"}
+    if "node_id" in metadata:
+        # Keep each chunk a distinct result: the reranker merges hits by node_id.
+        base["source_node_id"] = metadata["node_id"]
+    metadatas = [
+        {
+            **base,
+            "node_id": chunk_id,
+            "source_id": source_id,
+            "doc_title": title,
+            "heading_path": " > ".join(c.heading_path),
+            "chunk_index": c.index,
+            "chunk_count": len(chunks),
+        }
+        for chunk_id, c in zip(ids, chunks)
+    ]
+    return ids, metadatas
 
 
 class HybridQuery:
@@ -478,7 +506,14 @@ class HybridQuery:
         Returns
         -------
         dict with ingestion status.
+
+        With ``OPENCRAB_CHUNKING=1`` the text is split into heading-scoped
+        chunks (see :mod:`opencrab.ontology.chunking`) stored as
+        ``{source_id}#{n}``; stale chunks from a previous ingest are removed.
         """
+        if chunking.chunking_enabled():
+            return self._ingest_chunked(text, source_id, metadata or {})
+
         meta = metadata or {}
         meta["source_id"] = source_id
 
@@ -500,6 +535,44 @@ class HybridQuery:
             logger.warning("Ingest to ChromaDB failed: %s", exc)
             result["stores"]["chromadb"] = f"error: {exc}"
 
+        return result
+
+    def _ingest_chunked(
+        self,
+        text: str,
+        source_id: str,
+        metadata: dict[str, Any],
+    ) -> dict[str, Any]:
+        title = chunking.document_title(source_id, metadata)
+        chunks = chunking.chunk_markdown(text, title, max_chars=chunking.chunk_max_chars())
+        result: dict[str, Any] = {"source_id": source_id, "stores": {}, "chunks": len(chunks)}
+
+        if not self._chroma.available:
+            result["stores"]["chromadb"] = "unavailable"
+            return result
+
+        ids, metadatas = _chunk_records(chunks, source_id, title, metadata)
+        try:
+            previous = set(self._chroma.ids_where({"source_id": source_id}))
+            foreign = sorted(set(self._chroma.existing_ids(ids)) - previous)
+            if foreign:
+                result["stores"]["chromadb"] = (
+                    f"error: chunk ids already used by another source: {', '.join(foreign[:5])}"
+                )
+                return result
+            if ids:
+                # One call, not batches: a failure cannot leave half the chunks rewritten.
+                self._chroma.upsert_texts(texts=[c.text for c in chunks], metadatas=metadatas, ids=ids)
+            stale = sorted(previous - set(ids))
+            if stale:
+                self._chroma.delete(stale)
+        except Exception as exc:
+            logger.warning("Chunked ingest to ChromaDB failed for %s: %s", source_id, exc)
+            result["stores"]["chromadb"] = f"error: {exc}"
+            return result
+
+        result["stores"]["chromadb"] = f"ok ({len(chunks)} chunks)"
+        result["vector_ids"] = ids
         return result
 
     def keyword_search(
