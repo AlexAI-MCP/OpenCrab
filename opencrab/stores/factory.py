@@ -27,16 +27,39 @@ def make_graph_store(settings: Settings) -> Any:
 
 
 def make_vector_store(settings: Settings) -> Any:
-    """Return the local persistent Chroma store."""
+    """Return the local persistent Chroma store.
+
+    With ``OPENCRAB_EMBEDDING_MODEL`` set, vectors come from that local
+    multilingual model and live in their own collection
+    (``<CHROMA_COLLECTION>__<model>``), since vectors from different models
+    cannot share one.
+    """
     from opencrab.stores.chroma_store import ChromaStore
 
     chroma_path = os.path.join(settings.local_data_dir, "chroma")
+    collection_name = settings.chroma_collection
+    embedding_function = None
+    if os.getenv("OPENCRAB_EMBEDDING_MODEL", "").strip():
+        # Imported only when asked for, so the default path is untouched.
+        from opencrab.stores.onnx_embedding import (
+            OnnxEmbeddingFunction,
+            check_model_dir,
+            embedding_model_from_env,
+            resolve_model_dir,
+        )
+
+        model = embedding_model_from_env()
+        if model is not None:
+            check_model_dir(model, resolve_model_dir(model))  # fail at startup, not on the first query
+            collection_name = f"{collection_name}__{model}"
+            embedding_function = OnnxEmbeddingFunction(model=model)
     return ChromaStore(
         host=settings.chroma_host,
         port=settings.chroma_port,
-        collection_name=settings.chroma_collection,
+        collection_name=collection_name,
         local_mode=True,
         local_path=chroma_path,
+        embedding_function=embedding_function,
     )
 
 

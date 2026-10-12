@@ -117,4 +117,5 @@ The `query_bm25` MCP tool still searches graph nodes only.
 ## Not Covered Yet
 
 - Query results return the full chunk text.
-- The embedding model is still Chroma's default English model.
+- The embedding model is Chroma's default English model unless
+  `OPENCRAB_EMBEDDING_MODEL` is set (see [multilingual-embedding.md](multilingual-embedding.md)).

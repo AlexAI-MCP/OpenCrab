@@ -26,12 +26,14 @@ class ChromaStore:
         collection_name: str,
         local_mode: bool = False,
         local_path: str = "./opencrab_data/chroma",
+        embedding_function: Any = None,
     ) -> None:
         self._host = host
         self._port = port
         self._collection_name = collection_name
         self._local_mode = local_mode
         self._local_path = local_path
+        self._embedding_function = embedding_function
         self._client: Any = None
         self._collection: Any = None
         self._available = False
@@ -58,6 +60,7 @@ class ChromaStore:
             self._collection = self._client.get_or_create_collection(
                 name=self._collection_name,
                 metadata={"hnsw:space": "cosine"},
+                **self._embedding_kwargs(),
             )
             self._available = True
         except Exception as exc:
@@ -72,6 +75,16 @@ class ChromaStore:
     @property
     def available(self) -> bool:
         return self._available
+
+    @property
+    def collection_name(self) -> str:
+        return self._collection_name
+
+    def _embedding_kwargs(self) -> dict[str, Any]:
+        """Pass a custom embedding function only when one is configured."""
+        if self._embedding_function is None:
+            return {}
+        return {"embedding_function": self._embedding_function}
 
     def ping(self) -> bool:
         """Return True if ChromaDB is reachable."""
@@ -257,6 +270,7 @@ class ChromaStore:
         self._collection = self._client.get_or_create_collection(
             name=self._collection_name,
             metadata={"hnsw:space": "cosine"},
+            **self._embedding_kwargs(),
         )
         logger.info("ChromaDB: collection '%s' reset.", self._collection_name)
 
